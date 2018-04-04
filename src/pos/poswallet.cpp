@@ -40,7 +40,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 #include <miner.h>
-
+#include <iostream>
 typedef std::vector<unsigned char> valtype;
 
 using namespace std;
@@ -68,10 +68,12 @@ void AvailableCoinsForStaking(CWallet *pwallet,std::vector<COutput>& vCoins){
             const uint256& wtxid = it->first;
             const CWalletTx* pcoin = &(*it).second;
             int nDepth = pcoin->GetDepthInMainChain();
-
+            int targetDepth = chainActive.Tip()->nHeight > DELAY_REWARD_HEIGHT ? COINSTAKE_MATURITY:COINBASE_MATURITY;
             //this utxo is low depth
-            if (nDepth < COINBASE_MATURITY)
-                continue;
+            if (nDepth < targetDepth){
+		        LogPrintf("AvailableCoinsForStaking coin's depth is error\n");
+		        continue;
+	        }
 
             //check depth again
             if (pcoin->GetBlocksToMaturity() > 0)
@@ -210,10 +212,10 @@ bool CreateCoinStake(CWallet *pwallet,unsigned int nBits, const CAmount& nTotalF
             //analysis pubkey
             if (!Solver(scriptPubKeyKernel, whichType, vSolutions))
             {
-                LogPrintf("coinstake", "CreateCoinStake : failed to parse kernel\n");
+                LogPrintf("coinstake CreateCoinStake : failed to parse kernel\n");
                 break;
             }
-            LogPrintf("coinstake", "CreateCoinStake : parsed kernel type=%d\n", whichType);
+            LogPrintf("coinstake CreateCoinStake : parsed kernel type=%d\n", whichType);
             //type should be p2pk,or p2pkh
             if (whichType != TX_PUBKEY && whichType != TX_PUBKEYHASH)
             {

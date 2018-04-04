@@ -18,9 +18,12 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 //Godcoin:superblock
 static const int COINBASE_MATURITY = 0;
+static const int COINSTAKE_MATURITY = 3;
+
 static const int SUPER_BLOCK_HEIGHT = 501226;
 static const int SUPER_BLOCK_COUNT = 2;
 static const int LAST_POW_BLOCK_HEIGHT= SUPER_BLOCK_HEIGHT + SUPER_BLOCK_COUNT - 1;
+static const int DELAY_REWARD_HEIGHT = 501236;
 
 static const int WITNESS_SCALE_FACTOR = 4;
 
