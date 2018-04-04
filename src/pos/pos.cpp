@@ -131,8 +131,8 @@ bool CheckProofOfStake(CBlockIndex* pindexPrev, CValidationState& state, const C
     if(!view.GetCoin(txin.prevout, coinPrev))
         return state.DoS(100, error("CheckProofOfStake() : Stake prevout does not exist %s", txin.prevout.hash.ToString()));
 
-    if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINBASE_MATURITY)
-        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", COINBASE_MATURITY, pindexPrev->nHeight + 1 - coinPrev.nHeight));
+    if(CheckCoinMaturity((pindexPrev->nHeight + 1),coinPrev.nHeight))
+        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", (pindexPrev->nHeight + 1 - coinPrev.nHeight) > DELAY_REWARD_HEIGHT ? COINSTAKE_MATURITY:COINBASE_MATURITY, pindexPrev->nHeight + 1 - coinPrev.nHeight));
     
     //check prevout's block
     CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
@@ -174,7 +174,7 @@ bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBloc
         if(!view.GetCoin(prevout, coinPrev))
             return false;
         
-        if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINBASE_MATURITY)
+        if(CheckCoinMaturity((pindexPrev->nHeight + 1),coinPrev.nHeight))
             return false;
         
         CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
@@ -205,8 +205,8 @@ void CacheKernel(std::map<COutPoint, CStakeCache>& cache, const COutPoint& prevo
     Coin coinPrev;
     if(!view.GetCoin(prevout, coinPrev))
         return;
-    
-    if(pindexPrev->nHeight + 1 - coinPrev.nHeight < COINBASE_MATURITY)
+        
+    if(CheckCoinMaturity((pindexPrev->nHeight + 1),coinPrev.nHeight))
         return;
     
     CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
@@ -217,6 +217,15 @@ void CacheKernel(std::map<COutPoint, CStakeCache>& cache, const COutPoint& prevo
     cache.insert({prevout, c});
 }
 
+bool CheckCoinMaturity(int blockHeight, int coinHeight){
+    if(blockHeight <= DELAY_REWARD_HEIGHT){
+	LogPrintf("check coinbase_maturity %d\n",(blockHeight - coinHeight) < COINBASE_MATURITY);
+        return (blockHeight - coinHeight) < COINBASE_MATURITY;
+    }else{
+	LogPrintf("check coinstake_maturity %d\n",(blockHeight - coinHeight) < COINBASE_MATURITY);
+        return (blockHeight - coinHeight) < COINSTAKE_MATURITY;
+    }
+}
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex){
     //CBlockIndex will be updated with information about the proof type later
     while (pindex && pindex->pprev && (pindex->IsProofOfWork()))

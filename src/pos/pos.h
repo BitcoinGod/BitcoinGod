@@ -48,7 +48,7 @@ bool CheckCoinStakeTimestamp(uint32_t nTimeBlock);
 // Convenient for searching a kernel
 bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, CCoinsViewCache& view);
 bool CheckKernel(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t nTimeBlock, const COutPoint& prevout, CCoinsViewCache& view, const std::map<COutPoint, CStakeCache>& cache);
-
+bool CheckCoinMaturity(int blockHeight, int coinHeight);
 //godcoin:pos
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex);
 unsigned int GetNextPosWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params);
