@@ -376,6 +376,7 @@ void BitcoinGUI::createActions()
 
     openAction = new QAction(platformStyle->TextColorIcon(":/icons/open"), tr("Open &URI..."), this);
     openAction->setStatusTip(tr("Open a bitcoin: URI or payment request"));
+    openAction->setVisible(false);
 
     showHelpMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
