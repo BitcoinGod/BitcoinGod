@@ -415,7 +415,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and bitcoingod: URIs)</source>
-        <translation>要求付款(產生 QR Code 和 bitcoingod 付款協議的資源識別碼: URI)</translation>
+        <translation>要求付款產生 QR Code</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>

@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and bitcoingod: URIs)</source>
-        <translation>Request payments (generates QR codes and bitcoingod: URIs)</translation>
+        <translation>Request payments generates QR codes</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>

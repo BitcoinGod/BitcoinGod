@@ -371,7 +371,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and bitcoingod: URIs)</source>
-        <translation>要求付款 (產生QR碼 bitcoingod: URIs)</translation>
+        <translation>要求付款產生QR碼</translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
