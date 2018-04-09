@@ -62,11 +62,11 @@
         <translation>アドレス受信</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your BitcoinGod addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>支払送信するためのビットコインアドレスです。コインを送付する前に、いつも残高と受信アドレスの確認をしてください。</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your BitcoinGod addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation>支払の受信をするためのビットコインアドレスです。それぞれの処理に新規に受信アドレスを使用することを推奨します。</translation>
     </message>
     <message>
@@ -338,7 +338,7 @@
         <translation>ディスクのブロックの再インデックス中...</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
+        <source>Send coins to a BitcoinGod address</source>
         <translation>ビットコインアドレスにコインを送信</translation>
     </message>
     <message>
@@ -390,11 +390,11 @@
         <translation>財布に属するプライベートキーの暗号化</translation>
     </message>
     <message>
-        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <source>Sign messages with your BitcoinGod addresses to prove you own them</source>
         <translation>所有者であることを証明するためにビットコインアドレスのメッセージにサイン</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <source>Verify messages to ensure they were signed with specified BitcoinGod addresses</source>
         <translation>署名された特定のビットコインアドレスを確認するために、メッセージを確認</translation>
     </message>
     <message>
@@ -414,7 +414,7 @@
         <translation>ツールバータブ</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <source>Request payments (generates QR codes and bitcoingod: URIs)</source>
         <translation>支払の要求 (QRコードとビットコインのURIを作成)</translation>
     </message>
     <message>
@@ -426,7 +426,7 @@
         <translation>受信に使用したアドレスとラベルの一覧を表示</translation>
     </message>
     <message>
-        <source>Open a bitcoin: URI or payment request</source>
+        <source>Open a bitcoingod: URI or payment request</source>
         <translation>ビットコインのURIまたは支払要求を開く</translation>
     </message>
     <message>
@@ -734,7 +734,7 @@
         <translation>送信アドレスの編集</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <source>The entered address "%1" is not a valid BitcoinGod address.</source>
         <translation>入寮されたアドレス "%1" は正当なビットコインアドレスではありません。</translation>
     </message>
     <message>
@@ -1246,7 +1246,7 @@
         <translation>支払い要求エラー</translation>
     </message>
     <message>
-        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <source>Cannot start bitcoingod: click-to-pay handler</source>
         <translation>ビットコインを開始できません: click-to-pay handler</translation>
     </message>
     <message>
@@ -1262,7 +1262,7 @@
         <translation>無効な支払アドレス %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid BitcoinGod address or malformed URI parameters.</source>
         <translation>URLはパースできませんでした! 原因はビットコインアドレスが無効であるか、URIパラメータの形式が間違っている可能性があります。</translation>
     </message>
     <message>
@@ -1356,7 +1356,7 @@
         <translation>残高</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <source>Enter a BitcoinGod address (e.g. %1)</source>
         <translation>ビットコインアドレスの入力 (例 %1)</translation>
     </message>
     <message>
@@ -2121,7 +2121,7 @@
         <translation>%1の必須料金のみ支払う</translation>
     </message>
     <message>
-        <source>Warning: Invalid Bitcoin address</source>
+        <source>Warning: Invalid BitcoinGod address</source>
         <translation>注意: 無効なビットコインアドレス</translation>
     </message>
     <message>
@@ -2164,7 +2164,7 @@
         <translation>これは通常の支払です。</translation>
     </message>
     <message>
-        <source>The Bitcoin address to send the payment to</source>
+        <source>The BitcoinGod address to send the payment to</source>
         <translation>支払に送信するビットコインアドレス</translation>
     </message>
     <message>
@@ -2208,7 +2208,7 @@
         <translation>使用されたアドレス一覧のために、このアドレスのラベルを入力します。</translation>
     </message>
     <message>
-        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <source>A message that was attached to the bitcoingod: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
         <translation>参考資料に保存された処理のビットコインURIは、メッセージに添付されます。メモ: このメッセージはビットコイン上で送信されません。</translation>
     </message>
     <message>
@@ -2253,11 +2253,11 @@
         <translation>&amp;署名メッセージ</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoingods sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>送信されたビットコインを受信できることを証明するために、アドレスのメッセージや同意事項に署名できます。フィッシング攻撃が署名を利用する可能性があるので、署名が曖昧やランダムでないことに注意してください。詳細な明細のみに署名されます。</translation>
     </message>
     <message>
-        <source>The Bitcoin address to sign the message with</source>
+        <source>The BitcoinGod address to sign the message with</source>
         <translation>メッセージ署名するためのビットコインアドレス</translation>
     </message>
     <message>
@@ -2289,7 +2289,7 @@
         <translation>システムのクリップボードへ現在の署名をコピー</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this Bitcoin address</source>
+        <source>Sign the message to prove you own this BitcoinGod address</source>
         <translation>ビットコインアドレスを証明するために、メッセージに署名</translation>
     </message>
     <message>
@@ -2313,11 +2313,11 @@
         <translation>以下のメッセージを確認して、受信者のアドレス、メッセージ（タブやすスペースなどを正確にこぴーしてください）、署名を入力してください。中間の攻撃者からのアタックを避けるために、署名されていないメッセージを読まないように注意してください。署名はアドレスと受信を証明することはできますが、送信者の処理を証明できないことに注意してください。</translation>
     </message>
     <message>
-        <source>The Bitcoin address the message was signed with</source>
+        <source>The BitcoinGod address the message was signed with</source>
         <translation>メッセージのビットコインアドレスはサインされています</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <source>Verify the message to ensure it was signed with the specified BitcoinGod address</source>
         <translation>特定のビットコインアドレスと署名されているメッセージであることを確認してください。</translation>
     </message>
     <message>
