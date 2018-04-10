@@ -5,7 +5,6 @@
 #if defined(HAVE_CONFIG_H)
 #include "config/bitcoin-config.h"
 #endif
-
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
@@ -27,6 +26,7 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QTimer>
+#include <QDebug>
 
 OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     QDialog(parent),
@@ -87,6 +87,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     for (const QString &langStr : translations.entryList())
     {
         QLocale locale(langStr);
+        if(!(langStr.contains("en_US")||langStr.contains("zh_CN"))){
+            continue;
+        }
 
         /** check if the locale name consists of 2 parts (language_country) */
         if(langStr.contains("_"))
@@ -113,6 +116,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #if QT_VERSION >= 0x040700
     ui->thirdPartyTxUrls->setPlaceholderText("https://example.com/tx/%s");
 #endif
+
+    ui->thirdPartyTxUrlsLabel->setVisible(false);
+    ui->thirdPartyTxUrls->setVisible(false);
 
     ui->unit->setModel(new BitcoinUnits(this));
 
