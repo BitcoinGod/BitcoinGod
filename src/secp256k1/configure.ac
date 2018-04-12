@@ -60,6 +60,8 @@ case $host_os in
          fi
        fi
      fi
+     CFLAGS="$CFLAGS -mmacosx-version-min=10.10"
+     LDFLAGS="$LDFLAGS -mmacosx-version-min=10.10"
    ;;
 esac
 

@@ -49,6 +49,10 @@ case $host in
   *mingw*)
     LIBTOOL_APP_LDFLAGS="$LIBTOOL_APP_LDFLAGS -all-static"
   ;;
+  *darwin*)
+     CXXFLAGS="$CXXFLAGS  -mmacosx-version-min=10.10"
+     LDFLAGS="$LDFLAGS  -mmacosx-version-min=10.10"
+  ;;
 esac
 
 BUILD_EXEEXT=
