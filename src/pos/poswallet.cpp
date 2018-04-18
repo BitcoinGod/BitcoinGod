@@ -68,16 +68,10 @@ void AvailableCoinsForStaking(CWallet *pwallet,std::vector<COutput>& vCoins){
             const uint256& wtxid = it->first;
             const CWalletTx* pcoin = &(*it).second;
             int nDepth = pcoin->GetDepthInMainChain();
-            int targetDepth = chainActive.Tip()->nHeight > DELAY_REWARD_HEIGHT ? COINSTAKE_MATURITY:COINBASE_MATURITY;
-            //this utxo is low depth
-            if (nDepth < targetDepth){
-		        LogPrintf("AvailableCoinsForStaking coin's depth is error\n");
-		        continue;
-	        }
 
-            //check depth again
-            if (pcoin->GetBlocksToMaturity() > 0)
+            if(!IsCoinMature(chainActive.Tip()->nHeight + 1, chainActive.Tip()->nHeight - nDepth - 1)){
                 continue;
+            }
 
             //tranverse coin vout
             for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
