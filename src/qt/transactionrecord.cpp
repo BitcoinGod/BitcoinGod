@@ -43,6 +43,11 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
         for(unsigned int i = 0; i < wtx.tx->vout.size(); i++)
         {
             const CTxOut& txout = wtx.tx->vout[i];
+
+            //godcoin:pos,the coinstake vout[0] is null,so can nou calculate ammount
+            if(wtx.IsCoinStake() && i == 0)
+                continue;
+            
             isminetype mine = wallet->IsMine(txout);
             if(mine)
             {
@@ -63,10 +68,14 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                     sub.type = TransactionRecord::RecvFromOther;
                     sub.address = mapValue["from"];
                 }
-                if (wtx.IsCoinBase())
+                if (wtx.IsCoinBase() || wtx.IsCoinStake())
                 {
                     // Generated
                     sub.type = TransactionRecord::Generated;
+                }
+                if (wtx.IsCoinStake())
+                {
+                    sub.credit = nNet;
                 }
 
                 parts.append(sub);
@@ -114,6 +123,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 TransactionRecord sub(hash, nTime);
                 sub.idx = nOut;
                 sub.involvesWatchAddress = involvesWatchAddress;
+
+                //godcoin:pos,the coinstake vout[0] is null,so can nou calculate ammount
+                if(wtx.IsCoinStake() && nOut == 0)
+                    continue;
 
                 if(wallet->IsMine(txout))
                 {

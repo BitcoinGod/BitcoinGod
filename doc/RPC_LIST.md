@@ -206,7 +206,7 @@ otherwise connected information will also be available.
 <tr>
 <td> getrawchangeaddress </td>
 <td> [account]</td>
-<td>  Returns a new Bitcoin address, for receiving change. This is for use with raw transactions, NOT normal use. </td>
+<td>  Returns a new BitcoinGod address, for receiving change. This is for use with raw transactions, NOT normal use. </td>
 <td> N
 </td></tr>
 <tr>

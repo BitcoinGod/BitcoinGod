@@ -155,7 +155,7 @@ class FrameworkInfo(object):
 class ApplicationBundleInfo(object):
     def __init__(self, path):
         self.path = path
-        appName = "Bitcoin-Qt"
+        appName = "BitcoinGod-Qt"
         self.binaryPath = os.path.join(path, "Contents", "MacOS", appName)
         if not os.path.exists(self.binaryPath):
             raise RuntimeError("Could not find bundle binary for " + path)
@@ -325,7 +325,7 @@ def deployFrameworks(frameworks, bundlePath, binaryPath, strip, verbose, deploym
         deploymentInfo.deployedFrameworks.append(framework.frameworkName)
         
         if verbose >= 2:
-            print("Processing", framework.frameworkName, "...")
+            print("Processing", framework.frameworkName, "...", framework.installName)
         
         # Get the Qt path from one of the Qt frameworks
         if deploymentInfo.qtPath is None and framework.isQtFramework():
@@ -498,7 +498,8 @@ ap.add_argument("-volname", nargs=1, metavar="volname", default=[], help="custom
 
 config = ap.parse_args()
 
-verbose = config.verbose[0]
+#verbose = config.verbose[0]
+verbose=3
 
 # ------------------------------------------------
 
@@ -603,7 +604,7 @@ else:
 
 # ------------------------------------------------
 
-target = os.path.join("dist", "Bitcoin-Qt.app")
+target = os.path.join("dist", "BitcoinGod-Qt.app")
 
 if verbose >= 2:
     print("+ Copying source bundle +")
@@ -645,6 +646,10 @@ if config.plugins:
         if verbose >= 1:
             sys.stderr.write("Error: %s\n" % str(e))
         sys.exit(1)
+
+#patch for libboost_system-mt.dylib
+os.system("cp /usr/local/opt/boost/lib/libboost_system-mt.dylib dist/BitcoinGod-Qt.app/Contents/Frameworks/")
+os.system("install_name_tool -change @loader_path/libboost_system-mt.dylib @executable_path/../Frameworks/libboost_system-mt.dylib dist/BitcoinGod-Qt.app/Contents/MacOS/BitcoinGod-Qt")
 
 # ------------------------------------------------
 

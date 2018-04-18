@@ -101,6 +101,7 @@ ReceiveRequestDialog::ReceiveRequestDialog(QWidget *parent) :
     ui->lblQRCode->setVisible(false);
 #endif
 
+    //ui->btnCopyURI->setVisible(false);
     connect(ui->btnSaveAs, SIGNAL(clicked()), ui->lblQRCode, SLOT(saveImage()));
 }
 
