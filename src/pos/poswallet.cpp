@@ -269,26 +269,26 @@ bool CreateCoinStake(CWallet *pwallet,unsigned int nBits, const CAmount& nTotalF
         return false;
 
     //put the remaint money into tx
-    for(const std::pair<const CWalletTx*, unsigned int>& pcoin:setCoins){
-        // Attempt to add more inputs
-        // Only add coins of the same key/address as kernel
-        if (txNew.vout.size() == 2 && ((pcoin.first->tx->vout[pcoin.second].scriptPubKey == scriptPubKeyKernel || pcoin.first->tx->vout[pcoin.second].scriptPubKey == txNew.vout[1].scriptPubKey))
-                && pcoin.first->GetHash() != txNew.vin[0].prevout.hash) {
-            // Stop adding more inputs if already too many inputs
-            if (txNew.vin.size() >= GetStakeMaxCombineInputs())
-                break;
-            // Stop adding inputs if reached reserve limit
-            if (nCredit + pcoin.first->tx->vout[pcoin.second].nValue > nBalance - nReserveBalance)
-                break;
-            // Do not add additional significant input
-            if (pcoin.first->tx->vout[pcoin.second].nValue >= GetStakeCombineThreshold())
-                continue;
+//    for(const std::pair<const CWalletTx*, unsigned int>& pcoin:setCoins){
+//        // Attempt to add more inputs
+//        // Only add coins of the same key/address as kernel
+//        if (txNew.vout.size() == 2 && ((pcoin.first->tx->vout[pcoin.second].scriptPubKey == scriptPubKeyKernel || pcoin.first->tx->vout[pcoin.second].scriptPubKey == txNew.vout[1].scriptPubKey))
+//                && pcoin.first->GetHash() != txNew.vin[0].prevout.hash) {
+//            // Stop adding more inputs if already too many inputs
+//            if (txNew.vin.size() >= GetStakeMaxCombineInputs())
+//                break;
+//            // Stop adding inputs if reached reserve limit
+//            if (nCredit + pcoin.first->tx->vout[pcoin.second].nValue > nBalance - nReserveBalance)
+//                break;
+//            // Do not add additional significant input
+//            if (pcoin.first->tx->vout[pcoin.second].nValue >= GetStakeCombineThreshold())
+//                continue;
 
-            txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
-            nCredit += pcoin.first->tx->vout[pcoin.second].nValue;
-            vwtxPrev.push_back(pcoin.first);
-        }
-    }
+//            txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
+//            nCredit += pcoin.first->tx->vout[pcoin.second].nValue;
+//            vwtxPrev.push_back(pcoin.first);
+//        }
+//    }
 
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
