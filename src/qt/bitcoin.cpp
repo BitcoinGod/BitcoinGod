@@ -40,6 +40,8 @@
 #include <stdint.h>
 
 #include <boost/thread.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <QApplication>
 #include <QDebug>
@@ -51,6 +53,10 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QSslConfiguration>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QSsl>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -77,6 +83,9 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #if QT_VERSION < 0x050000
 #include <QTextCodec>
 #endif
+
+static const char *qAppVersion = "v0.1.0";
+static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
 Q_DECLARE_METATYPE(bool*)
@@ -170,6 +179,13 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
 }
 #endif
 
+class QAppVersion{
+public:
+    std::string vNo;
+    int vLevel;
+    std::string vUrl;
+};
+
 /** Class encapsulating Bitcoin Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
@@ -182,6 +198,9 @@ public:
      * Return true on success.
      */
     static bool baseInitialize();
+    static void qAppVersionGetRemote();
+    static void qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
+    static void qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer);
 
 public Q_SLOTS:
     void initialize();
@@ -292,6 +311,7 @@ bool BitcoinCore::baseInitialize()
     {
         return false;
     }
+
     return true;
 }
 
@@ -307,6 +327,87 @@ void BitcoinCore::initialize()
     } catch (...) {
         handleRunawayException(nullptr);
     }
+}
+
+void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
+    QString qUrl = QString::fromLocal8Bit(qVer->vUrl.c_str());
+    QString msg = tr("new version found, please update!");
+    msg.append("<br />url:<a href='");
+    msg.append(qUrl);
+    msg.append("'>"+qUrl+"</a>");
+
+    //QMessageBox::warning(0, tr("Waring"), msg, QMessageBox::Yes);
+    QMessageBox* msgBox = new QMessageBox( 0 );
+    msgBox->setAttribute( Qt::WA_DeleteOnClose );
+    msgBox->setStandardButtons( QMessageBox::Yes );
+    msgBox->setWindowTitle( tr("Waring") );
+    msgBox->setText(msg);
+    msgBox->setModal( false );
+    msgBox->open(Q_NULLPTR, Q_NULLPTR);
+}
+
+void BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
+    bool isVersionNew = true;
+
+    //compare version
+    if(qVer->vNo.empty()){
+        return;
+    }
+    isVersionNew = (qVer->vNo.compare(qAppVersion)!=0);
+
+    //if version is different, go upgrade logic
+    qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
+    if(isVersionNew){
+        qDebug()<<"version is new, need to update";
+        qAppVersionUpgrade(qVer);
+    }
+}
+
+
+void BitcoinCore::qAppVersionGetRemote(){
+    //get qt version from web
+    QNetworkAccessManager manager;
+     QSslConfiguration config ;
+
+     config.setPeerVerifyMode(QSslSocket::VerifyNone);
+     config.setProtocol(QSsl::TlsV1_0);
+
+
+    QEventLoop synchronous;
+    connect(&manager, SIGNAL(finished(QNetworkReply*)), &synchronous, SLOT(quit()));
+    QNetworkRequest request;
+    request.setUrl(QUrl(qAppVerURL));
+    request.setSslConfiguration(config);
+    QNetworkReply* reply = manager.get(request);
+    synchronous.exec();
+
+    //get result
+    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    QByteArray bytes = reply->readAll();
+    QString result(bytes);
+    qDebug()<<result;
+    reply->deleteLater();
+
+
+    std::shared_ptr<QAppVersion> qVer = std::make_shared<QAppVersion>();
+    std::string newVersion = result.toStdString();
+    using namespace boost::property_tree;
+
+
+    //parse result
+    std::stringstream ss(newVersion);
+    ptree pt;
+
+    try{
+       read_json(ss, pt);
+       qVer->vLevel = pt.get<int>("v_level");
+       qVer->vNo = pt.get<std::string>("v_no");
+       qVer->vUrl = pt.get<std::string>("v_url", "");
+     }
+     catch(ptree_error & e) {
+     }
+
+     BitcoinCore::qAppVersionCheck(qVer);
 }
 
 void BitcoinCore::shutdown()
@@ -707,6 +808,10 @@ int main(int argc, char *argv[])
         // This is acceptable because this function only contains steps that are quick to execute,
         // so the GUI thread won't be held up.
         if (BitcoinCore::baseInitialize()) {
+
+            //version check
+            BitcoinCore::qAppVersionGetRemote();
+
             app.requestInitialize();
 #if defined(Q_OS_WIN) && QT_VERSION >= 0x050000
             WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("%1 didn't yet exit safely...").arg(QObject::tr(PACKAGE_NAME)), (HWND)app.getMainWinId());

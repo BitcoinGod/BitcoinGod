@@ -1288,6 +1288,10 @@
         <translation>无效的付款地址 %1</translation>
     </message>
     <message>
+        <source>new version found, please update!</source>
+        <translation>发现新版本，请及时更新!</translation>
+    </message>
+    <message>
         <source>URI cannot be parsed! This can be caused by an invalid BitcoinGod address or malformed URI parameters.</source>
         <translation>无法解析 URI 地址！可能是因为比特币上帝地址无效，或是 URI 参数格式错误。</translation>
     </message>
