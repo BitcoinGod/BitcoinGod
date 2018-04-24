@@ -1698,6 +1698,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>new version found, please update!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+8"/>
         <source>URI cannot be parsed! This can be caused by an invalid BitcoinGod address or malformed URI parameters.</source>
         <translation type="unfinished"></translation>
