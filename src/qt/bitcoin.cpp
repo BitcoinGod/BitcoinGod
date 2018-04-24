@@ -20,6 +20,7 @@
 #include "splashscreen.h"
 #include "utilitydialog.h"
 #include "winshutdownmonitor.h"
+#include "versionmessagedialog.h"
 
 #ifdef ENABLE_WALLET
 #include "paymentserver.h"
@@ -331,19 +332,23 @@ void BitcoinCore::initialize()
 
 void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
     QString qUrl = QString::fromLocal8Bit(qVer->vUrl.c_str());
-    QString msg = tr("new version found, please update!");
-    msg.append("<br />url:<a href='");
+    QString msg = tr("New version released,");
+    msg.append("<br />click <a href='");
     msg.append(qUrl);
-    msg.append("'>"+qUrl+"</a>");
+    msg.append("'>here</a> to update in time");
+    qDebug()<<"new version address"<<msg;
 
     //QMessageBox::warning(0, tr("Waring"), msg, QMessageBox::Yes);
-    QMessageBox* msgBox = new QMessageBox( 0 );
-    msgBox->setAttribute( Qt::WA_DeleteOnClose );
-    msgBox->setStandardButtons( QMessageBox::Yes );
-    msgBox->setWindowTitle( tr("Waring") );
-    msgBox->setText(msg);
-    msgBox->setModal( false );
-    msgBox->open(Q_NULLPTR, Q_NULLPTR);
+//    QMessageBox* msgBox = new QMessageBox( 0 );
+//    msgBox->setAttribute( Qt::WA_DeleteOnClose );
+//    msgBox->setStandardButtons( QMessageBox::Yes );
+//    msgBox->setWindowTitle( tr("Waring") );
+//    msgBox->setText(msg);
+//    msgBox->setModal( false );
+//    msgBox->open(Q_NULLPTR, Q_NULLPTR);
+      VersionMessageDialog dlg;
+      dlg.setContent(msg);
+      dlg.exec();
 }
 
 void BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
