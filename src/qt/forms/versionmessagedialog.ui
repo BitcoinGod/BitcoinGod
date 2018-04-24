@@ -16,15 +16,15 @@
   <widget class="QLabel" name="title">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>130</x>
      <y>10</y>
-     <width>81</width>
+     <width>141</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>21</pointsize>
+     <pointsize>18</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -33,19 +33,22 @@
    <property name="text">
     <string>Warning</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="content">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>60</x>
      <y>40</y>
-     <width>211</width>
+     <width>291</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="lineWidth">
@@ -75,7 +78,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>16</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="text">
