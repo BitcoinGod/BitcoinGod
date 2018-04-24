@@ -85,7 +85,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.0";
+static const char *qAppVersion = "v0.1.0.0";
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
@@ -332,6 +332,18 @@ void BitcoinCore::initialize()
 
 void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
     QString qUrl = QString::fromLocal8Bit(qVer->vUrl.c_str());
+    qUrl.append("bitcoingod-");
+    qUrl.append(qVer->vNo.c_str());
+    qUrl.append("-");
+#if defined(Q_OS_WIN64)
+    qUrl.append("win64.exe");
+#elif defined(Q_OS_WIN32)
+    qUrl.append("win32.exe");
+#else
+    qUrl.append("osx.dmg");
+#endif
+    qDebug()<<"new version url:"<<qUrl;
+
     QString msg = tr("New version released,");
     msg.append("<br />click <a href='");
     msg.append(qUrl);
