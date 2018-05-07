@@ -42,8 +42,8 @@ MnemonicDialog::MnemonicDialog(QWidget *parent) :
     ui->reimportWallet->setStyleSheet(restyleSheet);
 
     ui->textBrowser->setText("<p>"+tr("BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.")+"</p>"+
-                    "<p>"+tr("Tips: BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.")+"</p>"+
-                    "<p>"+tr("Tips: if the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.")+"</p>");
+                    "<p>"+tr("Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.")+"</p>"+
+                    "<p>"+tr("      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.")+"</p>");
 }
 
 MnemonicDialog::~MnemonicDialog()

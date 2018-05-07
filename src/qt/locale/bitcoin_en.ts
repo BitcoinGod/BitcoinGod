@@ -1073,8 +1073,8 @@
         <translation>BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.</translation>
     </message>
     <message>
-    <source>warning: BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
-    <translation>warning: BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</translation>
+    <source>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
+    <translation>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</translation>
     </message>
     <message>
         <source>Import mnemonic</source>
@@ -1121,8 +1121,8 @@
         <translation>Reimport</translation>
     </message>
     <message>
-        <source>Tips: if the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the ‘re-import’ button.</source>
-        <translation>Tips: if the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the ‘re-import’ button.</translation>
+        <source>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
+        <translation>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</translation>
     </message>
 </context>
 

@@ -859,8 +859,8 @@
         <translation>分叉前BTC用户可以通过导入助记词或私钥认领1:1的GOD币，获取的GOD币将增加到你当前的钱包中</translation>
     </message>
     <message>
-        <source>Tips: BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
-        <translation>提示：BitcoinGOD钱包是安全离线钱包，所有用户信息（助记词或私钥）仅存储于客户端</translation>
+        <source>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
+        <translation>提示：1.BitcoinGOD钱包是安全离线钱包，所有用户信息（助记词或私钥）仅存储于客户端</translation>
     </message>
     <message>
         <source>Import mnemonic</source>
@@ -907,8 +907,8 @@
         <translation>重新导入</translation>
     </message>
     <message>
-        <source>Tips: if the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
-        <translation>提示：导入过程如意外中断（如断电或意外关闭），请重新输入助记词或私钥，并点击‘重新导入’按钮</translation>
+        <source>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
+        <translation>     2.导入过程如意外中断（如断电或意外关闭），请重新输入助记词或私钥，并点击‘重新导入’按钮</translation>
     </message>
 </context>
 <context>
