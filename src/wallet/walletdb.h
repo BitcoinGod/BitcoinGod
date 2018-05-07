@@ -90,6 +90,7 @@ public:
     }
 };
 
+
 class CKeyMetadata
 {
 public:
@@ -232,6 +233,7 @@ public:
 
     //! write the hdchain model (external chain child index counter)
     bool WriteHDChain(const CHDChain& chain);
+
 
     //! Begin a new transaction
     bool TxnBegin();

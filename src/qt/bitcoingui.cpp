@@ -21,6 +21,7 @@
 #include "platformstyle.h"
 #include "rpcconsole.h"
 #include "utilitydialog.h"
+#include "mnemonicdialog.h"
 
 #ifdef ENABLE_WALLET
 #include "walletframe.h"
@@ -112,6 +113,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     aboutQtAction(0),
     openRPCConsoleAction(0),
     openAction(0),
+    mnemonicAction(0),
     showHelpMessageAction(0),
     trayIcon(0),
     trayIconMenu(0),
@@ -378,6 +380,9 @@ void BitcoinGUI::createActions()
     openAction->setStatusTip(tr("Open a bitcoin: URI or payment request"));
     //openAction->setVisible(false);
 
+    mnemonicAction = new QAction(platformStyle->TextColorIcon(":/icons/open"), tr("Import..."), this);
+    mnemonicAction->setStatusTip(tr("Old BTC user get 1:1 GOD"));
+
     showHelpMessageAction = new QAction(platformStyle->TextColorIcon(":/icons/info"), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
     showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Bitcoin command-line options").arg(tr(PACKAGE_NAME)));
@@ -403,6 +408,7 @@ void BitcoinGUI::createActions()
         connect(usedSendingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedSendingAddresses()));
         connect(usedReceivingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedReceivingAddresses()));
         connect(openAction, SIGNAL(triggered()), this, SLOT(openClicked()));
+        connect(mnemonicAction, SIGNAL(triggered()), this, SLOT(mnemonicClicked()));
     }
 #endif // ENABLE_WALLET
 
@@ -429,6 +435,7 @@ void BitcoinGUI::createMenuBar()
         file->addAction(signMessageAction);
         file->addAction(verifyMessageAction);
         file->addSeparator();
+        file->addAction(mnemonicAction);
         file->addAction(usedSendingAddressesAction);
         file->addAction(usedReceivingAddressesAction);
         file->addSeparator();
@@ -573,6 +580,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     usedSendingAddressesAction->setEnabled(enabled);
     usedReceivingAddressesAction->setEnabled(enabled);
     openAction->setEnabled(enabled);
+    mnemonicAction->setEnabled(enabled);
 }
 
 void BitcoinGUI::createTrayIcon(const NetworkStyle *networkStyle)
@@ -674,6 +682,13 @@ void BitcoinGUI::showHelpMessageClicked()
 }
 
 #ifdef ENABLE_WALLET
+void BitcoinGUI::mnemonicClicked()
+{
+    MnemonicDialog dlg(this);
+    connect(&dlg, SIGNAL(cmdToConsole(QString)),rpcConsole, SIGNAL(cmdRequest(QString)));
+    dlg.exec();
+}
+
 void BitcoinGUI::openClicked()
 {
     OpenURIDialog dlg(this);
@@ -1129,6 +1144,7 @@ void BitcoinGUI::showProgress(const QString &title, int nProgress)
     if (nProgress == 0)
     {
         progressDialog = new QProgressDialog(title, "", 0, 100);
+        progressDialog->setWindowTitle(tr(PACKAGE_NAME));
         progressDialog->setWindowModality(Qt::ApplicationModal);
         progressDialog->setMinimumDuration(0);
         progressDialog->setCancelButton(0);

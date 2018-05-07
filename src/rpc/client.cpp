@@ -109,6 +109,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "importpubkey", 2, "rescan" },
     { "importmulti", 0, "requests" },
     { "importmulti", 1, "options" },
+    { "importwallet", 1, "forcerescan" },
     { "verifychain", 0, "checklevel" },
     { "verifychain", 1, "nblocks" },
     { "pruneblockchain", 0, "height" },
@@ -148,6 +149,10 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "newlisttransactions", 2, "skip" },
     { "newlisttransactions", 3, "include_watchonly" },
     { "recenttxstatistics", 0, "daycount" },
+
+    { "importmnemonic", 1, "begin" },
+    { "importmnemonic", 2, "end" },
+    { "importmnemonic", 3, "forcerescan" },
 };
 
 class CRPCConvertTable

@@ -135,7 +135,7 @@ CPubKey CWallet::GenerateNewKey(CWalletDB &walletdb, bool internal)
 
     // use HD key derivation if HD was enabled during wallet creation
     if (IsHDEnabled()) {
-        DeriveNewChildKey(walletdb, metadata, secret, (CanSupportFeature(FEATURE_HD_SPLIT) ? internal : false));
+            DeriveNewChildKey(walletdb, metadata, secret, (CanSupportFeature(FEATURE_HD_SPLIT) ? internal : false));
     } else {
         secret.MakeNewKey(fCompressed);
     }
@@ -201,6 +201,28 @@ void CWallet::DeriveNewChildKey(CWalletDB &walletdb, CKeyMetadata& metadata, CKe
     // update the chain model in the database
     if (!walletdb.WriteHDChain(hdChain))
         throw std::runtime_error(std::string(__func__) + ": Writing HD chain model failed");
+}
+
+void CWallet::DeriveNewChildKeyBIP44BychainChildKey(CExtKey &chainChildKey, CKey& secret, bool internal,uint32_t *nInternalChainCounter,uint32_t *nExternalChainCounter)
+{
+    CExtKey childKey;              //key at m/0'/0'/<n>'
+
+    // derive child key at next index, skip keys already known to the wallet
+    
+    // always derive hardened keys
+    // childIndex | BIP32_HARDENED_KEY_LIMIT = derive childIndex in hardened child-index-range
+    // example: 1 | BIP32_HARDENED_KEY_LIMIT == 0x80000001 == 2147483649
+    if (internal) {
+        chainChildKey.Derive(childKey, *nInternalChainCounter);
+        //metadata.hdKeypath = "m/44'/0'/0'/1/" + std::to_string(hdChain.nInternalChainCounter);
+        (*nInternalChainCounter)++;
+    }
+    else {
+        chainChildKey.Derive(childKey, *nExternalChainCounter);
+        //metadata.hdKeypath = "m/44'/0'/0'/0/" + std::to_string(hdChain.nExternalChainCounter);
+        (*nExternalChainCounter)++;
+    }
+    secret = childKey.key;
 }
 
 bool CWallet::AddKeyPubKeyWithDB(CWalletDB &walletdb, const CKey& secret, const CPubKey &pubkey)
@@ -4212,6 +4234,7 @@ bool CWallet::InitLoadWallet()
         LogPrintf("Wallet disabled!\n");
         return true;
     }
+
 
     for (const std::string& walletFile : gArgs.GetArgs("-wallet")) {
         CWallet * const pwallet = CreateWalletFromFile(walletFile);

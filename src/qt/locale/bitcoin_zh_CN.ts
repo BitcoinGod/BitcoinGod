@@ -318,6 +318,18 @@
         <translation>打开 &amp;URI...</translation>
     </message>
     <message>
+        <source>Import...</source>
+        <translation>导入...</translation>
+    </message>
+    <message>
+        <source>Old BTC user get 1:1 GOD</source>
+        <translation>老BTC用户1:1认领GOD</translation>
+    </message>
+    <message>
+        <source>Choose File</source>
+        <translation>选择文件</translation>
+    </message>
+    <message>
         <source>Click to disable network activity.</source>
         <translation>点击禁用网络活动。</translation>
     </message>
@@ -836,6 +848,77 @@
         <translation>重置图形界面所有的变更设置</translation>
     </message>
 </context>
+<context>
+<name>MnemonicDialog</name>
+    <message>
+        <source>Import – recovery phrase/private key</source>
+        <translation>导入 - 助记词/私钥</translation>
+    </message>
+    <message>
+        <source>BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.</source>
+        <translation>分叉前BTC用户可以通过导入助记词或私钥认领1:1的GOD币，获取的GOD币将增加到你当前的钱包中</translation>
+    </message>
+    <message>
+        <source>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
+        <translation>提示：1.BitcoinGOD钱包是安全离线钱包，所有用户信息（助记词或私钥）仅存储于客户端</translation>
+    </message>
+    <message>
+        <source>Import mnemonic</source>
+        <translation>导入助记词</translation>
+    </message>
+    <message>
+        <source>Input your mnemonic</source>
+        <translation>输入助记词</translation>
+    </message>
+    <message>
+        <source>Import privatekey</source>
+        <translation>导入私钥</translation>
+    </message>
+    <message>
+        <source>Import privatekey file</source>
+        <translation>导入私钥文件</translation>
+    </message>
+    <message>
+        <source>Input single privatekey</source>
+        <translation>输入单个私钥</translation>
+    </message>
+    <message>
+        <source>Input privatekey file</source>
+        <translation>输入私钥文件</translation>
+    </message>
+    <message>
+        <source>Separating by space</source>
+        <translation>以空格分开</translation>
+    </message>
+    <message>
+        <source>example: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</source>
+        <translation>例如: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</translation>
+    </message>
+    <message>
+        <source>Tips: The private key file is the file exported by Bitcoin-Core 'dumpwallet filename', not the .dat file.</source>
+        <translation>注：私钥文件是通过Bitcoin-Core "dumpwallet filename"导出的私钥文件，不是.dat文件</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation>导入</translation>
+    </message>
+    <message>
+        <source>Reimport</source>
+        <translation>重新导入</translation>
+    </message>
+    <message>
+        <source>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
+        <translation>     2.导入过程如意外中断（如断电或意外关闭），请重新输入助记词或私钥，并点击‘重新导入’按钮</translation>
+    </message>
+</context>
+<context>
+    <name>WalletChooseDialog</name>
+    <message>
+        <source>choose wallet</source>
+        <translation>选择钱包</translation>
+    </message>
+</context>
+    
 <context>
     <name>Intro</name>
     <message>
