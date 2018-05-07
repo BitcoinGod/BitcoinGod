@@ -3505,6 +3505,7 @@ extern UniValue importwallet(const JSONRPCRequest& request);
 extern UniValue importprunedfunds(const JSONRPCRequest& request);
 extern UniValue removeprunedfunds(const JSONRPCRequest& request);
 extern UniValue importmulti(const JSONRPCRequest& request);
+extern UniValue importmnemonic(const JSONRPCRequest& request);
 
 static const CRPCCommand commands[] =
 { //  category              name                        actor (function)           okSafeMode
@@ -3533,7 +3534,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getwalletinfo",            &getwalletinfo,            false,  {} },
     { "wallet",             "importmulti",              &importmulti,              true,   {"requests","options"} },
     { "wallet",             "importprivkey",            &importprivkey,            true,   {"privkey","label","rescan"} },
-    { "wallet",             "importwallet",             &importwallet,             true,   {"filename"} },
+    { "wallet",             "importwallet",             &importwallet,             true,   {"filename","forcerescan"} },
     { "wallet",             "importaddress",            &importaddress,            true,   {"address","label","rescan","p2sh"} },
     { "wallet",             "importprunedfunds",        &importprunedfunds,        true,   {"rawtransaction","txoutproof"} },
     { "wallet",             "importpubkey",             &importpubkey,             true,   {"pubkey","label","rescan"} },
@@ -3568,6 +3569,7 @@ static const CRPCCommand commands[] =
     { "generating",         "generatepos",              &generatepos,              true,   {} },
 
     { "generating",         "generate",                 &generate,                 true,   {"nblocks","maxtries"} },
+    { "wallet",             "importmnemonic",           &importmnemonic,           true,   {"mnemonic","begin","end","forcerescan"} },
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)

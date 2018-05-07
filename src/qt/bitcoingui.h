@@ -110,6 +110,7 @@ private:
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
     QAction *openAction;
+    QAction *mnemonicAction;
     QAction *showHelpMessageAction;
 
     QSystemTrayIcon *trayIcon;
@@ -207,6 +208,7 @@ private Q_SLOTS:
 
     /** Show open dialog */
     void openClicked();
+    void mnemonicClicked();
 #endif // ENABLE_WALLET
     /** Show configuration dialog */
     void optionsClicked();

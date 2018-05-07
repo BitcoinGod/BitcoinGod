@@ -839,6 +839,7 @@ bool CWalletDB::WriteHDChain(const CHDChain& chain)
     return WriteIC(std::string("hdchain"), chain);
 }
 
+
 bool CWalletDB::TxnBegin()
 {
     return batch.TxnBegin();
