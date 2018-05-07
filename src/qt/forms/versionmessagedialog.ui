@@ -40,10 +40,10 @@
   <widget class="QLabel" name="content">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>30</x>
      <y>40</y>
-     <width>291</width>
-     <height>51</height>
+     <width>341</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="font">

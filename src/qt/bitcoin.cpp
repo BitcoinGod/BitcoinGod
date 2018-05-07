@@ -85,7 +85,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.0.0";
+static const char *qAppVersion = "v0.1.1.0";
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod

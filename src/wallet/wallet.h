@@ -18,6 +18,7 @@
 #include "wallet/crypter.h"
 #include "wallet/walletdb.h"
 #include "wallet/rpcwallet.h"
+#include "wallet/mnemonic/mnemonic.h"
 
 #include <algorithm>
 #include <atomic>
@@ -704,7 +705,6 @@ private:
 
     /* the HD chain data model (external chain counters) */
     CHDChain hdChain;
-
     /* HD derive new child key (on internal or external chain) */
     void DeriveNewChildKey(CWalletDB &walletdb, CKeyMetadata& metadata, CKey& secret, bool internal = false);
 
@@ -1133,6 +1133,7 @@ public:
     /* Returns true if HD is enabled */
     bool IsHDEnabled() const;
 
+
     /* Generates a new HD master key (will not be activated) */
     CPubKey GenerateNewHDMasterKey();
     
@@ -1141,6 +1142,9 @@ public:
        caller must ensure the current wallet version is correct before calling
        this function). */
     bool SetHDMasterKey(const CPubKey& key);
+    
+    void DeriveNewChildKeyBIP44BychainChildKey(CExtKey &chainChildKey, CKey& secret, bool internal,uint32_t *nInternalChainCounter,uint32_t *nExternalChainCounter);
+
 };
 
 /** A key allocated from the key pool. */
