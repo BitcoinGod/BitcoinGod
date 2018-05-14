@@ -164,6 +164,11 @@ void ClientModel::updateNetworkActive(bool networkActive)
     Q_EMIT networkActiveChanged(networkActive);
 }
 
+void ClientModel::updateMiningState(int miningState)
+{
+    Q_EMIT updateMiningStateChanged(miningState);
+}
+
 void ClientModel::updateAlert()
 {
     Q_EMIT alertsChanged(getStatusBarWarnings());
@@ -285,6 +290,11 @@ static void BannedListChanged(ClientModel *clientmodel)
     QMetaObject::invokeMethod(clientmodel, "updateBanlist", Qt::QueuedConnection);
 }
 
+static void MineStatusChangeSignal(ClientModel *clientmodel, int miningState){
+    QMetaObject::invokeMethod(clientmodel, "updateMiningState", Qt::QueuedConnection,
+                              Q_ARG(int, miningState));
+}
+
 static void BlockTipChanged(ClientModel *clientmodel, bool initialSync, const CBlockIndex *pIndex, bool fHeader)
 {
     // lock free async UI updates in case we have a new block tip
@@ -321,6 +331,7 @@ void ClientModel::subscribeToCoreSignals()
     uiInterface.NotifyNetworkActiveChanged.connect(boost::bind(NotifyNetworkActiveChanged, this, _1));
     uiInterface.NotifyAlertChanged.connect(boost::bind(NotifyAlertChanged, this));
     uiInterface.BannedListChanged.connect(boost::bind(BannedListChanged, this));
+    uiInterface.MineStatusChangeSignal.connect(boost::bind(MineStatusChangeSignal, this,_1));
     uiInterface.NotifyBlockTip.connect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.connect(boost::bind(BlockTipChanged, this, _1, _2, true));
 }
@@ -333,6 +344,7 @@ void ClientModel::unsubscribeFromCoreSignals()
     uiInterface.NotifyNetworkActiveChanged.disconnect(boost::bind(NotifyNetworkActiveChanged, this, _1));
     uiInterface.NotifyAlertChanged.disconnect(boost::bind(NotifyAlertChanged, this));
     uiInterface.BannedListChanged.disconnect(boost::bind(BannedListChanged, this));
+    uiInterface.MineStatusChangeSignal.disconnect(boost::bind(MineStatusChangeSignal, this,_1));
     uiInterface.NotifyBlockTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, false));
     uiInterface.NotifyHeaderTip.disconnect(boost::bind(BlockTipChanged, this, _1, _2, true));
 }

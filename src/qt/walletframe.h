@@ -66,6 +66,8 @@ public Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    /** Switch to posmining page */
+    void gotoMiningPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
@@ -84,7 +86,8 @@ public Q_SLOTS:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
-
+    /** Lock the wallet */
+    void lockWallet();
     /** Show used sending addresses */
     void usedSendingAddresses();
     /** Show used receiving addresses */

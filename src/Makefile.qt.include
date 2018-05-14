@@ -121,6 +121,7 @@ QT_FORMS_UI = \
   qt/forms/openuridialog.ui \
   qt/forms/optionsdialog.ui \
   qt/forms/overviewpage.ui \
+  qt/forms/miningpage.ui \
   qt/forms/receivecoinsdialog.ui \
   qt/forms/receiverequestdialog.ui \
   qt/forms/debugwindow.ui \
@@ -156,6 +157,7 @@ QT_MOC_CPP = \
   qt/moc_optionsdialog.cpp \
   qt/moc_optionsmodel.cpp \
   qt/moc_overviewpage.cpp \
+  qt/moc_miningpage.cpp \
   qt/moc_peertablemodel.cpp \
   qt/moc_paymentserver.cpp \
   qt/moc_qvalidatedlineedit.cpp \
@@ -229,6 +231,7 @@ BITCOIN_QT_H = \
   qt/optionsdialog.h \
   qt/optionsmodel.h \
   qt/overviewpage.h \
+  qt/miningpage.h \
   qt/paymentrequestplus.h \
   qt/paymentserver.h \
   qt/versionmessagedialog.h \
@@ -312,6 +315,7 @@ RES_ICONS = \
   qt/res/icons/tx_input.png \
   qt/res/icons/tx_output.png \
   qt/res/icons/tx_mined.png \
+  qt/res/icons/no_mined.png \
   qt/res/icons/warning.png \
   qt/res/icons/verify.png
 
@@ -352,6 +356,7 @@ BITCOIN_QT_WALLET_CPP = \
   qt/mnemonicdialog.cpp \
   qt/openuridialog.cpp \
   qt/overviewpage.cpp \
+  qt/miningpage.cpp \
   qt/paymentrequestplus.cpp \
   qt/paymentserver.cpp \
   qt/receivecoinsdialog.cpp \

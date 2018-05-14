@@ -306,6 +306,14 @@
         <translation>更改密码(&amp;C)...</translation>
     </message>
     <message>
+        <source>Unlock Wallet</source>
+        <translation>解锁钱包</translation>
+    </message>
+    <message>
+        <source>Lock Wallet</source>
+        <translation>锁定钱包</translation>
+    </message>
+    <message>
         <source>&amp;Sending addresses...</source>
         <translation>正在发送地址(&amp;S)...</translation>
     </message>
@@ -449,6 +457,7 @@
         <source>%n active connection(s) to Bitcoin network</source>
         <translation><numerusform>%n 个到比特币上帝网络的活动连接</numerusform></translation>
     </message>
+
     <message>
         <source>Indexing blocks on disk...</source>
         <translation>正在为数据块建立索引...</translation>
@@ -1345,6 +1354,34 @@
     <message>
         <source>Current total balance in watch-only addresses</source>
         <translation>观察地址(watch-only address)中的当前总余额 </translation>
+    </message>
+    <message>
+        <source>Mining state</source>
+        <translation>挖矿状态</translation>
+    </message>
+    <message>
+        <source>Mining</source>
+        <translation>挖矿中</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>准备中</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>已停止</translation>
+    </message>
+    <message>
+        <source>Wallet have not coin</source>
+        <translation>你的钱包为空</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>钱包已被锁定,</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>请解锁钱包</translation>
     </message>
 </context>
 <context>
