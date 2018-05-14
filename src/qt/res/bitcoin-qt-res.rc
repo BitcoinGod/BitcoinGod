@@ -21,13 +21,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName",        "BitcoinGod"
             VALUE "FileDescription",    PACKAGE_NAME " (GUI node for BitcoinGod)"
-            VALUE "FileVersion",        "0.1.1.0"
+            VALUE "FileVersion",        "0.1.2.0"
             VALUE "InternalName",       "bitcoingod-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "bitcoingod-qt.exe"
             VALUE "ProductName",        PACKAGE_NAME
-            VALUE "ProductVersion",     "0.1.1.0"
+            VALUE "ProductVersion",     "0.1.2.0"
         END
     END
 

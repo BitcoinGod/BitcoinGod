@@ -19,14 +19,12 @@ void Mnemonic::setMnemonic(string &mnemoics){
     //check mnemonic size
     if((data.size() % 3) != 0 || (data.size() / 3) < 4 || (data.size() / 3) > 8)
         data.clear();
-       
 }
 
 unsigned char *Mnemonic::MnemonicToSeed(){
     unsigned char *out;
     const char *mnemoichar;
     string mnemoics;
-    //const char mnemonic[78] = {'i','n','f','l','i','c','t',' ','w','i','t','n','e','s','s',' ','o','f','f',' ','p','r','o','p','e','r','t','y',' ','t','a','r','g','e','t',' ','f','a','i','n','t',' ','g','a','t','h','e','r',' ','m','a','t','c','h',' ','o','u','t','d','o','o','r',' ','w','e','a','p','o','n',' ','w','i','d','e',' ','m','i','x'};
     unsigned char salt_value[] = {'m','n','e','m','o','n','i','c'};
 
     for(string str : data){
@@ -38,8 +36,6 @@ unsigned char *Mnemonic::MnemonicToSeed(){
     mnemoichar = mnemoics.c_str();
 
     out = (unsigned char *) malloc(sizeof(unsigned char) * SEED_KEY_SIZE);
-
-    LogPrintf("!!!!size%d,mnemoichar:%s\n",mnemoics.length(),mnemoichar);
     
     LogPrintf("\n");
     if(PKCS5_PBKDF2_HMAC(mnemoichar, mnemoics.length(), salt_value, sizeof(salt_value), PBKDF2_ROUNDS,EVP_sha512() ,SEED_KEY_SIZE, out) == 0 )

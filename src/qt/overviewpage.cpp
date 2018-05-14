@@ -14,6 +14,7 @@
 #include "transactionfilterproxy.h"
 #include "transactiontablemodel.h"
 #include "walletmodel.h"
+#include "pos/posminemgr.h"
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
@@ -209,6 +210,7 @@ void OverviewPage::setClientModel(ClientModel *model)
     {
         // Show warning if this is a prerelease version
         connect(model, SIGNAL(alertsChanged(QString)), this, SLOT(updateAlerts(QString)));
+        connect(model, SIGNAL(updateMiningStateChanged(int)), this, SLOT(setMingState(int)));
         updateAlerts(model->getStatusBarWarnings());
     }
 }
@@ -264,6 +266,34 @@ void OverviewPage::updateAlerts(const QString &warnings)
 {
     this->ui->labelAlerts->setVisible(!warnings.isEmpty());
     this->ui->labelAlerts->setText(warnings);
+}
+
+void OverviewPage::setMingState(int miningState)
+{
+    QString icon = ":/icons/tx_mined";
+    QString tooltip;
+
+    switch(miningState){
+        case pos::PosMineStatus::ON:
+            tooltip = tr("Mining");
+         break;
+        case pos::PosMineStatus::OFF:
+            tooltip = tr("Stop");
+            icon = ":/icons/no_mined";
+         break;
+        case pos::PosMineStatus::NOMONEY:
+            tooltip = tr("Stop") + QString(" (") + tr("Wallet have not coin") + QString(")");
+            icon = ":/icons/no_mined";
+         break;
+        case pos::PosMineStatus::LOCK:
+            tooltip = tr("Stop") + QString(" (") + tr("Wallet is locked.")  + tr("Please unlock wallet") + QString(")");
+            icon = ":/icons/no_mined";
+         break;
+    }
+    
+    // Don't word-wrap this (fixed-width) tooltip
+    tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
+    ui->miningStatus->setText(tooltip);
 }
 
 void OverviewPage::showOutOfSyncWarning(bool fShow)

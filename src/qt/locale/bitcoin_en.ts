@@ -389,6 +389,14 @@
         <translation>&amp;Change Passphrase...</translation>
     </message>
     <message>
+        <source>Unlock Wallet</source>
+        <translation>Unlock Wallet</translation>
+    </message>
+    <message>
+        <source>Lock Wallet</source>
+        <translation>Lock Wallet</translation>
+    </message>
+    <message>
         <location line="+12"/>
         <source>&amp;Sending addresses...</source>
         <translation type="unfinished"></translation>
@@ -435,6 +443,36 @@
         <source>Syncing Headers (%1%)...</source>
         <translation type="unfinished"></translation>
     </message>
+    
+    <message>
+        <source>Mining state</source>
+        <translation>Mining state</translation>
+    </message>
+    <message>
+        <source>Mining</source>
+        <translation>Mining</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Reading</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <source>Wallet have not coin</source>
+        <translation>Wallet have not coin</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>Wallet is locked.</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>Please unlock wallet</translation>
+    </message>
+    
     <message>
         <location line="+37"/>
         <source>Reindexing blocks on disk...</source>

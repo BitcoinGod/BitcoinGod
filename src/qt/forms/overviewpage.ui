@@ -407,6 +407,41 @@
         </widget>
        </item>
        <item>
+        <widget class="QFrame" name="miningframe">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+          <layout class="QVBoxLayout" name="horizontalLayout_mining">
+            <item>
+             <widget class="QLabel" name="miningStatusLabel">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Mining state</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="miningStatus">
+              <property name="text">
+               <string>Reading</string>
+              </property>
+              <property name="wordWrap">
+                <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

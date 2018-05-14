@@ -33,6 +33,7 @@
 #include "ui_interface.h"
 #include "util.h"
 #include "warnings.h"
+#include "pos/posminemgr.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -85,7 +86,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.1.0";
+static const char *qAppVersion = "v0.1.2.0";
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
@@ -199,7 +200,7 @@ public:
      * Return true on success.
      */
     static bool baseInitialize();
-    static void qAppVersionGetRemote();
+    static bool qAppVersionGetRemote();
     static void qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
     static void qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer);
 
@@ -381,7 +382,7 @@ void BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
 }
 
 
-void BitcoinCore::qAppVersionGetRemote(){
+bool BitcoinCore::qAppVersionGetRemote(){
     //get qt version from web
     QNetworkAccessManager manager;
      QSslConfiguration config ;
@@ -424,7 +425,11 @@ void BitcoinCore::qAppVersionGetRemote(){
      catch(ptree_error & e) {
      }
 
-     BitcoinCore::qAppVersionCheck(qVer);
+    BitcoinCore::qAppVersionCheck(qVer);
+    if(qVer->vLevel == 3)
+        return false;
+    else
+        return true;
 }
 
 void BitcoinCore::shutdown()
@@ -571,6 +576,7 @@ void BitcoinApplication::requestShutdown()
     pollShutdownTimer->stop();
 
 #ifdef ENABLE_WALLET
+    pos::PosMineMgr::stopMine();
     window->removeAllWallets();
     delete walletModel;
     walletModel = 0;
@@ -605,6 +611,7 @@ void BitcoinApplication::initializeResult(bool success)
         // TODO: Expose secondary wallets
         if (!vpwallets.empty())
         {
+            pos::PosMineMgr::startMine();
             walletModel = new WalletModel(platformStyle, vpwallets[0], optionsModel);
 
             window->addWallet(BitcoinGUI::DEFAULT_WALLET, walletModel);
@@ -824,10 +831,8 @@ int main(int argc, char *argv[])
         // Perform base initialization before spinning up initialization/shutdown thread
         // This is acceptable because this function only contains steps that are quick to execute,
         // so the GUI thread won't be held up.
-        if (BitcoinCore::baseInitialize()) {
-
-            //version check
-            BitcoinCore::qAppVersionGetRemote();
+        //version check
+        if (BitcoinCore::baseInitialize() && BitcoinCore::qAppVersionGetRemote()) {
 
             app.requestInitialize();
 #if defined(Q_OS_WIN) && QT_VERSION >= 0x050000

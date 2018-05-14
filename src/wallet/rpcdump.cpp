@@ -560,10 +560,6 @@ UniValue importmnemonic(const JSONRPCRequest& request){
         return NullUniValue;
     }
 
-    LOCK2(cs_main, pwallet->cs_wallet);
-
-    UniValue entry(UniValue::VOBJ);
-
     if (request.fHelp || request.params.size() > 4)
         throw std::runtime_error(
             "importmnemonic \"mnemonic\"\n"
@@ -581,6 +577,11 @@ UniValue importmnemonic(const JSONRPCRequest& request){
     if (fPruneMode)
         throw JSONRPCError(RPC_WALLET_ERROR, "Importing wallets is disabled in pruned mode");
 
+    LOCK2(cs_main, pwallet->cs_wallet);
+    EnsureWalletIsUnlocked(pwallet);
+    
+    UniValue entry(UniValue::VOBJ);
+    
     std::string mnemonicstr = "";
     if (!request.params[0].isNull())
         mnemonicstr = request.params[0].get_str();

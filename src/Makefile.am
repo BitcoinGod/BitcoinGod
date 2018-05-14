@@ -159,6 +159,7 @@ BITCOIN_CORE_H = \
   pos/posvalidation.h \
   validation.h \
   pos/posminer.h \
+  pos/posminemgr.h \
   pos/pos.h \
   validationinterface.h \
   versionbits.h \
@@ -255,6 +256,7 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/walletdb.cpp \
   pos/poswallet.cpp \
   pos/posminer.cpp \
+  pos/posminemgr.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
