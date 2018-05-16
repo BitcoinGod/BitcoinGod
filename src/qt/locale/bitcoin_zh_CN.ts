@@ -1360,7 +1360,7 @@
         <translation>挖矿状态</translation>
     </message>
     <message>
-        <source>Mining</source>
+        <source>Active</source>
         <translation>挖矿中</translation>
     </message>
     <message>
@@ -1368,7 +1368,7 @@
         <translation>准备中</translation>
     </message>
     <message>
-        <source>Stop</source>
+        <source>Inactive</source>
         <translation>已停止</translation>
     </message>
     <message>

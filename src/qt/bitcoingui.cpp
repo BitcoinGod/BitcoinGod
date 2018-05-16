@@ -824,18 +824,18 @@ void BitcoinGUI::updateMingState(int miningState)
 
     switch(miningState){
         case pos::PosMineStatus::ON:
-            tooltip = tr("Mining");
+            tooltip = tr("Active");
          break;
         case pos::PosMineStatus::OFF:
-            tooltip = tr("Stop");
+            tooltip = tr("Inactive");
             icon = ":/icons/no_mined";
          break;
         case pos::PosMineStatus::NOMONEY:
-            tooltip = tr("Stop") + QString("<.br> (") + tr("Wallet have not coin") + QString(")");
+            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet have not coin") + QString(")");
             icon = ":/icons/no_mined";
          break;
         case pos::PosMineStatus::LOCK:
-            tooltip = tr("Stop") + QString("<.br> (") + tr("Wallet is locked")  + tr("Please unlock wallet") + QString(")");
+            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet is locked")  + tr("Please unlock wallet") + QString(")");
             icon = ":/icons/no_mined";
          break;
     }

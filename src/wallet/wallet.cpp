@@ -1853,7 +1853,7 @@ CAmount CWalletTx::GetDebit(const isminefilter& filter) const
 CAmount CWalletTx::GetCredit(const isminefilter& filter) const
 {
     // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if ((IsCoinBase() || IsCoinStake())&& GetBlocksToMaturity() > 0)
+    if ((IsCoinBase())&& GetBlocksToMaturity() > 0)
         return 0;
 
     CAmount credit = 0;
@@ -4438,7 +4438,7 @@ int CMerkleTx::GetBlocksToMaturity() const
     if (!IsCoinBase() && !IsCoinStake())
         return 0;
     else if (IsCoinStake())
-        return std::max(0, (20+1) - GetDepthInMainChain());
+        return std::max(0, (COINSTAKE_MATURITY_FIX+1) - GetDepthInMainChain());
     else
         return std::max(0, (COINBASE_MATURITY+1) - GetDepthInMainChain());
     
