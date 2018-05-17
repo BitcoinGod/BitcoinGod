@@ -282,7 +282,7 @@ void OverviewPage::setMingState(int miningState)
             icon = ":/icons/no_mined";
          break;
         case pos::PosMineStatus::NOMONEY:
-            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet have not coin") + QString(")");
+            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet have not available coins") + QString(")");
             icon = ":/icons/no_mined";
          break;
         case pos::PosMineStatus::LOCK:

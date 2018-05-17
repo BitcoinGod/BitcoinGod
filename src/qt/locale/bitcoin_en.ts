@@ -461,8 +461,8 @@
         <translation>Inactive</translation>
     </message>
     <message>
-        <source>Wallet have not coin</source>
-        <translation>Wallet have not coin</translation>
+        <source>Wallet have not available coins</source>
+        <translation>Wallet have not available coins</translation>
     </message>
     <message>
         <source>Wallet is locked.</source>

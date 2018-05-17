@@ -1372,8 +1372,8 @@
         <translation>已停止</translation>
     </message>
     <message>
-        <source>Wallet have not coin</source>
-        <translation>你的钱包为空</translation>
+        <source>Wallet have not available coins</source>
+        <translation>你的钱包没有可用金额</translation>
     </message>
     <message>
         <source>Wallet is locked.</source>
