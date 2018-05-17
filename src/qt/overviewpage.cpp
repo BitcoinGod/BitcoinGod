@@ -286,7 +286,7 @@ void OverviewPage::setMingState(int miningState)
             icon = ":/icons/no_mined";
          break;
         case pos::PosMineStatus::LOCK:
-            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet is locked")  + tr("Please unlock wallet") + QString(")");
+            tooltip = tr("Inactive") + QString("<.br> (") + tr("Wallet is locked.")  + tr("Please unlock wallet") + QString(")");
             icon = ":/icons/no_mined";
          break;
     }
