@@ -449,20 +449,20 @@
         <translation>Mining state</translation>
     </message>
     <message>
-        <source>Mining</source>
-        <translation>Mining</translation>
+        <source>Active</source>
+        <translation>Active</translation>
     </message>
     <message>
         <source>Reading</source>
         <translation>Reading</translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Stop</translation>
+        <source>Inactive</source>
+        <translation>Inactive</translation>
     </message>
     <message>
-        <source>Wallet have not coin</source>
-        <translation>Wallet have not coin</translation>
+        <source>Wallet have not available coins</source>
+        <translation>Wallet have not available coins</translation>
     </message>
     <message>
         <source>Wallet is locked.</source>

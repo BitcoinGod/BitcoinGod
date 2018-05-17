@@ -35,7 +35,6 @@
 
 int64_t nLastCoinStakeSearchInterval = 0;
 
-static bool isMining = false;
 //gocoin:pos
 UniValue minePosBlock(CWallet *pwallet) {
 
