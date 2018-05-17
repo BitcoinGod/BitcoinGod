@@ -561,6 +561,30 @@
         <translation>HD密钥生成&lt;b&gt;禁用&lt;/b&gt;</translation>
     </message>
     <message>
+        <source>Active</source>
+        <translation>挖矿中</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>准备中</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>已停止</translation>
+    </message>
+    <message>
+        <source>Wallet have not available coins</source>
+        <translation>你的钱包没有可用金额</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>钱包已被锁定,</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>请解锁钱包</translation>
+    </message>
+    <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
         <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;，当前为&lt;b&gt;解锁&lt;/b&gt;状态</translation>
     </message>
