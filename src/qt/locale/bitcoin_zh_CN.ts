@@ -2,8 +2,8 @@
 <context>
     <name>VersionMessageDialog</name>
     <message>
-        <source>click download</source>
-        <translation>点击下载</translation>
+        <source>click download.</source>
+        <translation>点击下载。</translation>
     </message>
     <message>
         <source>Version Upgrade</source>
@@ -18,10 +18,6 @@
         <translation>新版本</translation>
     </message>
     <message>
-        <source> is available</source>
-        <translation>发布了</translation>
-    </message>
-    <message>
         <source>, you can upgrade to new version,</source>
         <translation>，你可以升级到新版本，</translation>
     </message>
@@ -30,11 +26,11 @@
         <translation>里程碑版本</translation>
     </message>
     <message>
-        <source> has been released</source>
-        <translation>发布了</translation>
+        <source> released</source>
+        <translation>已发布</translation>
     </message>
     <message>
-        <source>, you must upgrade the wallet to the latest version before you can continue to use the wallet,</source>
+        <source>, you must upgrate to the lastest,</source>
         <translation>，你必须升级到新版本才能继续使用，</translation>
     </message>
 </context>

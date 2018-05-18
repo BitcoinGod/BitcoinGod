@@ -345,38 +345,36 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
 #endif
     qDebug()<<"new version url:"<<qUrl;
 
-    QString msg = "";
+    QString msg = "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; text-indent:26px;\">";
     if(qVer->vLevel == 3){
-        msg.append("<br />");
         msg.append("<a href='");
         msg.append(qUrl);
         msg.append("'>");
         msg.append(VersionMessageDialog::tr("New milestone version"));
         msg.append("</a>");
-        msg.append(VersionMessageDialog::tr(" has been released"));
-        msg.append(VersionMessageDialog::tr(", you must upgrade the wallet to the latest version before you can continue to use the wallet,"));
+        msg.append(VersionMessageDialog::tr(" released"));
+        msg.append(VersionMessageDialog::tr(", you must upgrate to the lastest,"));
         msg.append("<a href='");
         msg.append(qUrl);
         msg.append("'>");
-        msg.append(VersionMessageDialog::tr("click download"));
+        msg.append(VersionMessageDialog::tr("click download."));
         msg.append("</a>");
     }
     else {
-        msg.append("<br />");
-    msg.append("<a href='");
+        msg.append("  <a href='");
     msg.append(qUrl);
     msg.append("'>");
         msg.append(VersionMessageDialog::tr("New version"));
     msg.append("</a>");
-        msg.append(VersionMessageDialog::tr(" is available"));
+        msg.append(VersionMessageDialog::tr(" released"));
         msg.append(VersionMessageDialog::tr(", you can upgrade to new version,"));
         msg.append("<a href='");
         msg.append(qUrl);
         msg.append("'>");
-        msg.append(VersionMessageDialog::tr("click download"));
+        msg.append(VersionMessageDialog::tr("click download."));
         msg.append("</a>");
     }
-    
+    msg.append("</p>");
     qDebug()<<"new version address"<<msg;
 
     VersionMessageDialog dlg;
