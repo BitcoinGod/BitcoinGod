@@ -2,20 +2,28 @@
 <context>
     <name>VersionMessageDialog</name>
     <message>
-        <source>New version released,</source>
-        <translation>有新版本了</translation>
+        <source>New version</source>
+        <translation>新版本</translation>
     </message>
     <message>
-        <source>click </source>
-        <translation>点击</translation>
+        <source> is available</source>
+        <translation>发布了</translation>
     </message>
     <message>
-        <source>here to </source>
-        <translation>这里</translation>
+        <source>, you can upgrade to new version</source>
+        <translation>，你可以升级到新版本</translation>
     </message>
     <message>
-        <source>update in time</source>
-        <translation>，进行更新</translation>
+        <source>New milestone version</source>
+        <translation>里程碑版本</translation>
+    </message>
+    <message>
+        <source> has been released</source>
+        <translation>发布了</translation>
+    </message>
+    <message>
+        <source>, you must upgrade the wallet to the latest version before you can continue to use the wallet.</source>
+        <translation>，你必须升级到新版本才能继续使用</translation>
     </message>
 </context>
 <context>

@@ -346,18 +346,31 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
     qDebug()<<"new version url:"<<qUrl;
 
     QString msg = "";
-    /*msg.append("<br />");
-    msg.append(tr("click "));
+    if(qVer->vLevel == 3){
+        msg.append("<br />");
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("New milestone version"));
+        msg.append("</a>");
+        msg.append(VersionMessageDialog::tr(" has been released"));
+        msg.append(VersionMessageDialog::tr(", you must upgrade the wallet to the latest version before you can continue to use the wallet."));
+    }
+    else {
+        msg.append("<br />");
     msg.append("<a href='");
     msg.append(qUrl);
     msg.append("'>");
-    msg.append(tr("here to "));
+        msg.append(VersionMessageDialog::tr("New version"));
     msg.append("</a>");
-    msg.append(tr("update in time"));*/
+        msg.append(VersionMessageDialog::tr(" is available"));
+        msg.append(VersionMessageDialog::tr(", you can upgrade to new version"));
+    }
+    
     qDebug()<<"new version address"<<msg;
 
     VersionMessageDialog dlg;
-    dlg.setContent(BitcoinGUI::tr("New version released,"));
+    dlg.setContent(msg);
     dlg.exec();
 }
 
@@ -376,7 +389,7 @@ bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
         qAppVersionUpgrade(qVer);
         if(qVer->vLevel == 3)
             return false;
-        else if (qVer->vLevel < 3)
+        else
             return true;
     }
     return true;

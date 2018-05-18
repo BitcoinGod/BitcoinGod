@@ -4,20 +4,28 @@
 <context>
     <name>VersionMessageDialog</name>
     <message>
-        <source>New version released,</source>
-        <translation>New version released,</translation>
+        <source>New version</source>
+        <translation>New version</translation>
     </message>
     <message>
-        <source>click </source>
-        <translation>click </translation>
+        <source> is available</source>
+        <translation> is available</translation>
     </message>
     <message>
-        <source>here to </source>
-        <translation>here to </translation>
+        <source>, you can upgrade to new version</source>
+        <translation>, you can upgrade to new version</translation>
     </message>
     <message>
-        <source>update in time</source>
-        <translation>update in time</translation>
+        <source>New milestone version</source>
+        <translation>New milestone version</translation>
+    </message>
+    <message>
+        <source> has been released</source>
+        <translation> has been released</translation>
+    </message>
+    <message>
+        <source>, you must upgrade the wallet to the latest version before you can continue to use the wallet.</source>
+        <translation>, you must upgrade the wallet to the latest version before you can continue to use the wallet.</translation>
     </message>
 </context>
 <context>
