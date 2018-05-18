@@ -354,7 +354,12 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
         msg.append(VersionMessageDialog::tr("New milestone version"));
         msg.append("</a>");
         msg.append(VersionMessageDialog::tr(" has been released"));
-        msg.append(VersionMessageDialog::tr(", you must upgrade the wallet to the latest version before you can continue to use the wallet."));
+        msg.append(VersionMessageDialog::tr(", you must upgrade the wallet to the latest version before you can continue to use the wallet,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download"));
+        msg.append("</a>");
     }
     else {
         msg.append("<br />");
@@ -364,7 +369,12 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
         msg.append(VersionMessageDialog::tr("New version"));
     msg.append("</a>");
         msg.append(VersionMessageDialog::tr(" is available"));
-        msg.append(VersionMessageDialog::tr(", you can upgrade to new version"));
+        msg.append(VersionMessageDialog::tr(", you can upgrade to new version,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download"));
+        msg.append("</a>");
     }
     
     qDebug()<<"new version address"<<msg;
@@ -438,7 +448,6 @@ bool BitcoinCore::qAppVersionGetRemote(){
      }
      catch(ptree_error & e) {
      }
-
     return BitcoinCore::qAppVersionCheck(qVer);
 }
 

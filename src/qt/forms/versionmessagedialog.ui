@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Version Upgrade</string>
   </property>
   <widget class="QLabel" name="title">
    <property name="geometry">
@@ -62,6 +62,9 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
    <property name="margin">
     <number>0</number>
