@@ -10,7 +10,7 @@ IDI_ICON2 ICON DISCARDABLE "icons/bitcoin_testnet.ico"
 #define VER_FILEVERSION_STR    VER_PRODUCTVERSION_STR
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     0,1,2,0
+FILEVERSION     0,1,3,0
 PRODUCTVERSION  VER_PRODUCTVERSION
 FILEOS          VOS_NT_WINDOWS32
 FILETYPE        VFT_APP
@@ -21,13 +21,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName",        "BitcoinGod"
             VALUE "FileDescription",    PACKAGE_NAME " (GUI node for BitcoinGod)"
-            VALUE "FileVersion",        "0.1.2.0"
+            VALUE "FileVersion",        "0.1.3.0"
             VALUE "InternalName",       "bitcoingod-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "bitcoingod-qt.exe"
             VALUE "ProductName",        PACKAGE_NAME
-            VALUE "ProductVersion",     "0.1.2.0"
+            VALUE "ProductVersion",     "0.1.3.0"
         END
     END
 

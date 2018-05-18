@@ -86,7 +86,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.2.0";
+static const char *qAppVersion = "v0.1.3.0";
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
@@ -201,7 +201,7 @@ public:
      */
     static bool baseInitialize();
     static bool qAppVersionGetRemote();
-    static void qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
+    static bool qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
     static void qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer);
 
 public Q_SLOTS:
@@ -345,40 +345,62 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
 #endif
     qDebug()<<"new version url:"<<qUrl;
 
-    QString msg = tr("New version released,");
-    msg.append("<br />click <a href='");
-    msg.append(qUrl);
-    msg.append("'>here</a> to update in time");
+    QString msg = "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; text-indent:26px;\">";
+    if(qVer->vLevel == 3){
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("New milestone version"));
+        msg.append("</a>");
+        msg.append(VersionMessageDialog::tr(" released"));
+        msg.append(VersionMessageDialog::tr(", you must upgrade,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download."));
+        msg.append("</a>");
+    }
+    else {
+        msg.append("  <a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("New version"));
+        msg.append("</a>");
+        msg.append(VersionMessageDialog::tr(" released"));
+        msg.append(VersionMessageDialog::tr(", you can upgrade to new version,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download."));
+        msg.append("</a>");
+    }
+    msg.append("</p>");
     qDebug()<<"new version address"<<msg;
 
-    //QMessageBox::warning(0, tr("Waring"), msg, QMessageBox::Yes);
-//    QMessageBox* msgBox = new QMessageBox( 0 );
-//    msgBox->setAttribute( Qt::WA_DeleteOnClose );
-//    msgBox->setStandardButtons( QMessageBox::Yes );
-//    msgBox->setWindowTitle( tr("Waring") );
-//    msgBox->setText(msg);
-//    msgBox->setModal( false );
-//    msgBox->open(Q_NULLPTR, Q_NULLPTR);
-      VersionMessageDialog dlg;
-      dlg.setContent(msg);
-      dlg.exec();
+    VersionMessageDialog dlg;
+    dlg.setContent(msg);
+    dlg.exec();
 }
 
-void BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
+bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
     bool isVersionNew = true;
 
     //compare version
     if(qVer->vNo.empty()){
-        return;
+        return true;
     }
     isVersionNew = (qVer->vNo.compare(qAppVersion)!=0);
-
     //if version is different, go upgrade logic
     qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
     if(isVersionNew){
         qDebug()<<"version is new, need to update";
         qAppVersionUpgrade(qVer);
+        if(qVer->vLevel == 3)
+            return false;
+        else
+            return true;
     }
+    return true;
 }
 
 
@@ -424,12 +446,7 @@ bool BitcoinCore::qAppVersionGetRemote(){
      }
      catch(ptree_error & e) {
      }
-
-    BitcoinCore::qAppVersionCheck(qVer);
-    if(qVer->vLevel == 3)
-        return false;
-    else
-        return true;
+    return BitcoinCore::qAppVersionCheck(qVer);
 }
 
 void BitcoinCore::shutdown()

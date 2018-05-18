@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>click download.</source>
+        <translation>click download.</translation>
+    </message>
+    <message>
+        <source>Version Upgrade</source>
+        <translation>Version Upgrade</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <source>New version</source>
+        <translation>New version</translation>
+    </message>
+    <message>
+        <source>, you can upgrade to new version,</source>
+        <translation>, you can upgrade to new version,</translation>
+    </message>
+    <message>
+        <source>New milestone version</source>
+        <translation>New milestone version</translation>
+    </message>
+    <message>
+        <source> released</source>
+        <translation> released</translation>
+    </message>
+    <message>
+        <source>, you must upgrade,</source>
+        <translation>, you must upgrade,</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+30"/>

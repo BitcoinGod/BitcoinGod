@@ -1,5 +1,40 @@
 <TS language="zh_CN" version="2.1">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>click download.</source>
+        <translation>点击下载。</translation>
+    </message>
+    <message>
+        <source>Version Upgrade</source>
+        <translation>版本升级</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <source>New version</source>
+        <translation>新版本</translation>
+    </message>
+    <message>
+        <source>, you can upgrade to new version,</source>
+        <translation>，你可以升级到新版本，</translation>
+    </message>
+    <message>
+        <source>New milestone version</source>
+        <translation>里程碑版本</translation>
+    </message>
+    <message>
+        <source> released</source>
+        <translation>已发布</translation>
+    </message>
+    <message>
+        <source>, you must upgrade,</source>
+        <translation>，你必须升级到新版本才能继续使用，</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>
