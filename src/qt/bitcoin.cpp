@@ -201,7 +201,7 @@ public:
      */
     static bool baseInitialize();
     static bool qAppVersionGetRemote();
-    static void qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
+    static bool qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
     static void qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer);
 
 public Q_SLOTS:
@@ -345,40 +345,41 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
 #endif
     qDebug()<<"new version url:"<<qUrl;
 
-    QString msg = tr("New version released,");
-    msg.append("<br />click <a href='");
+    QString msg = "";
+    /*msg.append("<br />");
+    msg.append(tr("click "));
+    msg.append("<a href='");
     msg.append(qUrl);
-    msg.append("'>here</a> to update in time");
+    msg.append("'>");
+    msg.append(tr("here to "));
+    msg.append("</a>");
+    msg.append(tr("update in time"));*/
     qDebug()<<"new version address"<<msg;
 
-    //QMessageBox::warning(0, tr("Waring"), msg, QMessageBox::Yes);
-//    QMessageBox* msgBox = new QMessageBox( 0 );
-//    msgBox->setAttribute( Qt::WA_DeleteOnClose );
-//    msgBox->setStandardButtons( QMessageBox::Yes );
-//    msgBox->setWindowTitle( tr("Waring") );
-//    msgBox->setText(msg);
-//    msgBox->setModal( false );
-//    msgBox->open(Q_NULLPTR, Q_NULLPTR);
-      VersionMessageDialog dlg;
-      dlg.setContent(msg);
-      dlg.exec();
+    VersionMessageDialog dlg;
+    dlg.setContent(BitcoinGUI::tr("New version released,"));
+    dlg.exec();
 }
 
-void BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
+bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
     bool isVersionNew = true;
 
     //compare version
     if(qVer->vNo.empty()){
-        return;
+        return true;
     }
     isVersionNew = (qVer->vNo.compare(qAppVersion)!=0);
-
     //if version is different, go upgrade logic
     qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
     if(isVersionNew){
         qDebug()<<"version is new, need to update";
         qAppVersionUpgrade(qVer);
+        if(qVer->vLevel == 3)
+            return false;
+        else if (qVer->vLevel < 3)
+            return true;
     }
+    return true;
 }
 
 
@@ -425,11 +426,7 @@ bool BitcoinCore::qAppVersionGetRemote(){
      catch(ptree_error & e) {
      }
 
-    BitcoinCore::qAppVersionCheck(qVer);
-    if(qVer->vLevel == 3)
-        return false;
-    else
-        return true;
+    return BitcoinCore::qAppVersionCheck(qVer);
 }
 
 void BitcoinCore::shutdown()

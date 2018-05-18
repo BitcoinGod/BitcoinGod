@@ -1,5 +1,24 @@
 <TS language="zh_CN" version="2.1">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>New version released,</source>
+        <translation>有新版本了</translation>
+    </message>
+    <message>
+        <source>click </source>
+        <translation>点击</translation>
+    </message>
+    <message>
+        <source>here to </source>
+        <translation>这里</translation>
+    </message>
+    <message>
+        <source>update in time</source>
+        <translation>，进行更新</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>

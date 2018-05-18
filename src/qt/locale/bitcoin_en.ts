@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>New version released,</source>
+        <translation>New version released,</translation>
+    </message>
+    <message>
+        <source>click </source>
+        <translation>click </translation>
+    </message>
+    <message>
+        <source>here to </source>
+        <translation>here to </translation>
+    </message>
+    <message>
+        <source>update in time</source>
+        <translation>update in time</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+30"/>
