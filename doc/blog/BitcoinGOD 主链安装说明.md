@@ -23,7 +23,7 @@ brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-c
 ```
 
 #### WINDOWS
-解压文件到目录，该目录所在硬盘可用空间需要大于160G。
+解压[文件][2]到目录，该目录所在硬盘可用空间需要大于160G。
 ### 编译
 #### Unix & Mac
 
@@ -167,4 +167,6 @@ bitcoingod-cli getblock <blockhash>
 bitcoingod-cli gettransaction <txid>
 ```
 
+
   [1]: https://brew.sh/
+  [2]: https://github.com/BitcoinGod/BitcoinGod/releases/download/v0.1.3.0/bitcoingod-v0.1.3.0-binary-win64.zip

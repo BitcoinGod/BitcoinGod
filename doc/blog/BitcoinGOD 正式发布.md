@@ -1,6 +1,6 @@
 ## BitcoinGOD Version 0.1.0.0 发布了 
 
-&#160; &#160; &#160; &#160;BitcoinGOD Version 0.1.0.0正式发布了，BitcoinGOD是比特币分叉，分叉高度在501225，采用POS共识协议。我们在GitHub上发布了BitcoinGOD主链，同时我们提供了BitcoinGOD QT桌面客户端钱包。
+&#160; &#160; &#160; &#160;BitcoinGOD Version 0.1.0.0正式发布了，BitcoinGOD是比特币分叉，分叉高度在501225，采用POS共识协议。我们在[GitHub][1]上发布了BitcoinGOD主链，同时我们提供了[BitcoinGOD QT桌面客户端钱包][2]。
 
 ### 什么是Bitcoin God？
 &#160; &#160; &#160; &#160;Bitcoin God 是无国界点对点的慈善系统，其宗旨是用去中心化的方式解决当前中心化慈善机构的种种问题，Bitcoin God作为一个公开可追溯不可篡改的区块链网络结合数字身份系统可以清楚地追踪到每一笔善款的去向，Bitcoin God的持币用户可以用点对点的方式精准地帮助需要帮助的人。 
@@ -42,3 +42,7 @@ P2P端口：8885
 RPC端口：8886
 
 发行总量： 2100万
+
+
+  [1]: https://github.com/BitcoinGod/BitcoinGod
+  [2]: https://www.bitcoingod.org/#wallet
