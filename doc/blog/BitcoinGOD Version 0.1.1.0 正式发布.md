@@ -25,7 +25,7 @@
 2.	如导入过程中出现意外中断（如断电、意外关闭）等情况，请重新输入助记词、私钥等，点击‘重新导入’按钮进行操作，以保证你的认领成功。
 
 
-  [1]: https://www.bitcoingod.org/
+  [1]: https://www.bitcoingod.org/#wallet
   [2]: https://github.com/BitcoinGod/static/blob/master/pic/version0.1.1.0/import.png
   [3]: https://github.com/BitcoinGod/static/blob/master/pic/version0.1.1.0/input.png
   [4]: https://github.com/BitcoinGod/static/blob/master/pic/version0.1.1.0/execute.png
