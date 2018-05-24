@@ -3,21 +3,22 @@
 ### 依赖
 #### UNIX
 
-> sudo apt-get update 
-> sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils
-> sudo apt-get install libboost-all-dev
-> sudo apt-get install software-properties-common
-> sudo add-apt-repository ppa:bitcoin/bitcoin
-> sudo apt-get update
-> sudo apt-get install libdb4.8-dev libdb4.8++-dev
-> sudo apt-get install libminiupnpc-dev
+```
+sudo apt-get update  
+sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils 
+sudo apt-get install libboost-all-dev 
+sudo apt-get install software-properties-common 
+sudo add-apt-repository ppa:bitcoin/bitcoin 
+sudo apt-get update 
+sudo apt-get install libdb4.8-dev libdb4.8++-dev 
+sudo apt-get install libminiupnpc-dev
+```
 
 #### MAC
 安装OS X命令行工具：**xcode-select –install**，当弹出窗口时候，点击**Install**
 安装 **[Homebrew][1]**.
 
-> brew install automake berkeley-db4 libtool boost --c++11 miniupnpc
-> openssl pkg-config protobuf libevent
+> brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf libevent
 
 #### WINDOWS
 解压文件到目录，该目录所在硬盘可用空间需要大于160G。
@@ -31,11 +32,13 @@
 
 2. 编译Bitcoin God: 配置并编译Bitcoin God
 
-> binaries –without-gui 
-> ./autogen.sh  
-> ./configure --without-gui  
-> make 
-> make install
+```
+binaries –without-gui 
+./autogen.sh   
+./configure --without-gui   
+make  
+make install
+```
 
 #### Windows
 不需要编译。
@@ -44,8 +47,7 @@
 
 > echo -e "rpcuser=default@\nrpcpassword=default@"  > "/Users/${USER}/Library/Application Sup port/BitcoinGod/bitcoin.conf"
 
-> chmod 600 "/Users/${USER}/Library/Application
-> Support/BitcoinGod/bitcoin.conf"
+> chmod 600 "/Users/${USER}/Library/Application Support/BitcoinGod/bitcoin.conf"
 
 在Linux或者Unix下面创建配置文件
 
