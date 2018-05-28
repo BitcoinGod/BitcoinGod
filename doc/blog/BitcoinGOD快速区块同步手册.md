@@ -16,7 +16,7 @@
 
 <font color='red'>**Warning**</font>: 
 
-&#160; &#160; &#160;&#160;同步达到分叉高度501225后，通过BTC节点同步的过程将停止浏览数据存储目录。关闭BitcoinGOD桌面钱包，进入BitcoinGOD同步数据目录，找到并删除‘peers.dat’文件并重新启动钱包（钱包将自动寻找BitcoinGOD网络节点并继续同步）
+&#160; &#160; &#160;&#160;同步达到分叉高度501225后，关闭BitcoinGOD桌面钱包，进入BitcoinGOD同步数据目录，找到并删除‘peers.dat’文件并重新启动钱包（钱包将自动寻找BitcoinGOD网络节点并继续同步）
 
 TIPs:
 
