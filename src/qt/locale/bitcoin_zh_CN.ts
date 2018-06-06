@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Warning</source>
-        <translation>警告</translation>
+        <translation>提示</translation>
     </message>
     <message>
         <source>New version</source>
@@ -30,7 +30,7 @@
         <translation>已发布</translation>
     </message>
     <message>
-        <source>, you must upgrate to the lastest,</source>
+        <source>, you must upgrade,</source>
         <translation>，你必须升级到新版本才能继续使用，</translation>
     </message>
 </context>

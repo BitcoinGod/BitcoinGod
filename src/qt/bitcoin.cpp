@@ -353,7 +353,7 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
         msg.append(VersionMessageDialog::tr("New milestone version"));
         msg.append("</a>");
         msg.append(VersionMessageDialog::tr(" released"));
-        msg.append(VersionMessageDialog::tr(", you must upgrate to the lastest,"));
+        msg.append(VersionMessageDialog::tr(", you must upgrade,"));
         msg.append("<a href='");
         msg.append(qUrl);
         msg.append("'>");
@@ -362,10 +362,10 @@ void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
     }
     else {
         msg.append("  <a href='");
-    msg.append(qUrl);
-    msg.append("'>");
+        msg.append(qUrl);
+        msg.append("'>");
         msg.append(VersionMessageDialog::tr("New version"));
-    msg.append("</a>");
+        msg.append("</a>");
         msg.append(VersionMessageDialog::tr(" released"));
         msg.append(VersionMessageDialog::tr(", you can upgrade to new version,"));
         msg.append("<a href='");

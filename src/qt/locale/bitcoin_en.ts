@@ -32,8 +32,8 @@
         <translation> released</translation>
     </message>
     <message>
-        <source>, you must upgrate to the lastest,</source>
-        <translation>, you must upgrate to the lastest,</translation>
+        <source>, you must upgrade,</source>
+        <translation>, you must upgrade,</translation>
     </message>
 </context>
 <context>
