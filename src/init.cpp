@@ -1668,7 +1668,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     Discover(threadGroup);
 
     // Map ports with UPnP
-    MapPort(gArgs.GetBoolArg("-upnp", DEFAULT_UPNP));
+    MapPort(gArgs.GetBoolArg("-upnp", true));
 
     CConnman::Options connOptions;
     connOptions.nLocalServices = nLocalServices;

@@ -77,6 +77,11 @@ extern double NSAppKitVersionNumber;
 
 namespace GUIUtil {
 
+QString getAppVersion()
+{
+    return QString::fromStdString("0.1.4.0");
+}
+
 QString dateTimeStr(const QDateTime &date)
 {
     return date.date().toString(Qt::SystemLocaleShortDate) + QString(" ") + date.toString("hh:mm");

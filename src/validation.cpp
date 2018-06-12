@@ -1286,7 +1286,7 @@ void InitScriptExecutionCache() {
 bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks)
 {
     //godcoin:pos
-    if (!tx.IsCoinBase() &&!tx.IsCoinStake() )
+    if (!tx.IsCoinBase())
     {
         if (!Consensus::CheckTxInputs(tx, state, inputs, GetSpendHeight(inputs)))
             return false;
@@ -1858,9 +1858,10 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
         txdata.emplace_back(tx);
         //godcoin:pos
-        if (!tx.IsCoinBase() && !tx.IsCoinStake())
-        {
-            nFees += view.GetValueIn(tx)-tx.GetValueOut();
+        if (!tx.IsCoinBase())
+        {  
+            if(!tx.IsCoinStake())
+                nFees += view.GetValueIn(tx)-tx.GetValueOut();
 
             std::vector<CScriptCheck> vChecks;
             bool fCacheResults = fJustCheck; /* Don't cache results if we're actually connecting blocks (still consult the cache, though) */
@@ -3244,7 +3245,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         return false;
 
     //godcoin:pos
-    if(!AcceptPosBlock(pblock,state,chainparams,ppindex))
+    if(!AcceptPosBlock(pblock,state,chainparams,&pindex))
         return false;
 
     // Try to process all requested blocks that we don't have, but only

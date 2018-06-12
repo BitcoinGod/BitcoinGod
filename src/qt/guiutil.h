@@ -33,6 +33,8 @@ QT_END_NAMESPACE
  */
 namespace GUIUtil
 {
+    //Get Application Version
+    QString getAppVersion();
     // Create human-readable string from date
     QString dateTimeStr(const QDateTime &datetime);
     QString dateTimeStr(qint64 nTime);
