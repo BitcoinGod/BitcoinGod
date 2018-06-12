@@ -34,6 +34,7 @@
 #include "util.h"
 #include "warnings.h"
 #include "pos/posminemgr.h"
+#include "clientversion.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -86,7 +87,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.3.0";
+const char *qAppVersion = QT_GOD_APP_VERSION;
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod

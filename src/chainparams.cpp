@@ -134,7 +134,7 @@ public:
         //vSeeds.emplace_back("seed.bitcoinstats.com", true); // Christian Decker, supports x1 - xf
         //vSeeds.emplace_back("seed.bitcoin.jonasschnelli.ch", true); // Jonas Schnelli, only supports x1, x5, x9, and xd
         //vSeeds.emplace_back("seed.btc.petertodd.org", true); // Peter Todd, only supports x1, x5, x9, and xd        
-	 vSeeds.emplace_back("s.bitcoingod.org", false);        
+        vSeeds.emplace_back("s.bitcoingod.org", false);        
 
         //godcoin:change the address prefix of public address to 'g' and script address to 'A'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,97);
@@ -171,6 +171,7 @@ public:
                 {279000, uint256S("0x0000000000000001ae8c72a0b0c301f67e3afca10e819efa9041e458e9bd7e40")},
                 {295000, uint256S("0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983")},
                 {498888, uint256S("0x00000000000000000006cd8c4c5c0582afad218f13eb02f1351d0fa1821590d7")},
+                {536000, uint256S("0xc11c3db25e7fb7666d358acd8d8072c89b8a27c74e556150a3690cc1154bad86")},
             }
         };
 

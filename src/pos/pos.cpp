@@ -14,7 +14,7 @@
 #include "script/sign.h"
 #include "consensus/consensus.h"
 #include "pos/pos.h"
-
+#include "pos/posvalidation.h"
 using namespace std;
 
 // Stake Modifier (hash modifier of proof-of-stake):
@@ -66,7 +66,7 @@ bool CheckStakeKernelHash(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t 
 {
     if (nTimeBlock < blockFromTime)  // Transaction timestamp violation
         return error("CheckStakeKernelHash() : nTime violation");
-
+    
     // Base target
     arith_uint256 bnTarget;
     arith_uint256 bnTarget2;
@@ -96,7 +96,7 @@ bool CheckStakeKernelHash(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t 
         checkSucceed = false;
     } 
 
-    LogPrintf("%s:CheckStakeKernelHash() nBits=%d weight=%s modifier=%d nTimeBlockFrom=%u nPrevout=%s nTimeBlock=%u hashProof=%s prev=%s "
+    LogPrint(BCLog::CMPCTBLOCK," %s:CheckStakeKernelHash() nBits=%d weight=%s modifier=%d nTimeBlockFrom=%u nPrevout=%s nTimeBlock=%u hashProof=%s prev=%s "
             "target:%d, weight:%d, finalTarget:%d, diff:%d，limit:%d\n",
             checkSucceed ? "succeed" : "failed",
             nBits,
@@ -229,7 +229,7 @@ bool IsCoinMature(int blockHeight, int coinHeight){
         ret = (blockHeight - coinHeight) >= COINSTAKE_MATURITY_FIX;
     }
 
-    LogPrintf("check coin maturity, block height:%d, coin height:%d, ret:%d\n", blockHeight, coinHeight, ret);
+    LogPrint(BCLog::SELECTCOINS,"check coin maturity, block height:%d, coin height:%d, ret:%d\n", blockHeight, coinHeight, ret);
     return ret;
 }
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex){

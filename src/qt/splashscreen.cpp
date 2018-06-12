@@ -15,6 +15,7 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "version.h"
+#include "clientversion.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -44,7 +45,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     // define text to place
     QString titleText       = tr(PACKAGE_NAME);
     //QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString versionText     = QString("Version %1").arg(QString::fromStdString("0.1.3.0"));
+    QString versionText     = QString("Version %1").arg(QString::fromStdString(qAppVersion));
     QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2017, COPYRIGHT_YEAR)).c_str());
     QString titleAddText    = networkStyle->getTitleAddText();
 

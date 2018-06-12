@@ -17,7 +17,8 @@
 #include "net.h"
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
-#include "intro.h" 
+#include "intro.h"
+#include "util.h" 
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -110,10 +111,13 @@ void OptionsModel::Init(bool resetSettings)
     if (!gArgs.SoftSetBoolArg("-spendzeroconfchange", settings.value("bSpendZeroConfChange").toBool()))
         addOverriddenOption("-spendzeroconfchange");
 #endif
-
     // Network
     if (!settings.contains("fUseUPnP"))
-        settings.setValue("fUseUPnP", DEFAULT_UPNP);
+        settings.setValue("fUseUPnP", true);
+    if(!settings.contains("fVersion")){
+        settings.setValue("fUseUPnP", true);
+        settings.setValue("fVersion", GUIUtil::getAppVersion());
+    }
     if (!gArgs.SoftSetBoolArg("-upnp", settings.value("fUseUPnP").toBool()))
         addOverriddenOption("-upnp");
 
