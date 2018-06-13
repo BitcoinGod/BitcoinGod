@@ -390,7 +390,7 @@ bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
     if(qVer->vNo.empty()){
         return true;
     }
-    isVersionNew = (qVer->vNo.compare(qAppVersion)!=0);
+    isVersionNew = (qVer->vNo.substr(1).compare(qAppVersion)!=0);
     //if version is different, go upgrade logic
     qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
     if(isVersionNew){
