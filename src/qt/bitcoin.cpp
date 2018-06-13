@@ -34,6 +34,7 @@
 #include "util.h"
 #include "warnings.h"
 #include "pos/posminemgr.h"
+#include "clientversion.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -86,7 +87,7 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #include <QTextCodec>
 #endif
 
-static const char *qAppVersion = "v0.1.4.0";
+const char *qAppVersion = QT_GOD_APP_VERSION;
 static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
@@ -389,7 +390,7 @@ bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
     if(qVer->vNo.empty()){
         return true;
     }
-    isVersionNew = (qVer->vNo.compare(qAppVersion)!=0);
+    isVersionNew = (qVer->vNo.substr(1).compare(qAppVersion)!=0);
     //if version is different, go upgrade logic
     qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
     if(isVersionNew){

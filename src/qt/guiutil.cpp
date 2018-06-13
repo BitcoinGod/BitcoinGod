@@ -17,6 +17,7 @@
 #include "script/script.h"
 #include "script/standard.h"
 #include "util.h"
+#include "clientversion.h"
 
 #ifdef WIN32
 #ifdef _WIN32_WINNT
@@ -79,7 +80,7 @@ namespace GUIUtil {
 
 QString getAppVersion()
 {
-    return QString::fromStdString("0.1.4.0");
+    return QString::fromStdString(QT_GOD_APP_VERSION);
 }
 
 QString dateTimeStr(const QDateTime &date)
