@@ -631,7 +631,7 @@ void RPCConsole::setClientModel(ClientModel *model)
 
         // Provide initial values
         //ui->clientVersion->setText(model->formatFullVersion());
-        ui->clientVersion->setText(qAppVersion);
+        ui->clientVersion->setText(GUIUtil::getAppVersion());
         ui->clientUserAgent->setText(model->formatSubVersion());
         ui->dataDir->setText(model->dataDir());
         ui->startupTime->setText(model->formatClientStartupTime());

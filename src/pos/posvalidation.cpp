@@ -280,7 +280,7 @@ bool AcceptPosBlock(const std::shared_ptr<const CBlock>& pblock, CValidationStat
 }
 /**Accept POS blockheader**/
 bool AcceptPosBlockHeader(const CBlockHeader& block, CValidationState& state, CBlockIndex* pindexPrev){
-    if((pindexPrev->nHeight >= LAST_POW_BLOCK_HEIGHT)&&block.nNonce == 0)
+    if((pindexPrev->nHeight >= Params().GetConsensus().nLastPOWBlock)&&block.nNonce == 0)
         return state.DoS(10, error("pos block nNonce is zero, hash:%s, prevHeight:%d, prevHash:%s",block.GetHash().GetHex(),pindexPrev->nHeight, pindexPrev->GetBlockHash().GetHex()),REJECT_INVALID, "bad-pos-block-nNonce");
     
     return true;

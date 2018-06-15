@@ -379,7 +379,7 @@ bool IsPOSHardForkEnabled(const CChainParams& chainParams, const CBlockIndex *pi
     if (pindexPrev == nullptr) {
         return false;
     }
-    return pindexPrev->nHeight >= LAST_POW_BLOCK_HEIGHT;
+    return pindexPrev->nHeight >= Params().GetConsensus().nLastPOWBlock;
 }
 //godcoin:two way protect
 bool IsPOSHardForkEnabledForCurrentBlock(const CChainParams& chainParams) {
@@ -1082,7 +1082,7 @@ bool IsInitialBlockDownload()
     //godcoin:pos , 
     //when chainactive height equal to LAST_POW_BLOCK_HEIGHT then IsInitialBlockDownload return false,
     //for make the node can getheaders
-    if (chainActive.Tip() != nullptr && (chainActive.Tip()->nHeight == LAST_POW_BLOCK_HEIGHT)) {
+    if (chainActive.Tip() != nullptr && (chainActive.Tip()->nHeight == Params().GetConsensus().nLastPOWBlock)) {
         return false;
     }
 
@@ -3176,7 +3176,7 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
 
         //godcoin:pow block check
         int blockHeight = pindexPrev->nHeight + 1;
-        if((blockHeight < SUPER_BLOCK_HEIGHT) && !CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())){
+        if((blockHeight < Params().GetConsensus().nSuperBlockHeight) && !CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())){
             return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
         }
 

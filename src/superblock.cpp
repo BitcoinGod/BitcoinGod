@@ -10,17 +10,30 @@
 #include "version.h"
 #include "chain.h"
 #include "consensus/consensus.h"
+#include "chainparams.h"
 
 //godcoin:superblock
 static const uint256 SUPER_BLOCK_HASH1 = uint256S("0fd7ab36246daf61802e10a0316cc2b0f17a1d6404bfdd53878ba34e158b4680");
 static const uint256 SUPER_BLOCK_HASH2 = uint256S("1bfe6e1dc86f504a0a059f624d97e53772a767ea950b43d57665a37383b16536");
+
+static const uint256 TESTNET_SUPER_BLOCK_HASH1 = uint256S("35724d3b0d72504bde551381f6751342e5a693a129a92a0bde9db87d901bea03");
+static const uint256 TESTNET_SUPER_BLOCK_HASH2 = uint256S("3c1526d933b9f0b483cf209751b7f9ac3ed75ae7ddd02c3ffca971dfb6ef5088");
+static const uint256 TESTNET_SUPER_BLOCK_HASH3 = uint256S("7c54f3e13c9e8543ff0230d9cad6d13795f0cfde898c782a8151417625227dd5");
 
 bool isSuperBlock(const CBlock& block) {
     return isSuperBlockHash(block.GetHash());
 }
 
 bool isSuperBlockHash(const uint256 hash) {
-    return hash ==  SUPER_BLOCK_HASH1 || hash ==  SUPER_BLOCK_HASH2;
+    if (Params().NetworkIDString().compare(CBaseChainParams::TESTNET) == 0){
+        return hash ==  TESTNET_SUPER_BLOCK_HASH1 || hash ==  TESTNET_SUPER_BLOCK_HASH2 || hash ==  TESTNET_SUPER_BLOCK_HASH3;
+    }else if (Params().NetworkIDString().compare(CBaseChainParams::MAIN) == 0){
+         return hash ==  SUPER_BLOCK_HASH1 || hash ==  SUPER_BLOCK_HASH2;
+    }else{
+        //when REGTEST have not superblock
+        return false;
+    }
+    
 }
 
 //godcoin:superblock
@@ -38,8 +51,8 @@ std::shared_ptr<CBlock> getSuperBlock(int i) {
 
 bool getSuperBlockWorkLimit(const CBlockIndex* pindexLast,unsigned int& nProofOfWorkLimit) {
     if (pindexLast != nullptr && 
-            (pindexLast->nHeight + 1) >= SUPER_BLOCK_HEIGHT && 
-            (pindexLast->nHeight + 1) < LAST_POW_BLOCK_HEIGHT) { 
+            (pindexLast->nHeight + 1) >= Params().GetConsensus().nSuperBlockHeight && 
+            (pindexLast->nHeight + 1) < Params().GetConsensus().nLastPOWBlock) { 
         nProofOfWorkLimit =  UintToArith256(uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")).GetCompact();
         return true;
     }

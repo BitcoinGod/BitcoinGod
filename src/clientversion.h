@@ -29,6 +29,10 @@
  * WINDRES_PREPROC is defined to indicate that its pre-processor is running.
  * Anything other than a define should be guarded below.
  */
+#define QT_GOD_APP_VERSION "0.1.4.0"
+#define QT_GOD_FILE_VERSION 0,1,4,0
+
+extern const char* qAppVersion;
 
 #if !defined(WINDRES_PREPROC)
 
@@ -41,12 +45,8 @@ static const int CLIENT_VERSION =
                          +     100 * CLIENT_VERSION_REVISION
                          +       1 * CLIENT_VERSION_BUILD;
 
-#define QT_GOD_APP_VERSION "0.1.4.0"
-#define QT_GOD_FILE_VERSION 0,1,4,0
-
 extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
-extern const char* qAppVersion;
 
 std::string FormatFullVersion();
 std::string FormatSubVersion(const std::string& name, int nClientVersion, const std::vector<std::string>& comments);
