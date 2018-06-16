@@ -26,11 +26,11 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
 {
     //gocoin:pos nNonce
     int32_t nStakeModifier = 0;
-    if(pindexPrev->nHeight > LAST_POW_BLOCK_HEIGHT){
+    if(pindexPrev->nHeight > Params().GetConsensus().nLastPOWBlock){
         nStakeModifier = pindexPrev->nNonce;
     }
 
-    if(nStakeModifier == 0 && pindexPrev->nHeight > LAST_POW_BLOCK_HEIGHT){
+    if(nStakeModifier == 0 && pindexPrev->nHeight > Params().GetConsensus().nLastPOWBlock){
         LogPrintf("prev stake modifider is null, pindexPrev:height:%d, hash:%s,nStakeModifier:%d\n", 
                 pindexPrev->nHeight,
                 pindexPrev->GetBlockHash().GetHex(), 
@@ -80,7 +80,7 @@ bool CheckStakeKernelHash(CBlockIndex* pindexPrev, unsigned int nBits, uint32_t 
     targetProofOfStake = ArithToUint256(bnTarget);
     //pos nNonce
     int32_t nStakeModifier = 0;
-    if(pindexPrev->nHeight > LAST_POW_BLOCK_HEIGHT){
+    if(pindexPrev->nHeight > Params().GetConsensus().nLastPOWBlock){
         nStakeModifier = pindexPrev->nNonce;
     }
 
@@ -132,7 +132,7 @@ bool CheckProofOfStake(CBlockIndex* pindexPrev, CValidationState& state, const C
         return state.DoS(100, error("CheckProofOfStake() : Stake prevout does not exist %s", txin.prevout.hash.ToString()));
 
     if(!IsCoinMature((pindexPrev->nHeight + 1),coinPrev.nHeight))
-        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", (pindexPrev->nHeight + 1 - coinPrev.nHeight) > DELAY_REWARD_HEIGHT ? COINSTAKE_MATURITY:COINBASE_MATURITY, pindexPrev->nHeight + 1 - coinPrev.nHeight));
+        return state.DoS(100, error("CheckProofOfStake() : Stake prevout is not mature, expecting %i and only matured to %i", (pindexPrev->nHeight + 1 - coinPrev.nHeight) > Params().GetConsensus().nDelayRewardHeight ? Params().GetConsensus().nCoinStakeMaturity:Params().GetConsensus().nCoinbaseMaturity, pindexPrev->nHeight + 1 - coinPrev.nHeight));
     
     //check prevout's block
     CBlockIndex* blockFrom = pindexPrev->GetAncestor(coinPrev.nHeight);
@@ -220,13 +220,13 @@ void CacheKernel(std::map<COutPoint, CStakeCache>& cache, const COutPoint& prevo
 bool IsCoinMature(int blockHeight, int coinHeight){
     bool ret = false;
 
-    if(blockHeight <= DELAY_REWARD_HEIGHT){
-        ret = (blockHeight - coinHeight) >= COINBASE_MATURITY;
-    }else if(blockHeight <= DELAY_REWARD_HEIGHT_FIX){
-        ret = (blockHeight - coinHeight) >= COINSTAKE_MATURITY;
+    if(blockHeight <= Params().GetConsensus().nDelayRewardHeight){
+        ret = (blockHeight - coinHeight) >= Params().GetConsensus().nCoinbaseMaturity;
+    }else if(blockHeight <= Params().GetConsensus().nDelayRewardHeightFix){
+        ret = (blockHeight - coinHeight) >= Params().GetConsensus().nCoinStakeMaturity;
     }
     else{
-        ret = (blockHeight - coinHeight) >= COINSTAKE_MATURITY_FIX;
+        ret = (blockHeight - coinHeight) >= Params().GetConsensus().nCoinStakeMaturityFix;
     }
 
     LogPrint(BCLog::SELECTCOINS,"check coin maturity, block height:%d, coin height:%d, ret:%d\n", blockHeight, coinHeight, ret);
@@ -249,7 +249,7 @@ unsigned int GetNextPosWorkRequired(const CBlockIndex* pindexLast, const CBlockH
         return pindexLast->nBits;
 
     //first and second pos block use target limit
-    if (pindexLast->nHeight < LAST_POW_BLOCK_HEIGHT + 2) 
+    if (pindexLast->nHeight < Params().GetConsensus().nLastPOWBlock + 2) 
         return GetLimit(params).GetCompact();
     
     // Limit adjustment step
