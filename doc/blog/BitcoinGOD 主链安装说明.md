@@ -169,4 +169,4 @@ bitcoingod-cli gettransaction <txid>
 
 
   [1]: https://brew.sh/
-  [2]: https://github.com/BitcoinGod/BitcoinGod/releases/download/v0.1.3.0/bitcoingod-v0.1.3.0-binary-win64.zip
+  [2]: https://github.com/BitcoinGod/BitcoinGod/releases/download/v0.1.4.0/bitcoingod-v0.1.4.0-binary-win64.zip

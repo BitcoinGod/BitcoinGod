@@ -45,6 +45,9 @@ static const int CLIENT_VERSION =
                          +     100 * CLIENT_VERSION_REVISION
                          +       1 * CLIENT_VERSION_BUILD;
 
+#define QT_GOD_APP_VERSION "0.1.4.0"
+#define QT_GOD_FILE_VERSION 0,1,4,0
+
 extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 
