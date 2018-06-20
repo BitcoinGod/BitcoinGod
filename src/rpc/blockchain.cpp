@@ -1616,6 +1616,33 @@ UniValue recenttxstatistics(const JSONRPCRequest& request)
     
     return listblock;
 }
+
+//godcoin:contract
+UniValue callcontract(const JSONRPCRequest& request){
+    if (request.fHelp || request.params.size() < 2)
+        throw std::runtime_error(
+             "callcontract \"address\" \"data\" ( address )\n"
+             "\nArgument:\n"
+             "1. \"address\"          (string, required) The account address\n"
+             "2. \"data\"             (string, required) The data hex string\n"
+             "3. address              (string, optional) The sender address hex string\n"
+             "4. gasLimit             (string, optional) The gas limit for executing the contract\n"
+         );
+ 
+    LOCK(cs_main);
+    UniValue result(UniValue::VOBJ);
+    std::string strAddr = request.params[0].get_str();
+    std::string data = request.params[1].get_str();
+
+    /*if(data.size() % 2 != 0 || !CheckHex(data))
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid data (data not hex)");
+
+    if(strAddr.size() != 40 || !CheckHex(strAddr))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Incorrect address");*/
+
+    result.push_back(Pair("callcontract","test sussess"));
+    return result;
+}
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         okSafe argNames
   //  --------------------- ------------------------  -----------------------  ------ ----------
@@ -1641,6 +1668,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "preciousblock",          &preciousblock,          true,  {"blockhash"} },
     //godcoin:newrpc 
     { "blockchain",         "recenttxstatistics",     &recenttxstatistics,     true,  {"daycount"} },
+    { "blockchain",         "callcontract",           &callcontract,           true,  {""} },
     /* Not shown in help */
     { "hidden",             "invalidateblock",        &invalidateblock,        true,  {"blockhash"} },
     { "hidden",             "reconsiderblock",        &reconsiderblock,        true,  {"blockhash"} },

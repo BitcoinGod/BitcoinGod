@@ -3495,6 +3495,100 @@ UniValue generatepos(const JSONRPCRequest& request)
     }
     return minePosBlock(pwallet);
 }
+
+//godcoin:contract
+UniValue createcontract(const JSONRPCRequest& request){
+
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+    //TODO: contract need to write blockgaslimit mingasprice
+    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    //uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Height());
+    //uint64_t minGasPrice = CAmount(qtumDGP.getMinGasPrice(chainActive.Height()));
+    //CAmount nGasPrice = (minGasPrice>DEFAULT_GAS_PRICE)?minGasPrice:DEFAULT_GAS_PRICE;
+    uint64_t blockGasLimit = 1024;
+    uint64_t minGasPrice = 1;
+    CAmount nGasPrice = 1;
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 6)
+        throw std::runtime_error(
+                            "createcontract \"bytecode\" (gaslimit gasprice \"senderaddress\" broadcast)"
+                            "\nCreate a contract with bytcode.\n"
+                            + HelpRequiringPassphrase(pwallet) +
+                            "\nArguments:\n"
+                            "1. \"bytecode\"  (string, required) contract bytcode.\n"
+                            "2. gasLimit  (numeric or string, optional) gasLimit, default: "+i64tostr(blockGasLimit)+", max: "+i64tostr(blockGasLimit)+"\n"
+                            "3. gasPrice  (numeric or string, optional) gasPrice QTUM price per gas unit, default: "+FormatMoney(nGasPrice)+", min:"+FormatMoney(minGasPrice)+"\n"
+                            "4. \"senderaddress\" (string, optional) The quantum address that will be used to create the contract.\n"
+                            "5. \"broadcast\" (bool, optional, default=true) Whether to broadcast the transaction or not.\n"
+                            "6. \"changeToSender\" (bool, optional, default=true) Return the change to the sender.\n"
+                            "\nResult:\n"
+                            "[\n"
+                            "  {\n"
+                            "    \"txid\" : (string) The transaction id.\n"
+                            "    \"sender\" : (string) " + CURRENCY_UNIT + " address of the sender.\n"
+                            "    \"hash160\" : (string) ripemd-160 hash of the sender.\n"
+                            "    \"address\" : (string) expected contract address.\n"
+                            "  }\n"
+                            "]\n"
+                            "\nExamples:\n"
+                            + HelpExampleRpc("createcontract", "\"60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256\"")
+                            + HelpExampleRpc("createcontract", "\"60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256\" 6000000 "+FormatMoney(minGasPrice)+" \"QM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" true")
+                            );
+    
+    UniValue result(UniValue::VOBJ);
+    
+    result.push_back(Pair("createcontract","test sussess"));
+    return result;
+}
+
+//godcoin:contract
+UniValue sendtocontract(const JSONRPCRequest& request){
+
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+    uint64_t blockGasLimit = 1024;
+    uint64_t minGasPrice = 1;
+    CAmount nGasPrice = 1;
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 8)
+        throw std::runtime_error(
+                "sendtocontract \"contractaddress\" \"data\" (amount gaslimit gasprice senderaddress broadcast)"
+                "\nSend funds and data to a contract.\n"
+                + HelpRequiringPassphrase(pwallet) +
+                "\nArguments:\n"
+                "1. \"contractaddress\" (string, required) The contract address that will receive the funds and data.\n"
+                "2. \"datahex\"  (string, required) data to send.\n"
+                "3. \"amount\"      (numeric or string, optional) The amount in " + CURRENCY_UNIT + " to send. eg 0.1, default: 0\n"
+                "4. gasLimit  (numeric or string, optional) gasLimit, default: "+i64tostr(blockGasLimit)+", max: "+i64tostr(blockGasLimit)+"\n"
+                "5. gasPrice  (numeric or string, optional) gasPrice Qtum price per gas unit, default: "+FormatMoney(nGasPrice)+", min:"+FormatMoney(minGasPrice)+"\n"
+                "6. \"senderaddress\" (string, optional) The quantum address that will be used as sender.\n"
+                "7. \"broadcast\" (bool, optional, default=true) Whether to broadcast the transaction or not.\n"
+                "8. \"changeToSender\" (bool, optional, default=true) Return the change to the sender.\n"
+                "\nResult:\n"
+                "[\n"
+                "  {\n"
+                "    \"txid\" : (string) The transaction id.\n"
+                "    \"sender\" : (string) " + CURRENCY_UNIT + " address of the sender.\n"
+                "    \"hash160\" : (string) ripemd-160 hash of the sender.\n"
+                "  }\n"
+                "]\n"
+                "\nExamples:\n"
+                + HelpExampleRpc("sendtocontract", "\"c6ca2697719d00446d4ea51f6fac8fd1e9310214\" \"54f6127f\"")
+                + HelpExampleRpc("sendtocontract", "\"c6ca2697719d00446d4ea51f6fac8fd1e9310214\" \"54f6127f\" 12.0015 6000000 "+FormatMoney(minGasPrice)+" \"QM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\"")
+        );
+    
+    UniValue result(UniValue::VOBJ);
+    
+    result.push_back(Pair("createcontract","test sussess"));
+    return result;
+}
 extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
@@ -3564,6 +3658,10 @@ static const CRPCCommand commands[] =
     { "wallet",             "listblocks",               &listblocks,               true,  {"page","length"} },
     { "wallet",             "transactionsummary",       &transactionsummary,       true,  {} },
     { "wallet",             "newlisttransactions",      &newlisttransactions,      false,  {"account","count","skip","include_watchonly"} },
+    
+    //godcoin:contract
+    { "wallet",             "createcontract",           &createcontract,           false,  {"bytecode", "gasLimit", "gasPrice", "senderAddress", "broadcast", "changeToSender"} },
+    { "wallet",             "sendtocontract",           &sendtocontract,           false,  {"contractaddress", "bytecode", "amount", "gasLimit", "gasPrice", "senderAddress", "broadcast", "changeToSender"} },
 
     //godcoin:pos
     { "generating",         "generatepos",              &generatepos,              true,   {} },

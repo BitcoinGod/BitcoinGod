@@ -155,6 +155,16 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "importmnemonic", 1, "begin" },
     { "importmnemonic", 2, "end" },
     { "importmnemonic", 3, "forcerescan" },
+    //godcoin:contract
+    { "createcontract", 1, "gasLimit" },
+    { "createcontract", 2, "gasPrice" },
+    { "createcontract", 4, "broadcast" },
+    { "createcontract", 5, "changeToSender" },
+    { "sendtocontract", 2, "amount" },
+    { "sendtocontract", 3, "gasLimit" },
+    { "sendtocontract", 4, "gasPrice" },
+    { "sendtocontract", 6, "broadcast" },
+    { "sendtocontract", 7, "changeToSender" },
 };
 
 class CRPCConvertTable
