@@ -4,6 +4,8 @@
 
 #ifndef BITCOIN_RPC_BLOCKCHAIN_H
 #define BITCOIN_RPC_BLOCKCHAIN_H
+#include "libdevcore/CommonData.h"
+#include "validation.h"
 
 class CBlock;
 class CBlockIndex;
@@ -35,6 +37,12 @@ UniValue blockheaderToJSON(const CBlockIndex* blockindex);
 
 /**Godcoin newrpc listBlock description to JSON**/
 UniValue listblockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool txDetails = false);
+
+//godcoin:contract
+UniValue executionResultToJSON(const dev::eth::ExecutionResult& exRes);
+
+UniValue transactionReceiptToJSON(const dev::eth::TransactionReceipt& txRec);
+
 static const int DEFAULT_LISTBLOCKS_LENGTH= 10;
 static const int MAX_LISTBLOCKS_LENGTH = 100;
 static const unsigned int ONE_DAY_SECONDS = 86400;//86400 = 60*60*24

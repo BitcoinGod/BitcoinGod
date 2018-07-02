@@ -22,4 +22,5 @@ std::string HelpRequiringPassphrase(CWallet *);
 void EnsureWalletIsUnlocked(CWallet *);
 bool EnsureWalletIsAvailable(CWallet *, bool avoidException);
 
+
 #endif //BITCOIN_WALLET_RPCWALLET_H

@@ -338,7 +338,11 @@ public:
      * @return Total transaction size in bytes
      */
     unsigned int GetTotalSize() const;
-
+    
+    //godcoin:contract
+    bool HasCreateOrCall() const;
+    bool HasOpSpend() const;
+    //------------------------------//
     bool IsCoinBase() const
     {
         return (vin.size() == 1 && vin[0].prevout.IsNull());

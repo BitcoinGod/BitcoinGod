@@ -78,6 +78,9 @@ struct Params {
     int nDelayRewardHeight;
     int nDelayRewardHeightFix;
     int nSpuerBlockCount;
+    
+    //godcoin:contract
+    int nFixUTXOCacheHFHeight;
 };
 } // namespace Consensus
 

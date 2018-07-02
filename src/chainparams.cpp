@@ -198,6 +198,7 @@ public:
         consensus.nDelayRewardHeightFix = DELAY_REWARD_HEIGHT_FIX;
         consensus.nSpuerBlockCount = SUPER_BLOCK_COUNT;
         consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
+        consensus.nFixUTXOCacheHFHeight=DELAY_REWARD_HEIGHT;//godcoin:contract
     }
 };
 
@@ -300,6 +301,7 @@ public:
         consensus.nDelayRewardHeightFix = 2000;
         consensus.nSpuerBlockCount = 3;
         consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
+        consensus.nFixUTXOCacheHFHeight=1000;//godcoin:contract
     }
 };
 
@@ -389,6 +391,7 @@ public:
         consensus.nDelayRewardHeightFix = 100;
         consensus.nSpuerBlockCount = 0;
         consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
+        consensus.nFixUTXOCacheHFHeight=1000;//godcoin:contract
     }
 };
 

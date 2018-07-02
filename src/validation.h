@@ -30,6 +30,39 @@
 
 #include <atomic>
 
+//godcoin:contract
+#include <qtum/qtumstate.h>
+#include <qtum/qtumDGP.h>
+#include <libethereum/ChainParams.h>
+#include <libethashseal/Ethash.h>
+#include <libethashseal/GenesisInfo.h>
+#include <script/standard.h>
+#include <qtum/storageresults.h>
+
+
+extern std::unique_ptr<QtumState> globalState;
+extern std::shared_ptr<dev::eth::SealEngineFace> globalSealEngine;
+extern bool fRecordLogOpcodes;
+extern bool fIsVMlogFile;
+extern StorageResults *pstorageresult;
+//TODO:need not DGP
+//extern bool fGettingValuesDGP;
+
+struct EthTransactionParams;
+using valtype = std::vector<unsigned char>;
+using ExtractQtumTX = std::pair<std::vector<QtumTransaction>, std::vector<EthTransactionParams>>;
+
+static const uint64_t DEFAULT_GAS_LIMIT_OP_CREATE=2500000;
+static const uint64_t DEFAULT_GAS_LIMIT_OP_SEND=250000;
+static const CAmount DEFAULT_GAS_PRICE=0.00000040*COIN;
+static const CAmount MAX_RPC_GAS_PRICE=0.00000100*COIN;
+static const size_t MAX_CONTRACT_VOUTS = 1000;
+/** Minimum gas limit that is allowed in a transaction within a block - prevent various types of tx and mempool spam **/
+static const uint64_t MINIMUM_GAS_LIMIT = 10000;
+
+static const uint64_t MEMPOOL_MIN_GAS_LIMIT = 22000;
+//----------------------------------------------------------------------------------------------//
+
 class CBlockIndex;
 class CBlockTreeDB;
 class CChainParams;
@@ -130,6 +163,9 @@ static const int64_t MAX_FEE_ESTIMATION_TIP_AGE = 3 * 60 * 60;
 static const bool DEFAULT_PERMIT_BAREMULTISIG = true;
 static const bool DEFAULT_CHECKPOINTS_ENABLED = true;
 static const bool DEFAULT_TXINDEX = false;
+//godcoin:contract
+static const bool DEFAULT_LOGEVENTS = false;
+//------------------------------//
 static const unsigned int DEFAULT_BANSCORE_THRESHOLD = 100;
 /** Default for -persistmempool */
 static const bool DEFAULT_PERSIST_MEMPOOL = true;
@@ -169,6 +205,9 @@ extern std::atomic_bool fImporting;
 extern bool fReindex;
 extern int nScriptCheckThreads;
 extern bool fTxIndex;
+//godcoin:contract
+extern bool fLogEvents;
+//-----------------------------------------//
 extern bool fIsBareMultisigStd;
 extern bool fRequireStandard;
 extern bool fCheckBlockIndex;
@@ -485,5 +524,165 @@ void DumpMempool();
 
 /** Load the mempool from disk. */
 bool LoadMempool();
+
+//godcoin:contract
+
+struct CHeightTxIndexIteratorKey {
+    unsigned int height;
+    
+    size_t GetSerializeSize(int nType, int nVersion) const {
+        return 4;
+    }
+    template<typename Stream>
+    void Serialize(Stream& s) const {
+        ser_writedata32be(s, height);
+    }
+    template<typename Stream>
+    void Unserialize(Stream& s) {
+        height = ser_readdata32be(s);
+    }
+    
+    CHeightTxIndexIteratorKey(unsigned int _height) {
+        height = _height;
+    }
+    
+    CHeightTxIndexIteratorKey() {
+        SetNull();
+    }
+    
+    void SetNull() {
+        height = 0;
+    }
+};
+
+struct CHeightTxIndexKey {
+    unsigned int height;
+    dev::h160 address;
+    
+    size_t GetSerializeSize(int nType, int nVersion) const {
+        return 24;
+    }
+    template<typename Stream>
+    void Serialize(Stream& s) const {
+        ser_writedata32be(s, height);
+        s << address.asBytes();
+    }
+    template<typename Stream>
+    void Unserialize(Stream& s) {
+        height = ser_readdata32be(s);
+        valtype tmp;
+        s >> tmp;
+        address = dev::h160(tmp);
+    }
+    
+    CHeightTxIndexKey(unsigned int _height, dev::h160 _address) {
+        height = _height;
+        address = _address;
+    }
+    
+    CHeightTxIndexKey() {
+        SetNull();
+    }
+    
+    void SetNull() {
+        height = 0;
+        address.clear();
+    }
+};
+
+std::vector<ResultExecute> CallContract(const dev::Address& addrContract, std::vector<unsigned char> opcode, const dev::Address& sender = dev::Address(), uint64_t gasLimit=0);
+
+bool CheckSenderScript(const CCoinsViewCache& view, const CTransaction& tx);
+
+bool CheckMinGasPrice(std::vector<EthTransactionParams>& etps, const uint64_t& minGasPrice);
+
+struct ByteCodeExecResult;
+
+void EnforceContractVoutLimit(ByteCodeExecResult& bcer, ByteCodeExecResult& bcerOut, const dev::h256& oldHashQtumRoot,
+                              const dev::h256& oldHashStateRoot, const std::vector<QtumTransaction>& transactions);
+
+void writeVMlog(const std::vector<ResultExecute>& res, const CTransaction& tx = CTransaction(), const CBlock& block = CBlock());
+
+//eth transaction(contract) paramters
+struct EthTransactionParams{
+    VersionVM version;//EVM version
+    dev::u256 gasLimit;//contract gaslimit
+    dev::u256 gasPrice;//contract gasPrice
+    valtype code;//contract code
+    dev::Address receiveAddress;//contract address
+    
+    bool operator!=(EthTransactionParams etp){
+        if(this->version.toRaw() != etp.version.toRaw() || this->gasLimit != etp.gasLimit ||
+           this->gasPrice != etp.gasPrice || this->code != etp.code ||
+           this->receiveAddress != etp.receiveAddress)
+            return true;
+        return false;
+    }
+};
+
+//the result,after executing contract
+struct ByteCodeExecResult{
+    uint64_t usedGas = 0;//the gas of real using in EVM
+    CAmount refundSender = 0;//coins which need to refund sender
+    std::vector<CTxOut> refundOutputs;//the vouts(UTXO) which need to refund sender
+    std::vector<CTransaction> valueTransfers;//the contract may transfer to others coins,after invoking contract.
+};
+
+//BTC converter QtumTransactions
+class QtumTxConverter{
+    
+public:
+    
+    QtumTxConverter(CTransaction tx, CCoinsViewCache* v = NULL, const std::vector<CTransactionRef>* blockTxs = NULL) : txBit(tx), view(v), blockTransactions(blockTxs){}
+    //convert tx to qtum tx
+    bool extractionQtumTransactions(ExtractQtumTX& qtumTx);
+    
+private:
+    //push script stack for qtum tx vout scriptPubKey
+    bool receiveStack(const CScript& scriptPubKey);
+    //calculate EthTransactionParams
+    bool parseEthTXParams(EthTransactionParams& params);
+    //create QtumTransaction
+    QtumTransaction createEthTX(const EthTransactionParams& etp, const uint32_t nOut);
+    
+    const CTransaction txBit;
+    const CCoinsViewCache* view;
+    std::vector<valtype> stack;
+    opcodetype opcode;
+    const std::vector<CTransactionRef> *blockTransactions;
+    
+};
+
+//contract code executer
+//the class adapt to the multi contract.
+class ByteCodeExec {
+    
+public:
+    
+    ByteCodeExec(const CBlock& _block, std::vector<QtumTransaction> _txs, const uint64_t _blockGasLimit) : txs(_txs), block(_block), blockGasLimit(_blockGasLimit) {}
+    
+    bool performByteCode(dev::eth::Permanence type = dev::eth::Permanence::Committed);
+    //make the contract result for refund（gas ,coin for contract is failed）,transfer other's address
+    bool processingResults(ByteCodeExecResult& result);
+    //get contract result
+    std::vector<ResultExecute>& getResult(){ return result; }
+    
+private:
+    
+    dev::eth::EnvInfo BuildEVMEnvironment();
+    //get contract address from scriptIn
+    dev::Address EthAddrFromScript(const CScript& scriptIn);
+    
+    std::vector<QtumTransaction> txs;
+    
+    std::vector<ResultExecute> result;
+    
+    const CBlock& block;
+    
+    const uint64_t blockGasLimit;
+    
+};
+
+//----------------------------------------------------------------------------------------------//
 
 #endif // BITCOIN_VALIDATION_H

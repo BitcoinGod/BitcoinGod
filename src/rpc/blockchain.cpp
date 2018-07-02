@@ -1634,15 +1634,136 @@ UniValue callcontract(const JSONRPCRequest& request){
     std::string strAddr = request.params[0].get_str();
     std::string data = request.params[1].get_str();
 
-    /*if(data.size() % 2 != 0 || !CheckHex(data))
+    if(data.size() % 2 != 0 || !CheckHex(data))
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid data (data not hex)");
-
+    
     if(strAddr.size() != 40 || !CheckHex(strAddr))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Incorrect address");*/
-
-    result.push_back(Pair("callcontract","test sussess"));
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Incorrect address");
+    
+    dev::Address addrAccount(strAddr);
+    if(!globalState->addressInUse(addrAccount))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Address does not exist");
+    
+    dev::Address senderAddress;
+    if(request.params.size() == 3){
+        CBitcoinAddress qtumSenderAddress(request.params[2].get_str());
+        if(qtumSenderAddress.IsValid()){
+            CKeyID keyid;
+            qtumSenderAddress.GetKeyID(keyid);
+            senderAddress = dev::Address(HexStr(valtype(keyid.begin(),keyid.end())));
+        }else{
+            senderAddress = dev::Address(request.params[2].get_str());
+        }
+        
+    }
+    uint64_t gasLimit=0;
+    if(request.params.size() == 4){
+        gasLimit = request.params[3].get_int();
+    }
+    
+    
+    std::vector<ResultExecute> execResults = CallContract(addrAccount, ParseHex(data), senderAddress, gasLimit);
+    
+    if(fRecordLogOpcodes){
+        writeVMlog(execResults);
+    }
+    
+    result.push_back(Pair("address", strAddr));
+    result.push_back(Pair("executionResult", executionResultToJSON(execResults[0].execRes)));
+    result.push_back(Pair("transactionReceipt", transactionReceiptToJSON(execResults[0].txRec)));
+    
     return result;
 }
+
+UniValue executionResultToJSON(const dev::eth::ExecutionResult& exRes)
+{
+    UniValue result(UniValue::VOBJ);
+    result.push_back(Pair("gasUsed", CAmount(exRes.gasUsed)));
+    std::stringstream ss;
+    ss << exRes.excepted;
+    result.push_back(Pair("excepted", ss.str()));
+    result.push_back(Pair("newAddress", exRes.newAddress.hex()));
+    result.push_back(Pair("output", HexStr(exRes.output)));
+    result.push_back(Pair("codeDeposit", static_cast<int32_t>(exRes.codeDeposit)));
+    result.push_back(Pair("gasRefunded", CAmount(exRes.gasRefunded)));
+    result.push_back(Pair("depositSize", static_cast<int32_t>(exRes.depositSize)));
+    result.push_back(Pair("gasForDeposit", CAmount(exRes.gasForDeposit)));
+    return result;
+}
+
+UniValue transactionReceiptToJSON(const dev::eth::TransactionReceipt& txRec)
+{
+    UniValue result(UniValue::VOBJ);
+    result.push_back(Pair("stateRoot", txRec.stateRoot().hex()));
+    result.push_back(Pair("gasUsed", CAmount(txRec.gasUsed())));
+    result.push_back(Pair("bloom", txRec.bloom().hex()));
+    UniValue logEntries(UniValue::VARR);
+    dev::eth::LogEntries logs = txRec.log();
+    for(dev::eth::LogEntry log : logs){
+        UniValue logEntrie(UniValue::VOBJ);
+        logEntrie.push_back(Pair("address", log.address.hex()));
+        UniValue topics(UniValue::VARR);
+        for(dev::h256 l : log.topics){
+            topics.push_back(l.hex());
+        }
+        logEntrie.push_back(Pair("topics", topics));
+        logEntrie.push_back(Pair("data", HexStr(log.data)));
+        logEntries.push_back(logEntrie);
+    }
+    result.push_back(Pair("log", logEntries));
+    return result;
+}
+
+UniValue getaccountinfo(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 1)
+        throw std::runtime_error(
+                                 "getaccountinfo \"address\"\n"
+                                 "\nArgument:\n"
+                                 "1. \"address\"          (string, required) The account address\n"
+                                 );
+    
+    LOCK(cs_main);
+    
+    std::string strAddr = request.params[0].get_str();
+    if(strAddr.size() != 40 || !CheckHex(strAddr))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Incorrect address");
+    
+    dev::Address addrAccount(strAddr);
+    if(!globalState->addressInUse(addrAccount))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Address does not exist");
+    
+    UniValue result(UniValue::VOBJ);
+    
+    result.push_back(Pair("address", strAddr));
+    result.push_back(Pair("balance", CAmount(globalState->balance(addrAccount))));
+    std::vector<uint8_t> code(globalState->code(addrAccount));
+    auto storage(globalState->storage(addrAccount));
+    
+    UniValue storageUV(UniValue::VOBJ);
+    for (auto j: storage)
+    {
+        UniValue e(UniValue::VOBJ);
+        e.push_back(Pair(dev::toHex(j.second.first), dev::toHex(j.second.second)));
+        storageUV.push_back(Pair(j.first.hex(), e));
+    }
+    
+    result.push_back(Pair("storage", storageUV));
+    
+    result.push_back(Pair("code", HexStr(code.begin(), code.end())));
+    
+    std::unordered_map<dev::Address, Vin> vins = globalState->vins();
+    if(vins.count(addrAccount)){
+        UniValue vin(UniValue::VOBJ);
+        valtype vchHash(vins[addrAccount].hash.asBytes());
+        vin.push_back(Pair("hash", HexStr(vchHash.rbegin(), vchHash.rend())));
+        vin.push_back(Pair("nVout", uint64_t(vins[addrAccount].nVout)));
+        vin.push_back(Pair("value", uint64_t(vins[addrAccount].value)));
+        result.push_back(Pair("vin", vin));
+    }
+    return result;
+}
+//-------------------------------------------------------------------------------------------------//
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         okSafe argNames
   //  --------------------- ------------------------  -----------------------  ------ ----------
@@ -1668,6 +1789,8 @@ static const CRPCCommand commands[] =
     { "blockchain",         "preciousblock",          &preciousblock,          true,  {"blockhash"} },
     //godcoin:newrpc 
     { "blockchain",         "recenttxstatistics",     &recenttxstatistics,     true,  {"daycount"} },
+    //godcoin:contract
+    { "blockchain",         "getaccountinfo",         &getaccountinfo,         true,  {"contract_address"} },
     { "blockchain",         "callcontract",           &callcontract,           true,  {""} },
     /* Not shown in help */
     { "hidden",             "invalidateblock",        &invalidateblock,        true,  {"blockhash"} },

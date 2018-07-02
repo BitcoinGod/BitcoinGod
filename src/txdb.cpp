@@ -24,6 +24,11 @@ static const char DB_BLOCK_FILES = 'f';
 static const char DB_TXINDEX = 't';
 static const char DB_BLOCK_INDEX = 'b';
 
+//godcoin:contract
+static const char DB_HEIGHTINDEX = 'h';
+static const char DB_STAKEINDEX = 's';
+//---------------------------------------------//
+
 static const char DB_BEST_BLOCK = 'B';
 static const char DB_HEAD_BLOCKS = 'H';
 static const char DB_FLAG = 'F';
@@ -258,7 +263,111 @@ bool CBlockTreeDB::ReadFlag(const std::string &name, bool &fValue) {
     fValue = ch == '1';
     return true;
 }
+//godcoin:contract
+bool CBlockTreeDB::WriteHeightIndex(const CHeightTxIndexKey &heightIndex, const std::vector<uint256>& hash) {
+    CDBBatch batch(*this);
+    batch.Write(std::make_pair(DB_HEIGHTINDEX, heightIndex), hash);
+    return WriteBatch(batch);
+}
 
+int CBlockTreeDB::ReadHeightIndex(int low, int high, int minconf,
+                                  std::vector<std::vector<uint256>> &blocksOfHashes,
+                                  std::set<dev::h160> const &addresses) {
+    
+    if ((high < low && high > -1) || (high == 0 && low == 0) || (high < -1 || low < 0)) {
+        return -1;
+    }
+    
+    std::unique_ptr<CDBIterator> pcursor(NewIterator());
+    
+    pcursor->Seek(std::make_pair(DB_HEIGHTINDEX, CHeightTxIndexIteratorKey(low)));
+    
+    int curheight = 0;
+    
+    for (size_t count = 0; pcursor->Valid(); pcursor->Next()) {
+        
+        std::pair<char, CHeightTxIndexKey> key;
+        if (!pcursor->GetKey(key) || key.first != DB_HEIGHTINDEX) {
+            break;
+        }
+        
+        int nextHeight = key.second.height;
+        
+        if (high > -1 && nextHeight > high) {
+            break;
+        }
+        
+        if (minconf > 0) {
+            int conf = chainActive.Height() - nextHeight;
+            if (conf < minconf) {
+                break;
+            }
+        }
+        
+        curheight = nextHeight;
+        
+        auto address = key.second.address;
+        if (!addresses.empty() && addresses.find(address) == addresses.end()) {
+            continue;
+        }
+        
+        std::vector<uint256> hashesTx;
+        
+        if (!pcursor->GetValue(hashesTx)) {
+            break;
+        }
+        
+        count += hashesTx.size();
+        
+        blocksOfHashes.push_back(hashesTx);
+    }
+    
+    return curheight;
+}
+
+bool CBlockTreeDB::EraseHeightIndex(const unsigned int &height) {
+    
+    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+    CDBBatch batch(*this);
+    
+    pcursor->Seek(std::make_pair(DB_HEIGHTINDEX, CHeightTxIndexIteratorKey(height)));
+    
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        std::pair<char, CHeightTxIndexKey> key;
+        if (pcursor->GetKey(key) && key.first == DB_HEIGHTINDEX && key.second.height == height) {
+            batch.Erase(key);
+            pcursor->Next();
+        } else {
+            break;
+        }
+    }
+    
+    return WriteBatch(batch);
+}
+
+bool CBlockTreeDB::WipeHeightIndex() {
+    
+    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+    CDBBatch batch(*this);
+    
+    pcursor->Seek(DB_HEIGHTINDEX);
+    
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        std::pair<char, CHeightTxIndexKey> key;
+        if (pcursor->GetKey(key) && key.first == DB_HEIGHTINDEX) {
+            batch.Erase(key);
+            pcursor->Next();
+        } else {
+            break;
+        }
+    }
+    
+    return WriteBatch(batch);
+}
+
+//---------------------------------------------------------------------------------------------------------//
 bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, std::function<CBlockIndex*(const uint256&)> insertBlockIndex)
 {
     std::unique_ptr<CDBIterator> pcursor(NewIterator());

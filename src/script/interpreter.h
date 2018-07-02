@@ -126,6 +126,10 @@ enum
     // Allow NON_FORKID in legacy tests and blocks under POS hard fork height
     //
     SCRIPT_ALLOW_NON_FORKID = (1U << 17),
+    
+    // Performs the compiled byte code
+    // godcoin:contract
+    SCRIPT_EXEC_BYTE_CODE = (1U << 30),
 };
 
 bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);
