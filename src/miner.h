@@ -14,6 +14,8 @@
 #include "boost/multi_index_container.hpp"
 #include "boost/multi_index/ordered_index.hpp"
 
+#include <validation.h>
+
 class CBlockIndex;
 class CChainParams;
 class CScript;
@@ -21,6 +23,10 @@ class CScript;
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
+
+//Will not add any more contracts when GetAdjustedTime() >= nTimeLimit-BYTECODE_TIME_BUFFER
+//This does not affect non-contract transactions
+static const int32_t BYTECODE_TIME_BUFFER = 6;//godcoin:contract
 
 struct CBlockTemplate
 {
@@ -73,6 +79,50 @@ struct modifiedentry_iter {
 struct CompareModifiedEntry {
     bool operator()(const CTxMemPoolModifiedEntry &a, const CTxMemPoolModifiedEntry &b) const
     {
+        //godcoin:contract
+        bool fAHasCreateOrCall = a.iter->GetTx().HasCreateOrCall();
+        bool fBHasCreateOrCall = b.iter->GetTx().HasCreateOrCall();
+        
+        // If either of the two entries that we are comparing has a contract scriptPubKey, the comparison here takes precedence
+        if(fAHasCreateOrCall || fBHasCreateOrCall) {
+            
+            // Prioritze non-contract txs
+            if(fAHasCreateOrCall != fBHasCreateOrCall) {
+                return fAHasCreateOrCall ? false : true;
+            }
+            
+            // Prioritize the contract txs that have the least number of ancestors
+            // The reason for this is that otherwise it is possible to send one tx with a
+            // high gas limit but a low gas price which has a child with a low gas limit but a high gas price
+            // Without this condition that transaction chain would get priority in being included into the block.
+            // The two next checks are to see if all our ancestors have been added.
+            if(a.nSizeWithAncestors == a.iter->GetTxSize() && b.nSizeWithAncestors != b.iter->GetTxSize()) {
+                return true;
+            }
+            
+            if(b.nSizeWithAncestors == b.iter->GetTxSize() && a.nSizeWithAncestors != a.iter->GetTxSize()) {
+                return false;
+            }
+            
+            // Otherwise, prioritize the contract tx with the highest (minimum among its outputs) gas price
+            // The reason for using the gas price of the output that sets the minimum gas price is that
+            // otherwise it may be possible to game the prioritization by setting a large gas price in one output
+            // that does no execution, while the real execution has a very low gas price
+            if(a.iter->GetMinGasPrice() != b.iter->GetMinGasPrice()) {
+                return a.iter->GetMinGasPrice() > b.iter->GetMinGasPrice();
+            }
+            
+            // Otherwise, prioritize the tx with the min size
+            if(a.iter->GetTxSize() != b.iter->GetTxSize()) {
+                return a.iter->GetTxSize() < b.iter->GetTxSize();
+            }
+            
+            // If the txs are identical in their minimum gas prices and tx size
+            // order based on the tx hash for consistency.
+            return CTxMemPool::CompareIteratorByHash()(a.iter, b.iter);
+        }
+        //-------------------------------------------------------------------------------//
+        
         double f1 = (double)a.nModFeesWithAncestors * b.nSizeWithAncestors;
         double f2 = (double)b.nModFeesWithAncestors * a.nSizeWithAncestors;
         if (f1 == f2) {
@@ -101,10 +151,10 @@ typedef boost::multi_index_container<
             modifiedentry_iter,
             CompareCTxMemPoolIter
         >,
-        // sorted by modified ancestor fee rate
+        // sorted by modified ancestor fee rate or gas price
         boost::multi_index::ordered_non_unique<
             // Reuse same tag from CTxMemPool's similar index
-            boost::multi_index::tag<ancestor_score>,
+            boost::multi_index::tag<ancestor_score_or_gas_price>,//godcoin:contract
             boost::multi_index::identity<CTxMemPoolModifiedEntry>,
             CompareModifiedEntry
         >
@@ -112,7 +162,7 @@ typedef boost::multi_index_container<
 > indexed_modified_transaction_set;
 
 typedef indexed_modified_transaction_set::nth_index<0>::type::iterator modtxiter;
-typedef indexed_modified_transaction_set::index<ancestor_score>::type::iterator modtxscoreiter;
+typedef indexed_modified_transaction_set::index<ancestor_score_or_gas_price>::type::iterator modtxscoreiter;//godcoin:contract
 
 struct update_for_parent_inclusion
 {
@@ -164,7 +214,21 @@ public:
 
     BlockAssembler(const CChainParams& params);
     BlockAssembler(const CChainParams& params, const Options& options);
-
+    
+    //godcoin:contract
+    ByteCodeExecResult bceResult;
+    uint64_t minGasPrice = 1;
+    uint64_t hardBlockGasLimit;
+    uint64_t softBlockGasLimit;
+    uint64_t txGasLimit;
+    
+    // The original constructed reward tx (either coinbase or coinstake) without gas refund adjustments
+    CMutableTransaction originalRewardTx; //
+    
+    //When GetAdjustedTime() exceeds this, no more transactions will attempt to be added
+    int32_t nTimeLimit;
+    //------------------------------------------------------------------------------------------------------//
+    
     /** Construct a new block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn, bool fMineWitnessTx=true);
     std::unique_ptr<CBlockTemplate> CreateNewSuperBlock(const CScript& scriptPubKeyIn, bool fMineWitnessTx=true);
@@ -183,8 +247,14 @@ private:
     /** Add transactions based on feerate including unconfirmed ancestors
       * Increments nPackagesSelected / nDescendantsUpdated with corresponding
       * statistics from the package selection (for logging statistics). */
-    void addPackageTxs(int &nPackagesSelected, int &nDescendantsUpdated);
-
+    void addPackageTxs(int &nPackagesSelected, int &nDescendantsUpdated, uint64_t *minGasPrice);
+    
+    //godcoin:contract
+    bool AttemptToAddContractToBlock(CTxMemPool::txiter iter, uint64_t minGasPrice);
+    /** Rebuild the coinbase/coinstake transaction to account for new gas refunds **/
+    void RebuildRefundTransaction();
+    //------------------------------------------------------------------------------------------------------//
+    
     // helper functions for addPackageTxs()
     /** Remove confirmed (inBlock) entries from given set */
     void onlyUnconfirmed(CTxMemPool::setEntries& testSet);

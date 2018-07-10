@@ -29,6 +29,7 @@ static const int DELAY_REWARD_HEIGHT_FIX = 510000;
 
 static const int WITNESS_SCALE_FACTOR = 4;
 
+static const int MAX_TRANSACTION_BASE_SIZE = 1000000;
 static const size_t MIN_TRANSACTION_WEIGHT = WITNESS_SCALE_FACTOR * 60; // 60 is the lower bound for the size of a valid serialized CTransaction
 static const size_t MIN_SERIALIZABLE_TRANSACTION_WEIGHT = WITNESS_SCALE_FACTOR * 10; // 10 is the lower bound for the size of a serialized CTransaction
 

@@ -237,6 +237,13 @@ bool CheckPosBlock(const CBlock& block, CValidationState& state){
     if (!CheckBlockSignature(block))
         return state.DoS(100, false, REJECT_INVALID, "bad-blk-signature", false, "bad proof-of-stake block signature");   
     
+    //godcoin:contract
+    //Don't allow contract opcodes in coinstake
+    //We might allow this later, but it hasn't been tested enough to determine if safe
+    if(block.vtx[1]->HasOpSpend() || block.vtx[1]->HasCreateOrCall()){
+        return state.DoS(100, false, REJECT_INVALID, "bad-cs-contract", false, "coinstake must not contain OP_SPEND, OP_CALL, or OP_CREATE");
+    }
+    //------------------------------------------------------------------------------------------//
     return true;
 }
 /**Accept POS block**/

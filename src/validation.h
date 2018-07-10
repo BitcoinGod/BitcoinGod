@@ -526,6 +526,7 @@ void DumpMempool();
 bool LoadMempool();
 
 //godcoin:contract
+bool CheckReward(const CBlock& block, CValidationState& state, int nHeight, const Consensus::Params& consensusParams, CAmount nFees, CAmount gasRefunds, CAmount nActualStakeReward, const std::vector<CTxOut>& vouts);
 
 struct CHeightTxIndexIteratorKey {
     unsigned int height;

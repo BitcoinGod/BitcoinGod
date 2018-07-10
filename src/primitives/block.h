@@ -27,7 +27,10 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
-
+    
+    uint256 hashStateRoot; // godcoin:pos
+    uint256 hashUTXORoot; // godcoin:pos
+    
     CBlockHeader()
     {
         SetNull();
@@ -43,6 +46,12 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+        //godcoin:contract
+        if(nTime > 1530602717){
+            READWRITE(hashStateRoot);
+            READWRITE(hashUTXORoot);
+        }
+        //---------------------------------------//
     }
 
     void SetNull()
@@ -53,6 +62,10 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
+        //godcoin:contract
+        hashStateRoot = uint256S("9514771014c9ae803d8cea2731b2063e83de44802b40dce2d06acd02d0ff65e9");
+        hashUTXORoot = uint256S("21b463e3b52f6201c0ad6c991be0485b6ef8c092e64583ffa655cc1b171fe856");
+        //---------------------------------------//
     }
 
     bool IsNull() const
@@ -77,6 +90,10 @@ public:
             this->nTime          = other.nTime;
             this->nBits          = other.nBits;
             this->nNonce         = other.nNonce;
+            //godcoin:contract
+            this->hashStateRoot  = other.hashStateRoot;
+            this->hashUTXORoot   = other.hashUTXORoot;
+            //----------------------------------------------------//
         }
         return *this;
     }
@@ -134,6 +151,10 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        //godcoin:contract
+        block.hashStateRoot  = hashStateRoot;
+        block.hashUTXORoot   = hashUTXORoot;
+        //---------------------------------------//
         return block;
     }
     //godcoin:pos

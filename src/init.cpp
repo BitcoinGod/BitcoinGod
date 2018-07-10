@@ -1536,30 +1536,27 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 if (fReset) {
                     pstorageresult->wipeResults();
                 }
-                
-                /*if(chainActive.Tip() != nullptr){
+
+                if(chainActive.Tip() != nullptr){
                     globalState->setRoot(uintToh256(chainActive.Tip()->hashStateRoot));
                     globalState->setRootUTXO(uintToh256(chainActive.Tip()->hashUTXORoot));
                 } else {
                     globalState->setRoot(dev::sha3(dev::rlp("")));
                     globalState->setRootUTXO(uintToh256(chainparams.GenesisBlock().hashUTXORoot));
                     globalState->populateFrom(cp.genesisState);
-                }*/
-                globalState->setRoot(dev::sha3(dev::rlp("")));
-                globalState->setRootUTXO(dev::sha3(dev::rlp("")));
-                globalState->populateFrom(cp.genesisState);
+                }
                 globalState->db().commit();
                 globalState->dbUtxo().commit();
 
                 fRecordLogOpcodes = gArgs.IsArgSet("-record-log-opcodes");
                 fIsVMlogFile = fs::exists(GetDataDir() / "vmExecLogs.json");
-                
+
                 // Check for changed -logevents state
                 if (fLogEvents != gArgs.GetBoolArg("-logevents", DEFAULT_LOGEVENTS) && !fLogEvents) {
                     strLoadError = _("You need to rebuild the database using -reindex-chainstate to enable -logevents");
                     break;
                 }
-                
+
                 if (!gArgs.GetBoolArg("-logevents", DEFAULT_LOGEVENTS))
                 {
                     pstorageresult->wipeResults();
@@ -1567,9 +1564,8 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                     fLogEvents = false;
                     pblocktree->WriteFlag("logevents", fLogEvents);
                 }
-                
-                //----------------------------------------------------------------------------------------------//
 
+                //----------------------------------------------------------------------------------------------//
                 if (!fReset) {
                     // Note that RewindBlockIndex MUST run even if we're about to -reindex-chainstate.
                     // It both disconnects blocks based on chainActive, and drops block data in

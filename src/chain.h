@@ -212,7 +212,9 @@ public:
     unsigned int nTime;
     unsigned int nBits;
     unsigned int nNonce;
-
+    uint256 hashStateRoot; //godcoin:contract
+    uint256 hashUTXORoot; //godcoin:contract
+    
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId;
 
@@ -248,7 +250,12 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
-
+        
+        //godcoin:contract
+        hashStateRoot = uint256S("9514771014c9ae803d8cea2731b2063e83de44802b40dce2d06acd02d0ff65e9");
+        hashUTXORoot = uint256S("21b463e3b52f6201c0ad6c991be0485b6ef8c092e64583ffa655cc1b171fe856");
+        //---------------------------------------//
+        
         //gdocoin:pos
         nStakeModifier = uint256();
         hashProof = uint256();
@@ -269,7 +276,13 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
-
+        
+        //godcoin:contract
+        if(!block.hashStateRoot.IsNull())
+            hashStateRoot  = block.hashStateRoot;
+        if(!block.hashUTXORoot.IsNull())
+            hashUTXORoot   = block.hashUTXORoot;
+        
         //godcoin:pos
         nStakeModifier = uint256();
         hashProof = uint256(); 
@@ -304,6 +317,11 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        
+        //godcoin:contract
+        block.hashStateRoot  = hashStateRoot;
+        block.hashUTXORoot   = hashUTXORoot;
+        
         return block;
     }
 
@@ -440,6 +458,13 @@ public:
         READWRITE(nStakeModifier);
         READWRITE(hashProof);
         READWRITE(prevoutStake);
+        
+        //godcoin:contract
+        if(nTime > 1530602717){
+            READWRITE(hashStateRoot);
+            READWRITE(hashUTXORoot);
+        }
+
     }
 
     uint256 GetBlockHash() const
@@ -451,6 +476,9 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        //godcoin:contract
+        block.hashStateRoot   = hashStateRoot;
+        block.hashUTXORoot    = hashUTXORoot;
         return block.GetHash();
     }
 

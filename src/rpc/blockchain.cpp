@@ -97,6 +97,8 @@ UniValue blockheaderToJSON(const CBlockIndex* blockindex)
     result.push_back(Pair("bits", strprintf("%08x", blockindex->nBits)));
     result.push_back(Pair("difficulty", GetDifficulty(blockindex)));
     result.push_back(Pair("chainwork", blockindex->nChainWork.GetHex()));
+    result.push_back(Pair("hashStateRoot", blockindex->hashStateRoot.GetHex())); //godcoin:contract
+    result.push_back(Pair("hashUTXORoot", blockindex->hashUTXORoot.GetHex())); //godcoin:contract
 
     if (blockindex->pprev)
         result.push_back(Pair("previousblockhash", blockindex->pprev->GetBlockHash().GetHex()));
@@ -141,6 +143,10 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     result.push_back(Pair("bits", strprintf("%08x", block.nBits)));
     result.push_back(Pair("difficulty", GetDifficulty(blockindex)));
     result.push_back(Pair("chainwork", blockindex->nChainWork.GetHex()));
+    result.push_back(Pair("hashStateRoot", blockindex->hashStateRoot.GetHex())); //godcoin:contract
+    result.push_back(Pair("hashUTXORoot", blockindex->hashUTXORoot.GetHex())); //godcoin:contract
+    result.push_back(Pair("globalState-hashStateRoot", h256Touint(globalState->rootHash()).GetHex())); //godcoin:contract
+    result.push_back(Pair("globalState-hashUTXORoot", h256Touint(globalState->rootHashUTXO()).GetHex())); //godcoin:contract
 
     if (blockindex->pprev)
         result.push_back(Pair("previousblockhash", blockindex->pprev->GetBlockHash().GetHex()));
