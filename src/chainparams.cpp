@@ -295,7 +295,7 @@ public:
         consensus.fPoSNoRetargeting = true;
         consensus.nCoinbaseMaturity = 0;
         consensus.nCoinStakeMaturity = 0;
-        consensus.nCoinStakeMaturityFix = 100;
+        consensus.nCoinStakeMaturityFix = 0;
         consensus.nSuperBlockHeight = 1000;
         consensus.nDelayRewardHeight = 1200;
         consensus.nDelayRewardHeightFix = 2000;

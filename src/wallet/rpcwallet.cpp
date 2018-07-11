@@ -3513,7 +3513,7 @@ UniValue test_excute(CTransaction tx,UniValue &result){
         }
         std::vector<QtumTransaction> qtumTransactions = resultConverter.first;
         std::vector<EthTransactionParams> qtumETP = resultConverter.second;
-        dev::u256 gasAllTxs = dev::u256(0);
+        //dev::u256 gasAllTxs = dev::u256(0);
         
         ByteCodeExec exec(block, qtumTransactions, 2500000000000);
         if(!exec.performByteCode()){
@@ -3710,8 +3710,8 @@ UniValue createcontract(const JSONRPCRequest& request){
     if(fBroadcast){
         CValidationState state;
         //TODO: test need not commit transaction to net
-        /*if (!pwallet->CommitTransaction(wtx, reservekey, g_connman.get(), state))
-            throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of the wallet and coins were spent in the copy but not marked as spent here.");*/
+        if (!pwallet->CommitTransaction(wtx, reservekey, g_connman.get(), state))
+            throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of the wallet and coins were spent in the copy but not marked as spent here.");
         
         std::string txId=wtx.GetHash().GetHex();
         result.push_back(Pair("txid", txId));
@@ -3749,7 +3749,7 @@ UniValue createcontract(const JSONRPCRequest& request){
     
     //recv contract tx
     //then check it
-    test_excute(*wtx.tx,result);
+    //test_excute(*wtx.tx,result);
     return result;
 }
 
@@ -3843,7 +3843,7 @@ UniValue sendtocontract(const JSONRPCRequest& request){
             fHasSender=true;
     }
     
-    bool fBroadcast=false;//todo need to broadcast
+    bool fBroadcast=true;//todo need to broadcast
     if (request.params.size() > 6){
         fBroadcast=request.params[6].get_bool();
     }
@@ -3935,8 +3935,6 @@ UniValue sendtocontract(const JSONRPCRequest& request){
     UniValue result(UniValue::VOBJ);
     
     if(fBroadcast){
-        
-        
         CValidationState state;
         if (!pwallet->CommitTransaction(wtx, reservekey, g_connman.get(), state))
             throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of the wallet and coins were spent in the copy but not marked as spent here.");
@@ -3954,7 +3952,7 @@ UniValue sendtocontract(const JSONRPCRequest& request){
         std::string strHex = EncodeHexTx(*wtx.tx, RPCSerializationFlags());
         result.push_back(Pair("raw transaction", strHex));
     }
-    test_excute(*wtx.tx,result);
+    //test_excute(*wtx.tx,result);
     return result;
 }
 extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp

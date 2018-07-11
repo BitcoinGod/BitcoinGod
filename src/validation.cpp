@@ -652,7 +652,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
             }
             
             //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-            uint64_t minGasPrice = 20;//qtumDGP.getMinGasPrice(chainActive.Tip()->nHeight + 1);
+            uint64_t minGasPrice = 1;//qtumDGP.getMinGasPrice(chainActive.Tip()->nHeight + 1);
             uint64_t blockGasLimit = 2100000 * COIN;//qtumDGP.getBlockGasLimit(chainActive.Tip()->nHeight + 1);
             size_t count = 0;
             for(const CTxOut& o : tx.vout)
@@ -2215,7 +2215,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     uint64_t blockGasUsed = 0;
     CAmount gasRefunds=0;
     //uint32_t sizeBlockDGP = 20000*Coin;
-    uint64_t minGasPrice = 20;
+    uint64_t minGasPrice = 1;
     uint64_t blockGasLimit = 20000000*COIN;
     //dgpMaxBlockSize = sizeBlockDGP ? sizeBlockDGP : dgpMaxBlockSize;
     //updateBlockSizeParams(dgpMaxBlockSize);
