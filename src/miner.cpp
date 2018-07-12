@@ -402,7 +402,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPosBlock(const CScript&
     if(!pblocktemplate.get())
         return nullptr;
     pblock = &pblocktemplate->block; // pointer for convenience
-
+    this->nTimeLimit = nTimeLimit;//godcoin:contract
     // Add dummy coinbase tx as first transaction
     pblock->vtx.emplace_back();
 
@@ -479,7 +479,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPosBlock(const CScript&
             minGasPrice = std::max(minGasPrice, (uint64_t)stakerMinGasPrice);
         }
     }
-    hardBlockGasLimit = 2000000;//qtumDGP.getBlockGasLimit(nHeight);
+    hardBlockGasLimit = 2000000000;//qtumDGP.getBlockGasLimit(nHeight);
     softBlockGasLimit = gArgs.GetArg("-staker-soft-block-gas-limit", hardBlockGasLimit);
     softBlockGasLimit = std::min(softBlockGasLimit, hardBlockGasLimit);
     txGasLimit = gArgs.GetArg("-staker-max-tx-gas-limit", softBlockGasLimit);
