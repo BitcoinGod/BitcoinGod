@@ -1548,7 +1548,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 globalState->db().commit();
                 globalState->dbUtxo().commit();
 
-                fRecordLogOpcodes = gArgs.IsArgSet("-record-log-opcodes");
+                //fRecordLogOpcodes = gArgs.IsArgSet("-record-log-opcodes");
                 fIsVMlogFile = fs::exists(GetDataDir() / "vmExecLogs.json");
 
                 // Check for changed -logevents state

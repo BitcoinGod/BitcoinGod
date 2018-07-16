@@ -43,6 +43,7 @@
 #include "warnings.h"
 #include "superblock.h"
 #include "pos/posvalidation.h"
+#include "rpc/blockchain.h"
 
 #include <atomic>
 #include <sstream>
@@ -2546,8 +2547,12 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
             }
                     
             for(ResultExecute& re: resultExec){
-                if(re.execRes.newAddress != dev::Address() && !fJustCheck)
+                if(re.execRes.newAddress != dev::Address() && !fJustCheck){
+                    dev::g_logPost(std::string("transaction>>>>>>>>>>>>>>>>>>>>>"),NULL);
                     dev::g_logPost(std::string("Address : " + re.execRes.newAddress.hex()), NULL);
+                    dev::g_logPost(std::string("executionResult" + executionResultToJSON(re.execRes).write()),NULL);
+                    dev::g_logPost(std::string("transactionReceipt" + transactionReceiptToJSON(re.txRec).write()),NULL);
+                }
             }
         }
         //--------------------------------------------------------------------------------------------------------------------//
