@@ -469,17 +469,17 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPosBlock(const CScript&
 
     //godcoin:contract
     //TODO:DGP
-    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-    //globalSealEngine->setQtumSchedule(qtumDGP.getGasSchedule(nHeight));
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    globalSealEngine->setQtumSchedule(qtumDGP.getGasSchedule(nHeight));
     //uint32_t blockSizeDGP = qtumDGP.getBlockSize(nHeight);
-    minGasPrice = 1;//qtumDGP.getMinGasPrice(nHeight);
+    minGasPrice = qtumDGP.getMinGasPrice(nHeight);
     if(gArgs.IsArgSet("-staker-min-tx-gas-price")) {
         CAmount stakerMinGasPrice;
         if(ParseMoney(gArgs.GetArg("-staker-min-tx-gas-price", ""), stakerMinGasPrice)) {
             minGasPrice = std::max(minGasPrice, (uint64_t)stakerMinGasPrice);
         }
     }
-    hardBlockGasLimit = 2000000000;//qtumDGP.getBlockGasLimit(nHeight);
+    hardBlockGasLimit = qtumDGP.getBlockGasLimit(nHeight);
     softBlockGasLimit = gArgs.GetArg("-staker-soft-block-gas-limit", hardBlockGasLimit);
     softBlockGasLimit = std::min(softBlockGasLimit, hardBlockGasLimit);
     txGasLimit = gArgs.GetArg("-staker-max-tx-gas-limit", softBlockGasLimit);

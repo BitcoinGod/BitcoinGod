@@ -45,8 +45,7 @@ extern std::shared_ptr<dev::eth::SealEngineFace> globalSealEngine;
 extern bool fRecordLogOpcodes;
 extern bool fIsVMlogFile;
 extern StorageResults *pstorageresult;
-//TODO:need not DGP
-//extern bool fGettingValuesDGP;
+extern bool fGettingValuesDGP;
 
 struct EthTransactionParams;
 using valtype = std::vector<unsigned char>;

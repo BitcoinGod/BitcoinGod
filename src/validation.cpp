@@ -70,7 +70,7 @@ std::shared_ptr<dev::eth::SealEngineFace> globalSealEngine;
 bool fRecordLogOpcodes = true;
 bool fIsVMlogFile = false;
 bool fLogEvents = false;
-//bool fGettingValuesDGP = false;
+bool fGettingValuesDGP = false;
 //----------------------------------------------------------------------------------------------//
 
 CCriticalSection cs_main;
@@ -652,9 +652,9 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
                 return state.DoS(1, false, REJECT_INVALID, "bad-txns-invalid-sender-script");
             }
             
-            //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-            uint64_t minGasPrice = 1;//qtumDGP.getMinGasPrice(chainActive.Tip()->nHeight + 1);
-            uint64_t blockGasLimit = 2100000 * COIN;//qtumDGP.getBlockGasLimit(chainActive.Tip()->nHeight + 1);
+            QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+            uint64_t minGasPrice = qtumDGP.getMinGasPrice(chainActive.Tip()->nHeight + 1);
+            uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Tip()->nHeight + 1);
             size_t count = 0;
             for(const CTxOut& o : tx.vout)
                 count += o.scriptPubKey.HasOpCreate() || o.scriptPubKey.HasOpCall() ? 1 : 0;
@@ -1812,9 +1812,8 @@ std::vector<ResultExecute> CallContract(const dev::Address& addrContract, std::v
     CBlock block;
     CMutableTransaction tx;
     
-    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-    //uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Tip()->nHeight + 1);
-    uint64_t blockGasLimit = 2000000;
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Tip()->nHeight + 1);
     if(gasLimit == 0){
         gasLimit = blockGasLimit - 1;
     }
@@ -2210,14 +2209,13 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
            (*pindex->phashBlock == block.GetHash()));
     int64_t nTimeStart = GetTimeMicros();
     //godcoin:contract
-    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-    //TODO:I think globalSealEngine is setting evm handle symbol gas price.
-    //globalSealEngine->setQtumSchedule(qtumDGP.getGasSchedule(pindex->nHeight + 1));
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    globalSealEngine->setQtumSchedule(qtumDGP.getGasSchedule(pindex->nHeight + 1));
+    uint32_t sizeBlockDGP = qtumDGP.getBlockSize(pindex->nHeight + 1);
+    uint64_t minGasPrice = qtumDGP.getMinGasPrice(pindex->nHeight + 1);
+    uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(pindex->nHeight + 1);
     uint64_t blockGasUsed = 0;
     CAmount gasRefunds=0;
-    //uint32_t sizeBlockDGP = 20000*Coin;
-    uint64_t minGasPrice = 1;
-    uint64_t blockGasLimit = 20000000*COIN;
     //dgpMaxBlockSize = sizeBlockDGP ? sizeBlockDGP : dgpMaxBlockSize;
     //updateBlockSizeParams(dgpMaxBlockSize);
     CBlock checkBlock(block.GetBlockHeader());
@@ -4551,7 +4549,7 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
     //godcoin:contract
     dev::h256 oldHashStateRoot(globalState->rootHash());
     dev::h256 oldHashUTXORoot(globalState->rootHashUTXO());
-    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP); TODO:DGP
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
     //--------------------------------//
     LogPrintf("[0%%]...");
     for (CBlockIndex* pindex = chainActive.Tip(); pindex && pindex->pprev; pindex = pindex->pprev)

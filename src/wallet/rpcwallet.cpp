@@ -3548,13 +3548,10 @@ UniValue createcontract(const JSONRPCRequest& request){
 
     LOCK2(cs_main, pwallet->cs_wallet);
     //TODO: contract need to write blockgaslimit mingasprice
-    //QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
-    //uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Height());
-    //uint64_t minGasPrice = CAmount(qtumDGP.getMinGasPrice(chainActive.Height()));
-    //CAmount nGasPrice = (minGasPrice>DEFAULT_GAS_PRICE)?minGasPrice:DEFAULT_GAS_PRICE;
-    uint64_t blockGasLimit = 102400000000;
-    uint64_t minGasPrice = 1;
-    CAmount nGasPrice = 1;
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Height());
+    uint64_t minGasPrice = CAmount(qtumDGP.getMinGasPrice(chainActive.Height()));
+    CAmount nGasPrice = (minGasPrice>DEFAULT_GAS_PRICE)?minGasPrice:DEFAULT_GAS_PRICE;
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 6)
         throw std::runtime_error(
                             "createcontract \"bytecode\" (gaslimit gasprice \"senderaddress\" broadcast)"
@@ -3762,9 +3759,10 @@ UniValue sendtocontract(const JSONRPCRequest& request){
     }
 
     LOCK2(cs_main, pwallet->cs_wallet);
-    uint64_t blockGasLimit = 102400000000;
-    uint64_t minGasPrice = 1;
-    CAmount nGasPrice = 1;
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Height());
+    uint64_t minGasPrice = CAmount(qtumDGP.getMinGasPrice(chainActive.Height()));
+    CAmount nGasPrice = (minGasPrice>DEFAULT_GAS_PRICE)?minGasPrice:DEFAULT_GAS_PRICE;
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 8)
         throw std::runtime_error(
                 "sendtocontract \"contractaddress\" \"data\" (amount gaslimit gasprice senderaddress broadcast)"
