@@ -113,6 +113,10 @@ void BlockAssembler::RebuildRefundTransaction(){
     CMutableTransaction contrTx(originalRewardTx);
     contrTx.vout[1].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
     contrTx.vout[1].nValue -= bceResult.refundSender;
+    uint256 hashStateRoot = uint256(h256Touint(dev::h256(globalState->rootHash())));
+    uint256 hashUTXORoot = uint256(h256Touint(dev::h256(globalState->rootHashUTXO())));
+    contrTx.vout[2].scriptPubKey = CScript() << hashStateRoot << hashStateRoot;
+    
     //note, this will need changed for MPoS
     int i=contrTx.vout.size();
     contrTx.vout.resize(contrTx.vout.size()+bceResult.refundOutputs.size());
@@ -359,6 +363,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateEmptyBlock(const CScript& 
     coinstakeTx.vout.resize(2);
     coinstakeTx.vout[0].SetEmpty();
     coinstakeTx.vout[1].scriptPubKey = scriptPubKeyIn;
+    coinstakeTx.vout[2].SetEmpty();
     originalRewardTx = coinstakeTx;
     //put into block
     pblock->vtx[1] = MakeTransactionRef(std::move(coinstakeTx));
@@ -464,6 +469,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPosBlock(const CScript&
     coinstakeTx.vout.resize(2);
     coinstakeTx.vout[0].SetEmpty();
     coinstakeTx.vout[1].scriptPubKey = scriptPubKeyIn;
+    coinstakeTx.vout[2].SetEmpty();
     originalRewardTx = coinstakeTx;
     pblock->vtx[1] = MakeTransactionRef(std::move(coinstakeTx));
 

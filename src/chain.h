@@ -459,11 +459,6 @@ public:
         READWRITE(hashProof);
         READWRITE(prevoutStake);
         
-        //godcoin:contract
-        if(nTime > 1531205949){
-            READWRITE(hashStateRoot);
-            READWRITE(hashUTXORoot);
-        }
 
     }
 

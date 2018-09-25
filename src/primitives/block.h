@@ -46,12 +46,6 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        //godcoin:contract
-        if(nTime > 1531205949){
-            READWRITE(hashStateRoot);
-            READWRITE(hashUTXORoot);
-        }
-        //---------------------------------------//
     }
 
     void SetNull()

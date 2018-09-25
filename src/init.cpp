@@ -1523,6 +1523,13 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                     assert(chainActive.Tip() != nullptr);
                 }
                 //godcoin:contract
+                if((gArgs.IsArgSet("-dgpstorage") && gArgs.IsArgSet("-dgpevm")) || (!gArgs.IsArgSet("-dgpstorage") && gArgs.IsArgSet("-dgpevm")) ||
+                   (!gArgs.IsArgSet("-dgpstorage") && !gArgs.IsArgSet("-dgpevm"))){
+                    fGettingValuesDGP = true;
+                } else {
+                    fGettingValuesDGP = false;
+                }
+                
                 dev::eth::Ethash::init();
                 fs::path qtumStateDir = GetDataDir() / "stateQtum";
                 bool fStatus = fs::exists(qtumStateDir);

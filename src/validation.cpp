@@ -2426,7 +2426,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if(!tx.HasOpSpend()){
             checkBlock.vtx.push_back(block.vtx[i]);
         }
-        if(tx.HasCreateOrCall() && !hasOpSpend && block.nTime > 1531205949){
+        if(tx.HasCreateOrCall() && !hasOpSpend){
             if(!CheckSenderScript(view, tx)){
                 return state.DoS(100, false, REJECT_INVALID, "bad-txns-invalid-sender-script");
             }

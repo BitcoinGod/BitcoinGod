@@ -35,9 +35,8 @@ const char* GetTxnOutputType(txnouttype t)
     case TX_NULL_DATA: return "nulldata";
     case TX_WITNESS_V0_KEYHASH: return "witness_v0_keyhash";
     case TX_WITNESS_V0_SCRIPTHASH: return "witness_v0_scripthash";
-    //godcoin:contract
-    case TX_CREATE: return "create";
-    case TX_CALL: return "call";
+    case TX_CREATE: return "create";//godcoin:contract
+    case TX_CALL: return "call";//godcoin:contract
     }
     return nullptr;
 }

@@ -401,8 +401,9 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->prevoutStake   = diskindex.prevoutStake;
                 pindexNew->hashProof    = diskindex.hashProof; 
                 
-                pindexNew->hashStateRoot  = diskindex.hashStateRoot; //godcoin:contract
-                pindexNew->hashUTXORoot   = diskindex.hashUTXORoot; //godcoin:contract
+                //TODO hashStateRoot & hashUTXRoot may not need to store
+                //pindexNew->hashStateRoot  = diskindex.hashStateRoot; //godcoin:contract
+                //pindexNew->hashUTXORoot   = diskindex.hashUTXORoot; //godcoin:contract
                 //godcoin:pos
                 if (pindexNew->nHeight <= consensusParams.nLastPOWBlock &&!CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits, consensusParams))
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());

@@ -648,11 +648,26 @@ UniValue echo(const JSONRPCRequest& request)
     return request.params;
 }
 
+//godcoin:coin
+UniValue getgasinfo(const JSONRPCRequest& request)
+{
+    QtumDGP qtumDGP(globalState.get(), fGettingValuesDGP);
+    uint64_t blockGasLimit = qtumDGP.getBlockGasLimit(chainActive.Height());
+    uint64_t minGasPrice = CAmount(qtumDGP.getMinGasPrice(chainActive.Height()));
+    uint64_t nGasPrice = (minGasPrice>DEFAULT_GAS_PRICE)?minGasPrice:DEFAULT_GAS_PRICE;
+    UniValue result(UniValue::VOBJ);
+    result.push_back(Pair("blockGasLimit", blockGasLimit));
+    result.push_back(Pair("minGasPrice", minGasPrice));
+    result.push_back(Pair("nGasPrice", nGasPrice));
+    return result;
+}
+//---------------------------------------------------//
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         okSafeMode
   //  --------------------- ------------------------  -----------------------  ----------
     { "control",            "getinfo",                &getinfo,                true,  {} }, /* uses wallet if enabled */
     { "control",            "getmemoryinfo",          &getmemoryinfo,          true,  {"mode"} },
+    { "control",            "getgasinfo",             &getgasinfo,             true,  {} },
     { "util",               "validateaddress",        &validateaddress,        true,  {"address"} }, /* uses wallet if enabled */
     { "util",               "createmultisig",         &createmultisig,         true,  {"nrequired","keys"} },
     { "util",               "verifymessage",          &verifymessage,          true,  {"address","signature","message"} },
