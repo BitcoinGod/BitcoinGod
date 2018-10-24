@@ -2930,7 +2930,8 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     
     // Check transactions
     for (const auto& tx : block.vtx)
-        if (!CheckTransaction(*tx, state, false))
+        /*fix bug issue #14249(https://github.com/bitcoin/bitcoin/blob/v0.16.3/doc/release-notes.md)*/
+        if (!CheckTransaction(*tx, state, true))
             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
 
