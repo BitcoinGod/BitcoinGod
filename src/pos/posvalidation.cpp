@@ -373,3 +373,34 @@ bool GetBlockPublicKey(const CBlock& block, std::vector<unsigned char>& vchPubKe
     return false;
 }
 
+bool isSpecTx(int height, const CTransaction& tx){
+    //check height
+    if(height > SPEC_TX_HEIGHT){
+        return false;
+    }
+    
+    //check vin vout size
+    if ((tx.vin.size() != 1) ||(tx.vout.size()!=1)){
+        return false;
+    }
+    
+    //check vin
+    const COutPoint &prevout = tx.vin[0].prevout;
+    if(prevout.n != SPEC_TX_IN_INDEX){
+        return false;
+    }
+    
+    //check input hash
+    uint256 specInHash;
+    specInHash.SetHex(SPEC_TX_IN_HASH);
+    if(prevout.hash != specInHash){
+        return false;
+    }
+    
+    //check amount
+    if(SPEC_TX_AMOUNT != tx.vout[0].nValue){
+        return false;
+    }
+    
+    return true;
+}
