@@ -29,9 +29,8 @@ static const int DELAY_REWARD_HEIGHT = 501236;
 static const int DELAY_REWARD_HEIGHT_FIX = 510000;
 
 static const int SPEC_TX_HEIGHT=610000;
-static const char* SPEC_TX_IN_HASH="b830a9ea39d9f2bb9fbc9a3122ad066b02ced48c3dd80fa95577b16a01d151c4";
-static const int SPEC_TX_IN_INDEX=0;
-static const CAmount SPEC_TX_AMOUNT = 3599999.38 * COIN;
+static const char* SPEC_TX_HASH="286ffe8d0e2ad7a40a01e558db1c66456eb99ba0dc536a1c8923e06e5518cf9f";
+
 
 static const int WITNESS_SCALE_FACTOR = 4;
 
