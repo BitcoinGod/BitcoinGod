@@ -20,6 +20,7 @@
 #include "splashscreen.h"
 #include "utilitydialog.h"
 #include "winshutdownmonitor.h"
+#include "versionmessagedialog.h"
 
 #ifdef ENABLE_WALLET
 #include "paymentserver.h"
@@ -32,6 +33,8 @@
 #include "ui_interface.h"
 #include "util.h"
 #include "warnings.h"
+#include "pos/posminemgr.h"
+#include "clientversion.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -40,6 +43,8 @@
 #include <stdint.h>
 
 #include <boost/thread.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <QApplication>
 #include <QDebug>
@@ -51,6 +56,10 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QSslConfiguration>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QSsl>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -77,6 +86,9 @@ Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
 #if QT_VERSION < 0x050000
 #include <QTextCodec>
 #endif
+
+const char *qAppVersion = QT_GOD_APP_VERSION;
+static const char *qAppVerURL="https://api.s.bitcoingod.org:8081/god/api/getversion";
 
 // Declare meta types used for QMetaObject::invokeMethod
 Q_DECLARE_METATYPE(bool*)
@@ -170,6 +182,13 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
 }
 #endif
 
+class QAppVersion{
+public:
+    std::string vNo;
+    int vLevel;
+    std::string vUrl;
+};
+
 /** Class encapsulating Bitcoin Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
@@ -182,6 +201,9 @@ public:
      * Return true on success.
      */
     static bool baseInitialize();
+    static bool qAppVersionGetRemote();
+    static bool qAppVersionCheck(std::shared_ptr<QAppVersion> qVer);
+    static void qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer);
 
 public Q_SLOTS:
     void initialize();
@@ -292,6 +314,7 @@ bool BitcoinCore::baseInitialize()
     {
         return false;
     }
+
     return true;
 }
 
@@ -307,6 +330,124 @@ void BitcoinCore::initialize()
     } catch (...) {
         handleRunawayException(nullptr);
     }
+}
+
+void BitcoinCore::qAppVersionUpgrade(std::shared_ptr<QAppVersion> qVer){
+    QString qUrl = QString::fromLocal8Bit(qVer->vUrl.c_str());
+    qUrl.append("bitcoingod-");
+    qUrl.append(qVer->vNo.c_str());
+    qUrl.append("-");
+#if defined(Q_OS_WIN64)
+    qUrl.append("win64.exe");
+#elif defined(Q_OS_WIN32)
+    qUrl.append("win32.exe");
+#else
+    qUrl.append("osx.dmg");
+#endif
+    qDebug()<<"new version url:"<<qUrl;
+
+    QString msg = "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; text-indent:26px;\">";
+    if(qVer->vLevel == 3){
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("New milestone version"));
+        msg.append("</a>");
+        msg.append(VersionMessageDialog::tr(" released"));
+        msg.append(VersionMessageDialog::tr(", you must upgrade,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download."));
+        msg.append("</a>");
+    }
+    else {
+        msg.append("  <a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("New version"));
+        msg.append("</a>");
+        msg.append(VersionMessageDialog::tr(" released"));
+        msg.append(VersionMessageDialog::tr(", you can upgrade to new version,"));
+        msg.append("<a href='");
+        msg.append(qUrl);
+        msg.append("'>");
+        msg.append(VersionMessageDialog::tr("click download."));
+        msg.append("</a>");
+    }
+    msg.append("</p>");
+    qDebug()<<"new version address"<<msg;
+
+    VersionMessageDialog dlg;
+    dlg.setContent(msg);
+    dlg.exec();
+}
+
+bool BitcoinCore::qAppVersionCheck(std::shared_ptr<QAppVersion> qVer){
+    bool isVersionNew = true;
+
+    //compare version
+    if(qVer->vNo.empty()){
+        return true;
+    }
+    isVersionNew = (qVer->vNo.substr(1).compare(qAppVersion)!=0);
+    //if version is different, go upgrade logic
+    qDebug()<<"new version:"<<qVer->vNo.c_str()<<",old Version:"<<qAppVersion<<",level:"<<qVer->vLevel;
+    if(isVersionNew){
+        qDebug()<<"version is new, need to update";
+        qAppVersionUpgrade(qVer);
+        if(qVer->vLevel == 3)
+            return false;
+        else
+            return true;
+    }
+    return true;
+}
+
+
+bool BitcoinCore::qAppVersionGetRemote(){
+    //get qt version from web
+    QNetworkAccessManager manager;
+     QSslConfiguration config ;
+
+     config.setPeerVerifyMode(QSslSocket::VerifyNone);
+     config.setProtocol(QSsl::TlsV1_0);
+
+
+    QEventLoop synchronous;
+    connect(&manager, SIGNAL(finished(QNetworkReply*)), &synchronous, SLOT(quit()));
+    QNetworkRequest request;
+    request.setUrl(QUrl(qAppVerURL));
+    request.setSslConfiguration(config);
+    QNetworkReply* reply = manager.get(request);
+    synchronous.exec();
+
+    //get result
+    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    QByteArray bytes = reply->readAll();
+    QString result(bytes);
+    qDebug()<<result;
+    reply->deleteLater();
+
+
+    std::shared_ptr<QAppVersion> qVer = std::make_shared<QAppVersion>();
+    std::string newVersion = result.toStdString();
+    using namespace boost::property_tree;
+
+
+    //parse result
+    std::stringstream ss(newVersion);
+    ptree pt;
+
+    try{
+       read_json(ss, pt);
+       qVer->vLevel = pt.get<int>("v_level");
+       qVer->vNo = pt.get<std::string>("v_no");
+       qVer->vUrl = pt.get<std::string>("v_url", "");
+     }
+     catch(ptree_error & e) {
+     }
+    return BitcoinCore::qAppVersionCheck(qVer);
 }
 
 void BitcoinCore::shutdown()
@@ -453,6 +594,7 @@ void BitcoinApplication::requestShutdown()
     pollShutdownTimer->stop();
 
 #ifdef ENABLE_WALLET
+    pos::PosMineMgr::stopMine();
     window->removeAllWallets();
     delete walletModel;
     walletModel = 0;
@@ -487,6 +629,7 @@ void BitcoinApplication::initializeResult(bool success)
         // TODO: Expose secondary wallets
         if (!vpwallets.empty())
         {
+            pos::PosMineMgr::startMine();
             walletModel = new WalletModel(platformStyle, vpwallets[0], optionsModel);
 
             window->addWallet(BitcoinGUI::DEFAULT_WALLET, walletModel);
@@ -706,7 +849,9 @@ int main(int argc, char *argv[])
         // Perform base initialization before spinning up initialization/shutdown thread
         // This is acceptable because this function only contains steps that are quick to execute,
         // so the GUI thread won't be held up.
-        if (BitcoinCore::baseInitialize()) {
+        //version check
+        if (BitcoinCore::baseInitialize() && BitcoinCore::qAppVersionGetRemote()) {
+
             app.requestInitialize();
 #if defined(Q_OS_WIN) && QT_VERSION >= 0x050000
             WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("%1 didn't yet exit safely...").arg(QObject::tr(PACKAGE_NAME)), (HWND)app.getMainWinId());

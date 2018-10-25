@@ -1,5 +1,40 @@
 <TS language="zh_CN" version="2.1">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>click download.</source>
+        <translation>点击下载。</translation>
+    </message>
+    <message>
+        <source>Version Upgrade</source>
+        <translation>版本升级</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>提示</translation>
+    </message>
+    <message>
+        <source>New version</source>
+        <translation>新版本</translation>
+    </message>
+    <message>
+        <source>, you can upgrade to new version,</source>
+        <translation>，你可以升级到新版本，</translation>
+    </message>
+    <message>
+        <source>New milestone version</source>
+        <translation>里程碑版本</translation>
+    </message>
+    <message>
+        <source> released</source>
+        <translation>已发布</translation>
+    </message>
+    <message>
+        <source>, you must upgrade,</source>
+        <translation>，你必须升级到新版本才能继续使用，</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <source>Right-click to edit address or label</source>
@@ -306,6 +341,14 @@
         <translation>更改密码(&amp;C)...</translation>
     </message>
     <message>
+        <source>Unlock Wallet</source>
+        <translation>解锁钱包</translation>
+    </message>
+    <message>
+        <source>Lock Wallet</source>
+        <translation>锁定钱包</translation>
+    </message>
+    <message>
         <source>&amp;Sending addresses...</source>
         <translation>正在发送地址(&amp;S)...</translation>
     </message>
@@ -316,6 +359,18 @@
     <message>
         <source>Open &amp;URI...</source>
         <translation>打开 &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Import...</source>
+        <translation>导入...</translation>
+    </message>
+    <message>
+        <source>Old BTC user get 1:1 GOD</source>
+        <translation>老BTC用户1:1认领GOD</translation>
+    </message>
+    <message>
+        <source>Choose File</source>
+        <translation>选择文件</translation>
     </message>
     <message>
         <source>Click to disable network activity.</source>
@@ -437,6 +492,7 @@
         <source>%n active connection(s) to Bitcoin network</source>
         <translation><numerusform>%n 个到比特币上帝网络的活动连接</numerusform></translation>
     </message>
+
     <message>
         <source>Indexing blocks on disk...</source>
         <translation>正在为数据块建立索引...</translation>
@@ -538,6 +594,30 @@
     <message>
         <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
         <translation>HD密钥生成&lt;b&gt;禁用&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>挖矿中</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>准备中</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>已停止</translation>
+    </message>
+    <message>
+        <source>Wallet have not available coins</source>
+        <translation>你的钱包没有可用金额</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>钱包已被锁定,</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>请解锁钱包</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
@@ -836,6 +916,77 @@
         <translation>重置图形界面所有的变更设置</translation>
     </message>
 </context>
+<context>
+<name>MnemonicDialog</name>
+    <message>
+        <source>Import – recovery phrase/private key</source>
+        <translation>导入 - 助记词/私钥</translation>
+    </message>
+    <message>
+        <source>BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.</source>
+        <translation>分叉前BTC用户可以通过导入助记词或私钥认领1:1的GOD币，获取的GOD币将增加到你当前的钱包中</translation>
+    </message>
+    <message>
+        <source>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
+        <translation>提示：1.BitcoinGOD钱包是安全离线钱包，所有用户信息（助记词或私钥）仅存储于客户端</translation>
+    </message>
+    <message>
+        <source>Import mnemonic</source>
+        <translation>导入助记词</translation>
+    </message>
+    <message>
+        <source>Input your mnemonic</source>
+        <translation>输入助记词</translation>
+    </message>
+    <message>
+        <source>Import privatekey</source>
+        <translation>导入私钥</translation>
+    </message>
+    <message>
+        <source>Import privatekey file</source>
+        <translation>导入私钥文件</translation>
+    </message>
+    <message>
+        <source>Input single privatekey</source>
+        <translation>输入单个私钥</translation>
+    </message>
+    <message>
+        <source>Input privatekey file</source>
+        <translation>输入私钥文件</translation>
+    </message>
+    <message>
+        <source>Separating by space</source>
+        <translation>以空格分开</translation>
+    </message>
+    <message>
+        <source>example: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</source>
+        <translation>例如: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</translation>
+    </message>
+    <message>
+        <source>Tips: The private key file is the file exported by Bitcoin-Core 'dumpwallet filename', not the .dat file.</source>
+        <translation>注：私钥文件是通过Bitcoin-Core "dumpwallet filename"导出的私钥文件，不是.dat文件</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation>导入</translation>
+    </message>
+    <message>
+        <source>Reimport</source>
+        <translation>重新导入</translation>
+    </message>
+    <message>
+        <source>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
+        <translation>     2.导入过程如意外中断（如断电或意外关闭），请重新输入助记词或私钥，并点击‘重新导入’按钮</translation>
+    </message>
+</context>
+<context>
+    <name>WalletChooseDialog</name>
+    <message>
+        <source>choose wallet</source>
+        <translation>选择钱包</translation>
+    </message>
+</context>
+    
 <context>
     <name>Intro</name>
     <message>
@@ -1263,6 +1414,34 @@
         <source>Current total balance in watch-only addresses</source>
         <translation>观察地址(watch-only address)中的当前总余额 </translation>
     </message>
+    <message>
+        <source>Mining state</source>
+        <translation>挖矿状态</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>挖矿中</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>准备中</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>已停止</translation>
+    </message>
+    <message>
+        <source>Wallet have not available coins</source>
+        <translation>你的钱包没有可用金额</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>钱包已被锁定,</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>请解锁钱包</translation>
+    </message>
 </context>
 <context>
     <name>PaymentServer</name>
@@ -1286,6 +1465,10 @@
     <message>
         <source>Invalid payment address %1</source>
         <translation>无效的付款地址 %1</translation>
+    </message>
+    <message>
+        <source>new version found, please update!</source>
+        <translation>发现新版本，请及时更新!</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid BitcoinGod address or malformed URI parameters.</source>

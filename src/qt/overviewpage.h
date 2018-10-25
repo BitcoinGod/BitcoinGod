@@ -40,6 +40,8 @@ public:
 public Q_SLOTS:
     void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance,
                     const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance);
+    /** Set mining state shown in the UI */
+    void setMingState(int miningState);
 
 Q_SIGNALS:
     void transactionClicked(const QModelIndex &index);

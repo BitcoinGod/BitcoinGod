@@ -280,7 +280,7 @@ bool AcceptPosBlock(const std::shared_ptr<const CBlock>& pblock, CValidationStat
 }
 /**Accept POS blockheader**/
 bool AcceptPosBlockHeader(const CBlockHeader& block, CValidationState& state, CBlockIndex* pindexPrev){
-    if((pindexPrev->nHeight >= LAST_POW_BLOCK_HEIGHT)&&block.nNonce == 0)
+    if((pindexPrev->nHeight >= Params().GetConsensus().nLastPOWBlock)&&block.nNonce == 0)
         return state.DoS(10, error("pos block nNonce is zero, hash:%s, prevHeight:%d, prevHash:%s",block.GetHash().GetHex(),pindexPrev->nHeight, pindexPrev->GetBlockHash().GetHex()),REJECT_INVALID, "bad-pos-block-nNonce");
     
     return true;
@@ -373,3 +373,18 @@ bool GetBlockPublicKey(const CBlock& block, std::vector<unsigned char>& vchPubKe
     return false;
 }
 
+bool isSpecTx(int height, const CTransaction& tx){
+    //check height
+    if(height > SPEC_TX_HEIGHT){
+        return false;
+    }
+    
+    //check tx hash
+    uint256 specHash;
+    specHash.SetHex(SPEC_TX_HASH);
+    if(specHash == tx.GetHash()){
+        return true;
+    }
+    
+    return false;
+}

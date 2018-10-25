@@ -6,6 +6,7 @@
 #define BITCOIN_QT_WALLETVIEW_H
 
 #include "amount.h"
+#include "miningpage.h"
 
 #include <QStackedWidget>
 
@@ -64,6 +65,7 @@ private:
     SendCoinsDialog *sendCoinsPage;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
+    MiningPage *miningPage;
 
     TransactionView *transactionView;
 
@@ -84,6 +86,9 @@ public Q_SLOTS:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
+    /** Switch to posmining page */
+    void gotoMiningPage();
+
 
     /** Show incoming transaction notification for new transactions.
 
@@ -98,7 +103,8 @@ public Q_SLOTS:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
-
+    /** Lock the wallet */
+    void lockWallet();
     /** Show used sending addresses */
     void usedSendingAddresses();
     /** Show used receiving addresses */

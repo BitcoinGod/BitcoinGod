@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name>VersionMessageDialog</name>
+    <message>
+        <source>click download.</source>
+        <translation>click download.</translation>
+    </message>
+    <message>
+        <source>Version Upgrade</source>
+        <translation>Version Upgrade</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <source>New version</source>
+        <translation>New version</translation>
+    </message>
+    <message>
+        <source>, you can upgrade to new version,</source>
+        <translation>, you can upgrade to new version,</translation>
+    </message>
+    <message>
+        <source>New milestone version</source>
+        <translation>New milestone version</translation>
+    </message>
+    <message>
+        <source> released</source>
+        <translation> released</translation>
+    </message>
+    <message>
+        <source>, you must upgrade,</source>
+        <translation>, you must upgrade,</translation>
+    </message>
+</context>
+<context>
     <name>AddressBookPage</name>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+30"/>
@@ -389,6 +424,14 @@
         <translation>&amp;Change Passphrase...</translation>
     </message>
     <message>
+        <source>Unlock Wallet</source>
+        <translation>Unlock Wallet</translation>
+    </message>
+    <message>
+        <source>Lock Wallet</source>
+        <translation>Lock Wallet</translation>
+    </message>
+    <message>
         <location line="+12"/>
         <source>&amp;Sending addresses...</source>
         <translation type="unfinished"></translation>
@@ -402,6 +445,18 @@
         <location line="+3"/>
         <source>Open &amp;URI...</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import(I)...</source>
+        <translation>Import(I)...</translation>
+    </message>
+    <message>
+        <source>Old BTC user get 1:1 GOD</source>
+        <translation>Old BTC user get 1:1 GOD</translation>
+    </message>
+    <message>
+        <source>Choose File</source>
+        <translation>Choose File</translation>
     </message>
     <message>
         <location line="+359"/>
@@ -423,6 +478,36 @@
         <source>Syncing Headers (%1%)...</source>
         <translation type="unfinished"></translation>
     </message>
+    
+    <message>
+        <source>Mining state</source>
+        <translation>Mining state</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation>Active</translation>
+    </message>
+    <message>
+        <source>Reading</source>
+        <translation>Reading</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation>Inactive</translation>
+    </message>
+    <message>
+        <source>Wallet have not available coins</source>
+        <translation>Wallet have not available coins</translation>
+    </message>
+    <message>
+        <source>Wallet is locked.</source>
+        <translation>Wallet is locked.</translation>
+    </message>
+    <message>
+        <source>Please unlock wallet</source>
+        <translation>Please unlock wallet</translation>
+    </message>
+    
     <message>
         <location line="+37"/>
         <source>Reindexing blocks on disk...</source>
@@ -1050,6 +1135,78 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+<name>MnemonicDialog</name>
+    <message>
+        <source>Import – recovery phrase/private key</source>
+        <translation>Import – recovery phrase/private key</translation>
+    </message>
+    <message>
+        <source>BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.</source>
+        <translation>BTC holders before the fork can use either the recovery phrase or the private key to claim 1:1 GOD tokens. The claimed GOD token will be airdropped to your current wallet.</translation>
+    </message>
+    <message>
+    <source>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</source>
+    <translation>Tips: 1.BitcoinGOD wallet is a safety cold wallet (offline wallet), all the user information (recovery phrase or private key) will only be stored in the client.</translation>
+    </message>
+    <message>
+        <source>Import mnemonic</source>
+        <translation>Import mnemonic</translation>
+    </message>
+    <message>
+        <source>Input your mnemonic</source>
+        <translation>Input your mnemonic</translation>
+    </message>
+    <message>
+        <source>Import privatekey</source>
+        <translation>Import privatekey</translation>
+    </message>
+    <message>
+        <source>Import privatekey file</source>
+        <translation>Import privatekey file</translation>
+    </message>
+    <message>
+        <source>Input single privatekey</source>
+        <translation>Input single privatekey</translation>
+    </message>
+    <message>
+        <source>Input privatekey file</source>
+        <translation>Input privatekey file</translation>
+    </message>
+    <message>
+        <source>Separating by space</source>
+        <translation>Separating by space</translation>
+    </message>
+    <message>
+        <source>example: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</source>
+        <translation>example: L2pVnppu4S12FDFTn6sCoyvfCU4QiedHVxNyqJQ63Kty6gGRm1Mz</translation>
+    </message>
+    <message>
+        <source>Tips: The private key file is the file exported by Bitcoin-Core ‘dumpwallet filename’, not the .dat file.</source>
+        <translation>Tips: The private key file is the file exported by Bitcoin-Core ‘dumpwallet filename’, not the .dat file.</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Reimport</source>
+        <translation>Reimport</translation>
+    </message>
+    <message>
+        <source>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</source>
+        <translation>      2.If the import process is interrupted(such as a power cut or accidental shutdown), please re-enter the recovery phrase or the private key and click the 'Reimport' button.</translation>
+    </message>
+</context>
+
+<context>
+    <name>WalletChooseDialog</name>
+    <message>
+        <source>choose wallet</source>
+        <translation>choose wallet</translation>
+    </message>
+</context>
+
 <context>
     <name>Intro</name>
     <message>
@@ -1695,6 +1852,10 @@
     <message>
         <location line="+13"/>
         <source>Invalid payment address %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>new version found, please update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -71,6 +71,13 @@ struct Params {
     int nPosSubsidyHalvingInterval;
     int64_t  nPosTargetTimespan;
     int64_t nPosTargetSpacing;
+    int nCoinbaseMaturity;
+    int nCoinStakeMaturity;
+    int nCoinStakeMaturityFix;
+    int nSuperBlockHeight;
+    int nDelayRewardHeight;
+    int nDelayRewardHeightFix;
+    int nSpuerBlockCount;
 };
 } // namespace Consensus
 

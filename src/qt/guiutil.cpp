@@ -17,6 +17,7 @@
 #include "script/script.h"
 #include "script/standard.h"
 #include "util.h"
+#include "clientversion.h"
 
 #ifdef WIN32
 #ifdef _WIN32_WINNT
@@ -76,6 +77,11 @@ extern double NSAppKitVersionNumber;
 #endif
 
 namespace GUIUtil {
+
+QString getAppVersion()
+{
+    return QString::fromStdString(QT_GOD_APP_VERSION);
+}
 
 QString dateTimeStr(const QDateTime &date)
 {

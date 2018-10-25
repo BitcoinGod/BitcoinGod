@@ -134,7 +134,7 @@ public:
         //vSeeds.emplace_back("seed.bitcoinstats.com", true); // Christian Decker, supports x1 - xf
         //vSeeds.emplace_back("seed.bitcoin.jonasschnelli.ch", true); // Jonas Schnelli, only supports x1, x5, x9, and xd
         //vSeeds.emplace_back("seed.btc.petertodd.org", true); // Peter Todd, only supports x1, x5, x9, and xd        
-	 vSeeds.emplace_back("s.bitcoingod.org", false);        
+        vSeeds.emplace_back("s.bitcoingod.org", false);        
 
         //godcoin:change the address prefix of public address to 'g' and script address to 'A'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,97);
@@ -171,6 +171,7 @@ public:
                 {279000, uint256S("0x0000000000000001ae8c72a0b0c301f67e3afca10e819efa9041e458e9bd7e40")},
                 {295000, uint256S("0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983")},
                 {498888, uint256S("0x00000000000000000006cd8c4c5c0582afad218f13eb02f1351d0fa1821590d7")},
+                {536000, uint256S("0xc11c3db25e7fb7666d358acd8d8072c89b8a27c74e556150a3690cc1154bad86")},
             }
         };
 
@@ -189,7 +190,14 @@ public:
         consensus.nPosTargetTimespan = 25 * 60; // 25 minutes
         consensus.nPosTargetSpacing = 150;  //2.5 minutes
         consensus.fPoSNoRetargeting = false;
-        consensus.nLastPOWBlock = LAST_POW_BLOCK_HEIGHT;
+        consensus.nCoinbaseMaturity = COINBASE_MATURITY;
+        consensus.nCoinStakeMaturity = COINSTAKE_MATURITY;
+        consensus.nCoinStakeMaturityFix = COINSTAKE_MATURITY_FIX;
+        consensus.nSuperBlockHeight = SUPER_BLOCK_HEIGHT;
+        consensus.nDelayRewardHeight = DELAY_REWARD_HEIGHT;
+        consensus.nDelayRewardHeightFix = DELAY_REWARD_HEIGHT_FIX;
+        consensus.nSpuerBlockCount = SUPER_BLOCK_COUNT;
+        consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
     }
 };
 
@@ -227,7 +235,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1493596800; // May 1st 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000002830dab7f76dbb7d63");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000000000a");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x0000000002e9e7b00e1f6dc5123a04aad68dd0f0968d8c7aa45f6640795c37b1"); //1135275
@@ -236,7 +244,7 @@ public:
         pchMessageStart[1] = 0x11;
         pchMessageStart[2] = 0x09;
         pchMessageStart[3] = 0x07;
-        nDefaultPort = 18333;
+        nDefaultPort = 18885;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1296688602, 414098458, 0x1d00ffff, 1, 50 * COIN);
@@ -247,9 +255,10 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch", true);
-        vSeeds.emplace_back("seed.tbtc.petertodd.org", true);
-        vSeeds.emplace_back("testnet-seed.bluematt.me", false);
+        //vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch", true);
+        //vSeeds.emplace_back("seed.tbtc.petertodd.org", true);
+        //vSeeds.emplace_back("testnet-seed.bluematt.me", false);
+        vSeeds.emplace_back("test.s.bitcoingod.org", false);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -266,7 +275,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {546, uint256S("000000002a936ca763904c3c35fce2f3556c559c0214345d31b1bcebf76acb70")},
+                //{546, uint256S("000000002a936ca763904c3c35fce2f3556c559c0214345d31b1bcebf76acb70")},
             }
         };
 
@@ -276,7 +285,21 @@ public:
             14706531,
             0.15
         };
-
+        
+        //godcoin:pos
+        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPosSubsidyHalvingInterval = 210240; //halving every  1 years
+        consensus.nPosTargetTimespan = 25 * 60; // 25 minutes
+        consensus.nPosTargetSpacing = 150;  //2.5 minutes
+        consensus.fPoSNoRetargeting = true;
+        consensus.nCoinbaseMaturity = 0;
+        consensus.nCoinStakeMaturity = 0;
+        consensus.nCoinStakeMaturityFix = 100;
+        consensus.nSuperBlockHeight = 1000;
+        consensus.nDelayRewardHeight = 1200;
+        consensus.nDelayRewardHeightFix = 2000;
+        consensus.nSpuerBlockCount = 3;
+        consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
     }
 };
 
@@ -351,6 +374,21 @@ public:
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+
+        //godcoin:pos
+        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPosSubsidyHalvingInterval = 210240; //halving every  1 years
+        consensus.nPosTargetTimespan = 25 * 60; // 25 minutes
+        consensus.nPosTargetSpacing = 150;  //2.5 minutes
+        consensus.fPoSNoRetargeting = true;
+        consensus.nCoinbaseMaturity = 0;
+        consensus.nCoinStakeMaturity = 0;
+        consensus.nCoinStakeMaturityFix = 0;
+        consensus.nSuperBlockHeight = 1;
+        consensus.nDelayRewardHeight = 10;
+        consensus.nDelayRewardHeightFix = 100;
+        consensus.nSpuerBlockCount = 0;
+        consensus.nLastPOWBlock = consensus.nSuperBlockHeight + consensus.nSpuerBlockCount - 1;
     }
 };
 

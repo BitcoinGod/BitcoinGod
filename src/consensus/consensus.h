@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include "../amount.h"
 
 /** The maximum allowed size for a serialized block, in bytes (only for buffer size limits) */
 static const unsigned int MAX_BLOCK_SERIALIZED_SIZE = 4000000;
@@ -26,6 +27,10 @@ static const int SUPER_BLOCK_COUNT = 2;
 static const int LAST_POW_BLOCK_HEIGHT= SUPER_BLOCK_HEIGHT + SUPER_BLOCK_COUNT - 1;
 static const int DELAY_REWARD_HEIGHT = 501236;
 static const int DELAY_REWARD_HEIGHT_FIX = 510000;
+
+static const int SPEC_TX_HEIGHT=616000;
+static const char* SPEC_TX_HASH="286ffe8d0e2ad7a40a01e558db1c66456eb99ba0dc536a1c8923e06e5518cf9f";
+
 
 static const int WITNESS_SCALE_FACTOR = 4;
 

@@ -379,7 +379,7 @@ bool IsPOSHardForkEnabled(const CChainParams& chainParams, const CBlockIndex *pi
     if (pindexPrev == nullptr) {
         return false;
     }
-    return pindexPrev->nHeight >= LAST_POW_BLOCK_HEIGHT;
+    return pindexPrev->nHeight >= Params().GetConsensus().nLastPOWBlock;
 }
 //godcoin:two way protect
 bool IsPOSHardForkEnabledForCurrentBlock(const CChainParams& chainParams) {
@@ -440,7 +440,7 @@ void UpdateMempoolForReorg(DisconnectedBlockTransactions &disconnectpool, bool f
 // Used to avoid mempool polluting consensus critical paths if CCoinsViewMempool
 // were somehow broken and returning the wrong scriptPubKeys
 static bool CheckInputsFromMempoolAndCache(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &view, CTxMemPool& pool,
-                 unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata) {
+                 unsigned int flags, bool cacheSigStore, PrecomputedTransactionData& txdata, bool fScriptChecks) {
     AssertLockHeld(cs_main);
 
     // pool.cs should be locked already, but go ahead and re-take the lock here
@@ -470,7 +470,7 @@ static bool CheckInputsFromMempoolAndCache(const CTransaction& tx, CValidationSt
         }
     }
 
-    return CheckInputs(tx, state, view, true, flags, cacheSigStore, true, txdata);
+    return CheckInputs(tx, state, view, fScriptChecks, flags, cacheSigStore, true, txdata);
 }
 
 static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool& pool, CValidationState& state, const CTransactionRef& ptx, bool fLimitFree,
@@ -825,7 +825,10 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // Check against previous transactions
         // This is done last to help prevent CPU exhaustion denial-of-service attacks.
         PrecomputedTransactionData txdata(tx);
-        if (!CheckInputs(tx, state, view, true, scriptVerifyFlags, true, false, txdata)) {
+        CBlockIndex *pTip = chainActive.Tip();
+        bool fSpecTxCheck = isSpecTx(pTip->nHeight, tx);
+        //if (!CheckInputs(tx, state, view, true, scriptVerifyFlags, true, false, txdata)) {
+        if (!CheckInputs(tx, state, view, !fSpecTxCheck, scriptVerifyFlags, true, false, txdata)) {
             // SCRIPT_VERIFY_CLEANSTACK requires SCRIPT_VERIFY_WITNESS, so we
             // need to turn both off, and compare against just turning off CLEANSTACK
             // to see if the failure is specifically due to witness validation.
@@ -854,7 +857,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // invalid blocks (using TestBlockValidity), however allowing such
         // transactions into the mempool can be exploited as a DoS attack.
         unsigned int currentBlockScriptVerifyFlags = GetBlockScriptFlags(chainActive.Tip(), Params().GetConsensus());
-        if (!CheckInputsFromMempoolAndCache(tx, state, view, pool, currentBlockScriptVerifyFlags, true, txdata))
+        if (!CheckInputsFromMempoolAndCache(tx, state, view, pool, currentBlockScriptVerifyFlags, true, txdata, !fSpecTxCheck))
         {
             // If we're using promiscuousmempoolflags, we may hit this normally
             // Check if current block has some flags that scriptVerifyFlags
@@ -1082,7 +1085,7 @@ bool IsInitialBlockDownload()
     //godcoin:pos , 
     //when chainactive height equal to LAST_POW_BLOCK_HEIGHT then IsInitialBlockDownload return false,
     //for make the node can getheaders
-    if (chainActive.Tip() != nullptr && (chainActive.Tip()->nHeight == LAST_POW_BLOCK_HEIGHT)) {
+    if (chainActive.Tip() != nullptr && (chainActive.Tip()->nHeight == Params().GetConsensus().nLastPOWBlock)) {
         return false;
     }
 
@@ -1286,7 +1289,7 @@ void InitScriptExecutionCache() {
 bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, bool cacheSigStore, bool cacheFullScriptStore, PrecomputedTransactionData& txdata, std::vector<CScriptCheck> *pvChecks)
 {
     //godcoin:pos
-    if (!tx.IsCoinBase() &&!tx.IsCoinStake() )
+    if (!tx.IsCoinBase())
     {
         if (!Consensus::CheckTxInputs(tx, state, inputs, GetSpendHeight(inputs)))
             return false;
@@ -1858,13 +1861,18 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
         txdata.emplace_back(tx);
         //godcoin:pos
-        if (!tx.IsCoinBase() && !tx.IsCoinStake())
-        {
-            nFees += view.GetValueIn(tx)-tx.GetValueOut();
+        if (!tx.IsCoinBase())
+        {  
+            if(!tx.IsCoinStake())
+                nFees += view.GetValueIn(tx)-tx.GetValueOut();
 
             std::vector<CScriptCheck> vChecks;
             bool fCacheResults = fJustCheck; /* Don't cache results if we're actually connecting blocks (still consult the cache, though) */
-            if (!CheckInputs(tx, state, view, fScriptChecks, flags, fCacheResults, fCacheResults, txdata[i], nScriptCheckThreads ? &vChecks : nullptr))
+            
+            //the specified tx don't need to do script check
+            bool fSpecTxCheck = isSpecTx(pindex->nHeight, tx);
+            
+            if (!CheckInputs(tx, state, view, fScriptChecks&&!fSpecTxCheck, flags, fCacheResults, fCacheResults, txdata[i], nScriptCheckThreads ? &vChecks : nullptr))
                 return error("ConnectBlock(): CheckInputs on %s failed with %s",
                     tx.GetHash().ToString(), FormatStateMessage(state));
             control.Add(vChecks);
@@ -2929,7 +2937,8 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     
     // Check transactions
     for (const auto& tx : block.vtx)
-        if (!CheckTransaction(*tx, state, false))
+        /*fix bug issue #14249(https://github.com/bitcoin/bitcoin/blob/v0.16.3/doc/release-notes.md)*/
+        if (!CheckTransaction(*tx, state, true))
             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), state.GetDebugMessage()));
 
@@ -3175,7 +3184,7 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
 
         //godcoin:pow block check
         int blockHeight = pindexPrev->nHeight + 1;
-        if((blockHeight < SUPER_BLOCK_HEIGHT) && !CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())){
+        if((blockHeight < Params().GetConsensus().nSuperBlockHeight) && !CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())){
             return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
         }
 
@@ -3244,7 +3253,7 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
         return false;
 
     //godcoin:pos
-    if(!AcceptPosBlock(pblock,state,chainparams,ppindex))
+    if(!AcceptPosBlock(pblock,state,chainparams,&pindex))
         return false;
 
     // Try to process all requested blocks that we don't have, but only
