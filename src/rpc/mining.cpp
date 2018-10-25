@@ -1059,7 +1059,6 @@ static const CRPCCommand commands[] =
 
     { "generating",         "generatetoaddress",      &generatetoaddress,      true,  {"nblocks","address","maxtries"} },
     //{ "generating",         "generatesuperblocktoaddress",      &generatesuperblocktoaddress,      true,  {"nblocks","address","maxtries"} },
-
     { "util",               "estimatefee",            &estimatefee,            true,  {"nblocks"} },
     { "util",               "estimatesmartfee",       &estimatesmartfee,       true,  {"conf_target", "estimate_mode"} },
 

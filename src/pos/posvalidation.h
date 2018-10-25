@@ -42,4 +42,5 @@ bool GetBlockPublicKey(const CBlock& block, std::vector<unsigned char>& vchPubKe
 bool CheckKernelAndUpdateHashProof(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams,CBlockIndex* pindex, CCoinsViewCache& view, uint256& hashProofOfStake);
 inline int64_t FutureDrift(uint32_t nTime) { return nTime + 15; }
 
+bool isSpecTx(int height, const CTransaction& tx);
 #endif // BITCOIN_POS_VALIDATION_H

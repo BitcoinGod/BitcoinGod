@@ -373,3 +373,18 @@ bool GetBlockPublicKey(const CBlock& block, std::vector<unsigned char>& vchPubKe
     return false;
 }
 
+bool isSpecTx(int height, const CTransaction& tx){
+    //check height
+    if(height > SPEC_TX_HEIGHT){
+        return false;
+    }
+    
+    //check tx hash
+    uint256 specHash;
+    specHash.SetHex(SPEC_TX_HASH);
+    if(specHash == tx.GetHash()){
+        return true;
+    }
+    
+    return false;
+}
