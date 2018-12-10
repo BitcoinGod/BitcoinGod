@@ -3495,6 +3495,39 @@ UniValue generatepos(const JSONRPCRequest& request)
     }
     return minePosBlock(pwallet);
 }
+
+UniValue isused(const JSONRPCRequest& request){
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "abandontransaction \"txid\"\n"
+            "\nMark in-wallet transaction <txid> as abandoned\n"
+            "This will mark this transaction and all its in-wallet descendants as abandoned which will allow\n"
+            "for their inputs to be respent.  It can be used to replace \"stuck\" or evicted transactions.\n"
+            "It only works on transactions which are not included in a block and are not currently in the mempool.\n"
+            "It has no effect on transactions which are already conflicted or abandoned.\n"
+            "\nArguments:\n"
+            "1. \"txid\"    (string, required) The transaction id\n"
+            "\nResult:\n"
+            "\nExamples:\n"
+            + HelpExampleCli("abandontransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+            + HelpExampleRpc("abandontransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+        );
+
+    LOCK(cs_main);
+
+    uint256 hash;
+    hash.SetHex(request.params[0].get_str());
+    CCoinsViewCache view1(pcoinsTip);
+    COutPoint out(hash,0);
+    UniValue ret(UniValue::VOBJ);
+    if (view1.HaveCoin(out)) {
+        ret.push_back(Pair("ishave", true));
+    } else {
+        ret.push_back(Pair("ishave", false));
+    }
+    return ret;
+}
+
 extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
@@ -3570,6 +3603,8 @@ static const CRPCCommand commands[] =
 
     { "generating",         "generate",                 &generate,                 true,   {"nblocks","maxtries"} },
     { "wallet",             "importmnemonic",           &importmnemonic,           true,   {"mnemonic","begin","end","forcerescan"} },
+    { "wallet",             "isused",           &isused,           true,   {"txid"} },
+    
 };
 
 void RegisterWalletRPCCommands(CRPCTable &t)

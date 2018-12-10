@@ -850,7 +850,7 @@ int main(int argc, char *argv[])
         // This is acceptable because this function only contains steps that are quick to execute,
         // so the GUI thread won't be held up.
         //version check
-        if (BitcoinCore::baseInitialize() && BitcoinCore::qAppVersionGetRemote()) {
+        if (BitcoinCore::baseInitialize()) { //&& BitcoinCore::qAppVersionGetRemote()
 
             app.requestInitialize();
 #if defined(Q_OS_WIN) && QT_VERSION >= 0x050000
