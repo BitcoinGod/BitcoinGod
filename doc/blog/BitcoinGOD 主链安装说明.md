@@ -1,7 +1,7 @@
-## BitcoinGOD Ö÷Á´°²×°ËµÃ÷
-&#160; &#160; &#160; &#160;Bitcoin God ¿Í»§¶ËÊÇ¹¹½¨Õû¸öÍøÂçµÄÖ§Öù¡£ÏÂÔØËü²¢Ä¬ÈÏ´æ´¢±ÈÌØ±Ò½»Ò×µÄËùÓĞÀúÊ·£¨Ä¿Ç°³¬¹ı160 G£©£»Í¬²½µÄ¹ı³Ì½«»á»¨·ÑÊıĞ¡Ê±»ò¸ü¶àÊ±¼ä£¬ËüÈ¡¾öÓÚ¼ÆËã»úµÄÓ²¼ş¶ÁĞ´ËÙ¶ÈºÍÍøËÙ¡£ 
-### ÒÀÀµ
-#### UNIX
+## BitcoinGOD ä¸»é“¾å®‰è£…è¯´æ˜
+&#160; &#160; &#160; &#160;Bitcoin God å®¢æˆ·ç«¯æ˜¯æ„å»ºæ•´ä¸ªç½‘ç»œçš„æ”¯æŸ±ã€‚ä¸‹è½½å®ƒå¹¶é»˜è®¤å­˜å‚¨æ¯”ç‰¹å¸äº¤æ˜“çš„æ‰€æœ‰å†å²ï¼ˆç›®å‰è¶…è¿‡160 Gï¼‰ï¼›åŒæ­¥çš„è¿‡ç¨‹å°†ä¼šèŠ±è´¹æ•°å°æ—¶æˆ–æ›´å¤šæ—¶é—´ï¼Œå®ƒå–å†³äºè®¡ç®—æœºçš„ç¡¬ä»¶è¯»å†™é€Ÿåº¦å’Œç½‘é€Ÿã€‚ 
+### ä¾èµ–
+#### Ubuntu
 
 ```
 sudo apt-get update  
@@ -13,31 +13,34 @@ sudo apt-get update
 sudo apt-get install libdb4.8-dev libdb4.8++-dev 
 sudo apt-get install libminiupnpc-dev
 ```
+#### Centos
+
+å®‰è£…è¯´æ˜è¯·ç‚¹å‡»[è¿™é‡Œ](https://github.com/BitcoinGod/BitcoinGod/tree/master/doc/blog/BitcoinGod%20å®‰è£…è¯´æ˜(centos).md)
 
 #### MAC
-°²×°OS XÃüÁîĞĞ¹¤¾ß£º**xcode-select ¨Cinstall**£¬µ±µ¯³ö´°¿ÚÊ±ºò£¬µã»÷**Install**
-°²×° **[Homebrew][1]**.
+å®‰è£…OS Xå‘½ä»¤è¡Œå·¥å…·ï¼š**xcode-select â€“install**ï¼Œå½“å¼¹å‡ºçª—å£æ—¶å€™ï¼Œç‚¹å‡»**Install**
+å®‰è£… **[Homebrew][1]**.
 
 ```
 brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf libevent
 ```
 
 #### WINDOWS
-½âÑ¹[ÎÄ¼ş][2]µ½Ä¿Â¼£¬¸ÃÄ¿Â¼ËùÔÚÓ²ÅÌ¿ÉÓÃ¿Õ¼äĞèÒª´óÓÚ160G¡£
-### ±àÒë
+è§£å‹[æ–‡ä»¶][2]åˆ°ç›®å½•ï¼Œè¯¥ç›®å½•æ‰€åœ¨ç¡¬ç›˜å¯ç”¨ç©ºé—´éœ€è¦å¤§äº160Gã€‚
+### ç¼–è¯‘
 #### Unix & Mac
 
-1. ÏÂÔØbitcoingodÔ´Âë²¢½øÈëbitcoingodÄ¿Â¼
+1. ä¸‹è½½bitcoingodæºç å¹¶è¿›å…¥bitcoingodç›®å½•
 
 ```
 git clone https://github.com/BitcoinGod/BitcoinGod.git 
 cd BitcoinGod
 ```
 
-2. ±àÒëBitcoin God: ÅäÖÃ²¢±àÒëBitcoin God
+2. ç¼–è¯‘Bitcoin God: é…ç½®å¹¶ç¼–è¯‘Bitcoin God
 
 ```
-binaries ¨Cwithout-gui 
+binaries â€“without-gui 
 ./autogen.sh   
 ./configure --without-gui   
 make  
@@ -45,123 +48,123 @@ make install
 ```
 
 #### Windows
-²»ĞèÒª±àÒë¡£
-### ÔËĞĞ
-ÔËĞĞÖ®Ç°£¬ÎÒÃÇÍÆ¼ö´´½¨RPCÅäÖÃÎÄ¼ş£¬ÔÚOSXÏÂ´´½¨ÅäÖÃÎÄ¼şÈçÏÂ£º
+ä¸éœ€è¦ç¼–è¯‘ã€‚
+### è¿è¡Œ
+è¿è¡Œä¹‹å‰ï¼Œæˆ‘ä»¬æ¨èåˆ›å»ºRPCé…ç½®æ–‡ä»¶ï¼Œåœ¨OSXä¸‹åˆ›å»ºé…ç½®æ–‡ä»¶å¦‚ä¸‹ï¼š
 
 ```
 echo -e "rpcuser=default@\nrpcpassword=default@"  > "/Users/${USER}/Library/Application Sup port/BitcoinGod/bitcoin.conf"
 chmod 600 "/Users/${USER}/Library/Application Support/BitcoinGod/bitcoin.conf"
 ```
 
-ÔÚLinux»òÕßUnixÏÂÃæ´´½¨ÅäÖÃÎÄ¼ş
+åœ¨Linuxæˆ–è€…Unixä¸‹é¢åˆ›å»ºé…ç½®æ–‡ä»¶
 
 ```
 echo -e "rpcuser=default@\nrpcpassword=default@"  > "/${USER}/.BitcoinGod/bitcoin.conf"
 chmod 600 "/${USER}/.BitcoinGod/bitcoin.conf"
 ```
-ÔÚWindowsÏÂÃæ´´½¨ÅäÖÃÎÄ¼ş
+åœ¨Windowsä¸‹é¢åˆ›å»ºé…ç½®æ–‡ä»¶
 
 ```
 echo rpcuser=default@ >%USERPROFILE%\AppData\Roaming\BitcoinGod\bitcoin.conf	
 echo rpcpassword=default@  >%USERPROFILE%\AppData\Roaming\BitcoinGod\bitcoin.conf
 ```
 
-### ¿ìËÙ¿ªÊ¼
+### å¿«é€Ÿå¼€å§‹
 #### windows
-Æô¶¯Bitcoin God
+å¯åŠ¨Bitcoin God
 
 ```
 bitcoingodd.exe
 ```
 
-Ö´ĞĞRpcÃüÁî
+æ‰§è¡ŒRpcå‘½ä»¤
 
 ```
 bitcoingod-cli.exe help
 ```
 
 #### linux
-Æô¶¯Bitcoin God
+å¯åŠ¨Bitcoin God
 
 ```
 bitcoingodd -datadir={/BitcoinGod/datadir} -rpcuser={username} -rpcpassword={passwd} -daemon
 ```
 
-Ö´ĞĞRpcÃüÁî
+æ‰§è¡ŒRpcå‘½ä»¤
 
 ```
 bitcoingod-cli -rpcuser={username} -rpcpassword={passwd} help
 ```
 
-Æô¶¯bitcoingodd daemon
+å¯åŠ¨bitcoingodd daemon
 
 ```
 bitcoingodd -daemon
 ```
 
-µ±ÄãµÚÒ»´ÎÆô¶¯²¢Á¬½ÓÔÚÍøÂçÖĞ£¬bitcoingodd»á¿ªÊ¼Ğ£Ñéblockchain²¢ÏÂÔØ¡£ÕâĞèÒª¸ù¾İÄãµÄÍøÂçÇé¿öºÍÓ²ÅÌ¶ÁĞ´Çé¿ö»¨ÉÏ¼¸¸öĞ¡Ê±»ò¸ü¶àÊ±¼ä¡£
-ÄãÄÜÍ¨¹ıÏÂÃæÃüÁî²é¿´ÈÕÖ¾£º
+å½“ä½ ç¬¬ä¸€æ¬¡å¯åŠ¨å¹¶è¿æ¥åœ¨ç½‘ç»œä¸­ï¼Œbitcoingoddä¼šå¼€å§‹æ ¡éªŒblockchainå¹¶ä¸‹è½½ã€‚è¿™éœ€è¦æ ¹æ®ä½ çš„ç½‘ç»œæƒ…å†µå’Œç¡¬ç›˜è¯»å†™æƒ…å†µèŠ±ä¸Šå‡ ä¸ªå°æ—¶æˆ–æ›´å¤šæ—¶é—´ã€‚
+ä½ èƒ½é€šè¿‡ä¸‹é¢å‘½ä»¤æŸ¥çœ‹æ—¥å¿—ï¼š
 
 ```
 tail -f debug.log
 ```
 
-ÆäËûÃüÁî£º
-1.	¿ªÊ¼ BitcoinGOD
+å…¶ä»–å‘½ä»¤ï¼š
+1.	å¼€å§‹ BitcoinGOD
 
 ```
 bitcoingodd -daemon -debug=0
 ```
 
-2.	Í£Ö¹BitcoinGOD
+2.	åœæ­¢BitcoinGOD
 
 ```
 bitcoingod-cli stop
 ```
 
-3.	²é¿´Óà¶î
+3.	æŸ¥çœ‹ä½™é¢
 
 ```
 bitcoingod-cli getbalance <account[optional]>
 ```
 
-4.	²é¿´fullnodeĞÅÏ¢
+4.	æŸ¥çœ‹fullnodeä¿¡æ¯
 
 ```
 bitcoingod-cli getinfo
 ```
-5.	×ªÕËµ½Ä³¸öµØÖ·
+5.	è½¬è´¦åˆ°æŸä¸ªåœ°å€
 
 ```
 bitcoingod-cli sendtoaddress <address> <amount>
 ```
-6.	²é¿´½»Ò×ÀúÊ·
+6.	æŸ¥çœ‹äº¤æ˜“å†å²
 
 ```
 bitcoingod-cli listtransactions <account> <count=10> <from=0>
 ```
-7.	²é¿´UTXOS
+7.	æŸ¥çœ‹UTXOS
 
 ```
 bitcoingod-cli listunspent <minconf=1> <maxconf=999999>
 ```
-8.	ÍÚ¿ó
+8.	æŒ–çŸ¿
 
 ```
 bitcoingod-cli generatepos
 ```
-9.	¸ù¾İblockheight»ñÈ¡blockhash
+9.	æ ¹æ®blockheightè·å–blockhash
 
 ```
 bitcoingod-cli getblockhash <height>
 ```
-10.	»ñÈ¡BlockĞÅÏ¢
+10.	è·å–Blockä¿¡æ¯
 
 ```
 bitcoingod-cli getblock <blockhash>
 ```
-11.	»ñÈ¡½»Ò×ĞÅÏ¢
+11.	è·å–äº¤æ˜“ä¿¡æ¯
 
 ```
 bitcoingod-cli gettransaction <txid>
