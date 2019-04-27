@@ -96,11 +96,11 @@ If you're connected to the Internet, bitcoingodd will begin downloading and veri
 the blockchain. This can take from several hours to several days depending on the 
 speed of your computer and Internet connection  
 
-## God Testnet
+## Testnet
 ### How to join the testnet
 - unix&mac
 
-		bitcoingod -daemon -testnet
+		bitcoingodd -daemon -testnet
 
 ### How to get test coin
 
